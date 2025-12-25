@@ -2,164 +2,217 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>资源魔法学院 - 你的名字</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>资源魔法学院 - 终极系守</title>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.15);
-            --border: rgba(255, 255, 255, 0.3);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-heavy: rgba(255, 255, 255, 0.18);
+            --glow: 0 0 15px rgba(161, 196, 253, 0.5);
         }
 
-        /* 强制一屏显示，禁止滚动 */
+        /* 电影级全屏适配 */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { 
-            height: 100dvh; width: 100vw; overflow: hidden; 
-            margin: 0; padding: 0;
+            margin: 0; padding: 0; width: 100%; height: 100dvh; 
+            overflow: hidden; font-family: 'ZCOOL KuaiLe', cursive;
+            background: #000;
         }
 
-        body {
-            font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+        /* 动态位移背景 */
+        .bg-layer {
+            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
             background: url('jm.jpg') no-repeat center center;
-            background-size: cover;
-            display: flex; flex-direction: column;
-            padding: 15px; color: white;
+            background-size: cover; z-index: -2;
+            animation: bg-pan 20s ease-in-out infinite;
         }
+        @keyframes bg-pan { 0%, 100% { transform: scale(1) translate(0, 0); } 50% { transform: scale(1.05) translate(-1%, -1%); } }
 
-        /* 电影遮罩层 */
-        body::after {
-            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+        .bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
             z-index: -1;
         }
 
-        /* --- 绝美拖尾流星逻辑 --- */
-        .comet-container { position: fixed; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 1; }
-        .comet {
-            position: absolute; width: 2px; height: 2px;
-            background: #fff; border-radius: 50%;
-            box-shadow: 0 0 10px 2px #fff, 0 0 20px 4px #a1c4fd;
-            opacity: 0; animation: comet-move linear infinite;
-        }
-        /* 彗星拖尾 */
-        .comet::after {
-            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-            width: 80px; height: 1px;
-            background: linear-gradient(to left, rgba(255,255,255,0.8), transparent);
-        }
-        @keyframes comet-move {
-            0% { transform: translate(120vw, -20vh) rotate(-45deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translate(-20vw, 80vh) rotate(-45deg); opacity: 0; }
+        /* Canvas 星河/流星引擎 */
+        #renderCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        /* 主体布局 */
+        .app-wrap {
+            position: relative; z-index: 10; height: 100%;
+            display: flex; flex-direction: column;
+            padding: calc(20px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom));
         }
 
-        /* --- 海报式顶部布局 --- */
-        .main-header {
+        /* 顶部电影海报卡片 */
+        .glass-header {
+            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.25); border-radius: 30px;
+            padding: 20px; display: flex; align-items: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            animation: slideDown 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .avatar-wrap {
+            position: relative; width: 65px; height: 65px; flex-shrink: 0;
+        }
+        .avatar-wrap img {
+            width: 100%; height: 100%; border-radius: 50%; border: 2.5px solid #fff;
+            object-fit: cover; box-shadow: var(--glow);
+        }
+        .status-dot {
+            position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px;
+            background: #4cd964; border-radius: 50%; border: 2px solid white;
+        }
+
+        .header-text { margin-left: 18px; flex: 1; }
+        .header-text h1 { margin: 0; font-size: 1.3rem; color: #fff; letter-spacing: 3px; text-shadow: var(--shadow); }
+        .header-text p { margin: 5px 0 0; font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+
+        /* 悬浮呼吸感播放器 */
+        #music-trigger {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); display: flex;
+            align-items: center; justify-content: center; font-size: 1.4rem;
+            cursor: pointer; transition: 0.3s;
+        }
+        .playing-rotate { animation: rot 8s linear infinite; box-shadow: 0 0 20px rgba(161,196,253,0.8); }
+
+        /* 交互资源面板 */
+        .content-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+        .magic-card {
             background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border); border-radius: 25px;
-            padding: 15px; display: flex; align-items: center;
-            margin-top: env(safe-area-inset-top); margin-bottom: 20px;
-            box-shadow: var(--shadow);
+            border-radius: 24px; padding: 22px; border: 1px solid rgba(255,255,255,0.15);
+            display: flex; align-items: center; position: relative; overflow: hidden;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .avatar-box {
-            width: 70px; height: 70px; border-radius: 50%;
-            border: 2px solid #fff; overflow: hidden;
-            box-shadow: 0 0 15px rgba(161, 196, 253, 0.6);
-            flex-shrink: 0;
+        .magic-card::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
         }
-        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
-        .title-box { margin-left: 15px; flex-grow: 1; }
-        .title-box h1 { font-size: 1.2rem; margin: 0; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .title-box p { font-size: 0.7rem; margin: 5px 0 0; opacity: 0.8; }
+        .magic-card:active { transform: scale(0.94); background: var(--glass-heavy); }
+        .magic-card:active::before { left: 100%; }
 
-        /* --- 播放控制按钮 --- */
-        .music-star {
-            font-size: 1.5rem; cursor: pointer; animation: rotate-star 5s linear infinite;
-            filter: drop-shadow(0 0 5px #fff);
-        }
-        @keyframes rotate-star { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+        .card-icon { font-size: 1.8rem; margin-right: 20px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.5)); }
+        .card-info b { font-size: 1.1rem; color: #fff; display: block; }
+        .card-info span { font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; }
 
-        /* --- 极简资源卡片 --- */
-        .card-list { flex-grow: 1; display: flex; flex-direction: column; gap: 12px; }
-        .card {
-            background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border); border-radius: 20px;
-            padding: 18px; display: flex; align-items: center;
-            transition: 0.3s;
-        }
-        .card:active { transform: scale(0.96); background: rgba(255,255,255,0.25); }
-        .card-icon { font-size: 1.3rem; margin-right: 15px; }
-        .card b { font-size: 1rem; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        @keyframes rot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* 底部版权信息 */
-        footer { text-align: center; font-size: 0.65rem; opacity: 0.6; padding-bottom: env(safe-area-inset-bottom); }
+        footer { text-align: center; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <div class="comet-container" id="comets"></div>
+    <div class="bg-layer"></div>
+    <div class="bg-overlay"></div>
+    <canvas id="renderCanvas"></canvas>
 
-    <header class="main-header">
-        <div class="avatar-box">
-            <img src="ndmz.jpg" alt="头像">
-        </div>
-        <div class="title-box">
-            <h1>资源魔法学院</h1>
-            <p>系守町站 · 寻找那个名字</p>
-        </div>
-        <div class="music-star" onclick="togglePlay()" id="star-btn">⭐</div>
-    </header>
+    <div class="app-wrap">
+        <header class="glass-header" onclick="handleMusic()">
+            <div class="avatar-wrap">
+                <img src="ndmz.jpg">
+                <div class="status-dot"></div>
+            </div>
+            <div class="header-text">
+                <h1>资源魔法学院</h1>
+                <p>系守町 · 寻找那个名字</p>
+            </div>
+            <div id="music-trigger">☄️</div>
+        </header>
 
-    <div class="card-list">
-        <div class="card" onclick="alert('即将进入系守分院...')">
-            <div class="card-icon">☄️</div>
-            <b>系守分院 (影视)</b>
+        <div class="content-body">
+            <div class="magic-card">
+                <div class="card-icon">🎞️</div>
+                <div class="card-info">
+                    <b>系守分院 (影视)</b>
+                    <span>Komorebi Visual Library</span>
+                </div>
+            </div>
+
+            <div class="magic-card">
+                <div class="card-icon">🧪</div>
+                <div class="card-info">
+                    <b>星轨实验室 (工具)</b>
+                    <span>Interstellar Lab Tools</span>
+                </div>
+            </div>
         </div>
-        <div class="card" onclick="alert('即将开启星轨实验室...')">
-            <div class="card-icon">🌠</div>
-            <b>星轨实验室 (工具)</b>
-        </div>
+
+        <footer>THE MAGIC ACADEMY · ITOMORI</footer>
     </div>
 
-    <audio id="bgm" loop preload="auto">
-        <source src="你的名字.mp3" type="audio/mpeg">
-    </audio>
-
-    <footer>Designed for Feng-180 · 系守町纪念</footer>
+    <audio id="main-bgm" loop src="ndmz.mp3"></audio>
 
 <script>
-    // 动态生成唯美流星
-    function createComet() {
-        const container = document.getElementById('comets');
-        const comet = document.createElement('div');
-        comet.className = 'comet';
-        comet.style.top = Math.random() * 40 + '%';
-        comet.style.animationDuration = (Math.random() * 3 + 3) + 's';
-        comet.style.animationDelay = (Math.random() * 5) + 's';
-        container.appendChild(comet);
-        setTimeout(() => comet.remove(), 8000);
-    }
-    // 初始生成几颗
-    setInterval(createComet, 2500);
+    const audio = document.getElementById('main-bgm');
+    const trigger = document.getElementById('music-trigger');
 
-    // 音乐播放逻辑修复
-    const audio = document.getElementById('bgm');
-    const star = document.getElementById('star-btn');
-    
-    function togglePlay() {
+    function handleMusic() {
         if (audio.paused) {
-            audio.play().catch(e => alert("点击屏幕任意位置激活音乐"));
-            star.style.animationPlayState = 'running';
+            audio.play();
+            trigger.innerText = '💿';
+            trigger.classList.add('playing-rotate');
         } else {
             audio.pause();
-            star.style.animationPlayState = 'paused';
+            trigger.innerText = '☄️';
+            trigger.classList.remove('playing-rotate');
         }
     }
-    // 默认暂停状态
-    star.style.animationPlayState = 'paused';
-</script>
 
+    // 终极流星引擎 (Canvas)
+    const canvas = document.getElementById('renderCanvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Meteor {
+        constructor() { this.init(); }
+        init() {
+            this.x = Math.random() * canvas.width + canvas.width/2;
+            this.y = Math.random() * -100;
+            this.speed = Math.random() * 8 + 4;
+            this.len = Math.random() * 100 + 100;
+            this.opacity = 0;
+        }
+        draw() {
+            ctx.beginPath();
+            const grad = ctx.createLinearGradient(this.x, this.y, this.x - this.len, this.y + this.len);
+            grad.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
+            grad.addColorStop(0.5, 'rgba(161, 196, 253, 0.2)');
+            grad.addColorStop(1, 'rgba(255, 183, 197, 0)');
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x - this.len, this.y + this.len);
+            ctx.stroke();
+        }
+        update() {
+            this.x -= this.speed;
+            this.y += this.speed;
+            if(this.opacity < 0.8) this.opacity += 0.02;
+            if(this.y > canvas.height + 200) this.init();
+            this.draw();
+        }
+    }
+
+    for(let i=0; i<4; i++) stars.push(new Meteor());
+
+    function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => s.update());
+        requestAnimationFrame(frame);
+    }
+    frame();
+</script>
 </body>
 </html>
