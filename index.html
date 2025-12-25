@@ -3,108 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>我的私藏资源</title>
+    <title>资源风的魔法学院</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pink-bg: #fff0f5; /* 樱花粉背景 */
-            --card-bg: rgba(255, 255, 255, 0.7); /* 毛玻璃透明度 */
-            --text-main: #5d5d5d;
-            --accent: #ffb7c5; /* 樱花深粉 */
+            --sakura-pink: rgba(255, 183, 197, 0.5);
+            --glass: rgba(255, 255, 255, 0.4);
+            --accent: #ffb7c5;
         }
+
         body {
-            font-family: -apple-system, "Helvetica Neue", sans-serif;
-            background: linear-gradient(180deg, var(--pink-bg) 0%, #ffffff 100%);
+            font-family: 'ZCOOL KuaiLe', cursive, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffffff 100%);
             margin: 0;
-            padding: 10px 20px 40px;
-            color: var(--text-main);
+            padding: 20px;
+            overflow-x: hidden;
             min-height: 100vh;
         }
-        /* 置顶个人主页样式 */
-        .top-banner {
-            background: var(--accent);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
+
+        /* 樱花背景层 */
+        #sakura-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* 置顶魔法学院 Banner */
+        .magic-banner {
+            background: linear-gradient(135deg, #ffb7c5 0%, #ff9a9e 100%);
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
             color: white;
-            box-shadow: 0 10px 20px rgba(255, 183, 197, 0.3);
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-        .top-banner .avatar { font-size: 40px; margin-right: 15px; }
-        .top-banner h2 { margin: 0; font-size: 1.2rem; }
-
-        /* 分类标题 */
-        .section-title {
-            font-size: 0.9rem;
-            color: #999;
-            margin: 20px 0 10px 5px;
-            letter-spacing: 1px;
-            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 154, 158, 0.4);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* 列表布局 */
-        .list-container { display: flex; flex-direction: column; gap: 12px; }
-        .item-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px;
+        .magic-banner h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 2px;
+        }
+
+        /* iOS 液态玻璃图标样式 */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
             padding: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: inherit;
-            border: 1px solid rgba(255,255,255,0.4);
-            transition: all 0.2s ease;
+            color: #555;
+            transition: 0.3s;
         }
-        .item-card:active { transform: scale(0.97); background: rgba(255,255,255,0.9); }
-        .item-icon {
-            width: 45px; height: 45px;
-            background: white;
-            border-radius: 12px;
+
+        .icon-box {
+            width: 50px; height: 50px;
+            border-radius: 14px;
+            /* 液态渐变色 */
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             margin-right: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
         }
-        .item-info b { display: block; font-size: 1rem; margin-bottom: 2px; color: #333; }
-        .item-info span { font-size: 0.8rem; color: #888; }
+
+        .section-tag {
+            color: var(--accent);
+            font-weight: bold;
+            margin: 20px 0 10px 5px;
+            display: block;
+        }
+
+        /* 简单的樱花动画 */
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        .petal {
+            position: absolute;
+            background-color: #ffb7c5;
+            border-radius: 150% 0 150% 0;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
     </style>
 </head>
 <body>
 
-    <a href="你的个人主页网址" class="top-banner">
-        <div class="avatar">🌸</div>
+    <div id="sakura-container"></div>
+
+    <div class="magic-banner">
+        <h1>🌸 资源风的魔法学院</h1>
+        <p style="opacity: 0.9; margin-top: 8px;">欢迎入学，探寻神秘资源链接</p>
+    </div>
+
+    <span class="section-tag">✨ 魔法入口</span>
+    <a href="https://feng-180.github.io/" class="glass-card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);">🏰</div>
         <div>
-            <h2>我的个人主页</h2>
-            <p style="margin:5px 0 0; opacity: 0.9; font-size: 0.8rem;">欢迎来到我的数字花园</p>
+            <b style="display:block; color:#333;">院长办公室</b>
+            <span style="font-size:0.8rem;">返回我的个人主页</span>
         </div>
     </a>
 
-    <div class="section-title">🎬 影视探索</div>
-    <div class="list-container">
-        <a href="网址1" class="item-card">
-            <div class="item-icon">📺</div>
-            <div class="item-info">
-                <b>资源站名称</b>
-                <span>高清蓝光在线观看</span>
+    <span class="section-tag">🎬 幻象镜像 (影视)</span>
+    <div id="movie-list">
+        <a href="#" class="glass-card">
+            <div class="icon-box" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">📺</div>
+            <div>
+                <b style="display:block; color:#333;">镜像之湖</b>
+                <span style="font-size:0.8rem;">高清影视魔法传送门</span>
             </div>
         </a>
     </div>
 
-    <div class="section-title">🔧 实用工具</div>
-    <div class="list-container">
-        <a href="网址2" class="item-card">
-            <div class="item-icon">🛠️</div>
-            <div class="item-info">
-                <b>工具名称</b>
-                <span>非常实用的在线处理工具</span>
-            </div>
-        </a>
-    </div>
-
+    <script>
+        // 生成樱花瓣的简单脚本
+        function createPetal() {
+            const container = document.getElementById('sakura-container');
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const size = Math.random() * 10 + 10 + 'px';
+            petal.style.width = size;
+            petal.style.height = size;
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = Math.random() * 3 + 2 + 's';
+            container.appendChild(petal);
+            setTimeout(() => { petal.remove(); }, 5000);
+        }
+        setInterval(createPetal, 300);
+    </script>
 </body>
 </html>
