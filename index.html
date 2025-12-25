@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>资源魔法学院 - 终极系守</title>
+    <title>资源魔法学院 - 永恒系守</title>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-heavy: rgba(255, 255, 255, 0.18);
-            --glow: 0 0 15px rgba(161, 196, 253, 0.5);
+            --glass: rgba(0, 0, 0, 0.25);
+            --border: rgba(255, 255, 255, 0.2);
+            --glow: 0 0 20px rgba(161, 196, 253, 0.4);
         }
 
-        /* 电影级全屏适配 */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { 
             margin: 0; padding: 0; width: 100%; height: 100dvh; 
@@ -20,199 +19,180 @@
             background: #000;
         }
 
-        /* 动态位移背景 */
-        .bg-layer {
-            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
-            background: url('jm.jpg') no-repeat center center;
-            background-size: cover; z-index: -2;
-            animation: bg-pan 20s ease-in-out infinite;
-        }
-        @keyframes bg-pan { 0%, 100% { transform: scale(1) translate(0, 0); } 50% { transform: scale(1.05) translate(-1%, -1%); } }
-
-        .bg-overlay {
+        /* --- 核心修复：背景图层 --- */
+        #fixed-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
-            z-index: -1;
+            background: url('jm.jpg') no-repeat center center;
+            background-size: cover; z-index: -10; /* 强制置底 */
+            animation: slowZoom 25s ease-in-out infinite;
+        }
+        @keyframes slowZoom {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
 
-        /* Canvas 星河/流星引擎 */
-        #renderCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        /* 电影压暗滤镜，保护文字可见度 */
+        .film-mask {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+            z-index: -9;
+        }
 
-        /* 主体布局 */
-        .app-wrap {
+        /* 流星引擎层 */
+        #starCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -5; pointer-events: none; }
+
+        /* 内容容器 */
+        .main-stage {
             position: relative; z-index: 10; height: 100%;
             display: flex; flex-direction: column;
             padding: calc(20px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom));
         }
 
-        /* 顶部电影海报卡片 */
-        .glass-header {
-            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.25); border-radius: 30px;
-            padding: 20px; display: flex; align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            animation: slideDown 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        /* 顶部海报卡片 */
+        header {
+            background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 28px;
+            padding: 18px; display: flex; align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
-        .avatar-wrap {
-            position: relative; width: 65px; height: 65px; flex-shrink: 0;
+        .user-avatar {
+            position: relative; width: 60px; height: 60px; flex-shrink: 0;
         }
-        .avatar-wrap img {
-            width: 100%; height: 100%; border-radius: 50%; border: 2.5px solid #fff;
+        .user-avatar img {
+            width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff;
             object-fit: cover; box-shadow: var(--glow);
         }
-        .status-dot {
-            position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px;
-            background: #4cd964; border-radius: 50%; border: 2px solid white;
+        
+        .header-content { margin-left: 15px; flex: 1; }
+        .header-content h1 { margin: 0; font-size: 1.25rem; color: #fff; letter-spacing: 2px; }
+        .header-content p { margin: 4px 0 0; font-size: 0.7rem; color: rgba(255,255,255,0.7); }
+
+        /* 旋转播放器图标 */
+        .music-disk {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: 1px solid #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; transition: 0.4s;
         }
+        .is-playing { animation: diskRotate 5s linear infinite; box-shadow: 0 0 15px #fff; }
+        @keyframes diskRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .header-text { margin-left: 18px; flex: 1; }
-        .header-text h1 { margin: 0; font-size: 1.3rem; color: #fff; letter-spacing: 3px; text-shadow: var(--shadow); }
-        .header-text p { margin: 5px 0 0; font-size: 0.75rem; color: rgba(255,255,255,0.7); }
-
-        /* 悬浮呼吸感播放器 */
-        #music-trigger {
-            width: 45px; height: 45px; border-radius: 50%;
-            background: rgba(255,255,255,0.15); display: flex;
-            align-items: center; justify-content: center; font-size: 1.4rem;
-            cursor: pointer; transition: 0.3s;
+        /* 资源列表 */
+        .resource-list { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+        .magic-item {
+            background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border); border-radius: 22px;
+            padding: 22px; display: flex; align-items: center;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .playing-rotate { animation: rot 8s linear infinite; box-shadow: 0 0 20px rgba(161,196,253,0.8); }
+        .magic-item:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+        .magic-item i { font-size: 1.6rem; margin-right: 20px; }
+        .magic-item span { font-size: 1.05rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
-        /* 交互资源面板 */
-        .content-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
-        .magic-card {
-            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 24px; padding: 22px; border: 1px solid rgba(255,255,255,0.15);
-            display: flex; align-items: center; position: relative; overflow: hidden;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .magic-card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: 0.5s;
-        }
-        .magic-card:active { transform: scale(0.94); background: var(--glass-heavy); }
-        .magic-card:active::before { left: 100%; }
-
-        .card-icon { font-size: 1.8rem; margin-right: 20px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.5)); }
-        .card-info b { font-size: 1.1rem; color: #fff; display: block; }
-        .card-info span { font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; }
-
-        @keyframes rot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        footer { text-align: center; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 2px; }
+        footer { text-align: center; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; }
     </style>
 </head>
 <body>
 
-    <div class="bg-layer"></div>
-    <div class="bg-overlay"></div>
-    <canvas id="renderCanvas"></canvas>
+    <div id="fixed-bg"></div>
+    <div class="film-mask"></div>
+    <canvas id="starCanvas"></canvas>
 
-    <div class="app-wrap">
-        <header class="glass-header" onclick="handleMusic()">
-            <div class="avatar-wrap">
+    <div class="main-stage">
+        <header onclick="togglePlay()">
+            <div class="user-avatar">
                 <img src="ndmz.jpg">
-                <div class="status-dot"></div>
             </div>
-            <div class="header-text">
+            <div class="header-content">
                 <h1>资源魔法学院</h1>
                 <p>系守町 · 寻找那个名字</p>
             </div>
-            <div id="music-trigger">☄️</div>
+            <div id="disk" class="music-disk">🎵</div>
         </header>
 
-        <div class="content-body">
-            <div class="magic-card">
-                <div class="card-icon">🎞️</div>
-                <div class="card-info">
-                    <b>系守分院 (影视)</b>
-                    <span>Komorebi Visual Library</span>
-                </div>
+        <div class="resource-list">
+            <div class="magic-item" onclick="location.href='#'">
+                <i>☄️</i><span>系守分院 (影视)</span>
             </div>
-
-            <div class="magic-card">
-                <div class="card-icon">🧪</div>
-                <div class="card-info">
-                    <b>星轨实验室 (工具)</b>
-                    <span>Interstellar Lab Tools</span>
-                </div>
+            <div class="magic-item" onclick="location.href='#'">
+                <i>🧪</i><span>星轨实验室 (工具)</span>
             </div>
         </div>
 
-        <footer>THE MAGIC ACADEMY · ITOMORI</footer>
+        <footer>THE MAGIC ACADEMY · ITOMORI MEMORY</footer>
     </div>
 
-    <audio id="main-bgm" loop src="ndmz.mp3"></audio>
+    <audio id="audio-player" loop preload="auto">
+        <source src="ndmz.mp3" type="audio/mpeg">
+    </audio>
 
 <script>
-    const audio = document.getElementById('main-bgm');
-    const trigger = document.getElementById('music-trigger');
+    const audio = document.getElementById('audio-player');
+    const disk = document.getElementById('disk');
 
-    function handleMusic() {
+    function togglePlay() {
         if (audio.paused) {
-            audio.play();
-            trigger.innerText = '💿';
-            trigger.classList.add('playing-rotate');
+            audio.play().then(() => {
+                disk.classList.add('is-playing');
+                disk.innerText = '💿';
+            }).catch(e => console.log("等待交互触发播放"));
         } else {
             audio.pause();
-            trigger.innerText = '☄️';
-            trigger.classList.remove('playing-rotate');
+            disk.classList.remove('is-playing');
+            disk.innerText = '🎵';
         }
     }
 
-    // 终极流星引擎 (Canvas)
-    const canvas = document.getElementById('renderCanvas');
+    // 绝美 Canvas 流星
+    const canvas = document.getElementById('starCanvas');
     const ctx = canvas.getContext('2d');
-    let stars = [];
+    let meteors = [];
 
-    function resize() {
+    function init() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize);
-    resize();
+    window.addEventListener('resize', init);
+    init();
 
     class Meteor {
-        constructor() { this.init(); }
-        init() {
-            this.x = Math.random() * canvas.width + canvas.width/2;
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * canvas.width + canvas.width / 2;
             this.y = Math.random() * -100;
-            this.speed = Math.random() * 8 + 4;
-            this.len = Math.random() * 100 + 100;
-            this.opacity = 0;
+            this.h = Math.random() * 150 + 100;
+            this.v = Math.random() * 10 + 5;
+            this.alpha = 1;
         }
         draw() {
+            ctx.save();
             ctx.beginPath();
-            const grad = ctx.createLinearGradient(this.x, this.y, this.x - this.len, this.y + this.len);
-            grad.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
-            grad.addColorStop(0.5, 'rgba(161, 196, 253, 0.2)');
-            grad.addColorStop(1, 'rgba(255, 183, 197, 0)');
-            ctx.strokeStyle = grad;
-            ctx.lineWidth = 2.5;
-            ctx.lineCap = 'round';
+            const g = ctx.createLinearGradient(this.x, this.y, this.x - this.h, this.y + this.h);
+            g.addColorStop(0, `rgba(255,255,255,${this.alpha})`);
+            g.addColorStop(1, 'rgba(161,196,253,0)');
+            ctx.strokeStyle = g;
+            ctx.lineWidth = 2;
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x - this.len, this.y + this.len);
+            ctx.lineTo(this.x - this.h, this.y + this.h);
             ctx.stroke();
+            ctx.restore();
         }
         update() {
-            this.x -= this.speed;
-            this.y += this.speed;
-            if(this.opacity < 0.8) this.opacity += 0.02;
-            if(this.y > canvas.height + 200) this.init();
+            this.x -= this.v;
+            this.y += this.v;
+            if (this.y > canvas.height + 100) this.reset();
             this.draw();
         }
     }
 
-    for(let i=0; i<4; i++) stars.push(new Meteor());
+    for (let i = 0; i < 4; i++) meteors.push(new Meteor());
 
-    function frame() {
+    function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(s => s.update());
-        requestAnimationFrame(frame);
+        meteors.forEach(m => m.update());
+        requestAnimationFrame(render);
     }
-    frame();
+    render();
 </script>
 </body>
 </html>
