@@ -7,127 +7,121 @@
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
         :root {
-            --mashiro-pink: rgba(255, 240, 245, 0.4); /* 更透明的樱花粉 */
-            --glass-border: rgba(255, 255, 255, 0.7);
-            --accent-pink: #ffb7c5;
+            --mashiro-pink: rgba(255, 240, 245, 0.5);
+            --accent: #ffb7c5;
+            --glass: rgba(255, 255, 255, 0.35);
         }
 
         body {
-            font-family: 'ZCOOL KuaiLe', cursive, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #fff5f7 0%, #ffffff 100%);
+            font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffffff 100%);
             margin: 0; padding: 20px; overflow-x: hidden; min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* 仙气樱花飘屏 */
+        /* 樱花飘屏 */
         #sakura-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; }
         .petal {
-            position: absolute; background: #ffb7c5; border-radius: 150% 0 150% 0;
-            opacity: 0.4; /* 增加透明度 */
-            animation: fall linear infinite;
+            position: absolute; background: var(--accent); border-radius: 150% 0 150% 0;
+            opacity: 0.3; animation: fall linear infinite;
         }
         @keyframes fall {
             0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.4; }
-            90% { opacity: 0.4; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* 真白风格 Banner */
-        .magic-banner {
-            background: rgba(255, 183, 197, 0.3);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px; padding: 40px 20px; text-align: center;
-            margin-bottom: 30px; position: relative;
+        /* 真白探头立绘 */
+        .mashiro-peek {
+            position: fixed; bottom: -10px; right: -20px;
+            width: 150px; z-index: 1000; pointer-events: none;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+            animation: float 4s ease-in-out infinite;
         }
-        .magic-banner h1 { font-size: 1.6rem; color: #d68189; margin: 0; letter-spacing: 3px; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* 分类大传送门（主页展示） */
-        .category-gate {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px; padding: 25px; margin-bottom: 20px;
-            display: flex; align-items: center; cursor: pointer;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Banner & 卡片风格 */
+        .magic-banner {
+            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.6); border-radius: 30px;
+            padding: 40px 20px; text-align: center; margin-bottom: 30px;
         }
-        .category-gate:active { transform: scale(0.95); }
-        .icon-circle {
-            width: 60px; height: 60px; border-radius: 50%;
+        .magic-banner h1 { color: #d68189; margin: 0; letter-spacing: 2px; font-size: 1.5rem; }
+
+        .category-gate {
+            background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5); border-radius: 20px;
+            padding: 20px; margin-bottom: 15px; display: flex; align-items: center;
+            transition: 0.3s;
+        }
+        .category-gate:active { transform: scale(0.96); background: rgba(255,255,255,0.5); }
+        .icon-box {
+            width: 55px; height: 55px; border-radius: 15px;
             background: linear-gradient(135deg, #fff 0%, #ffd1dc 100%);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem; margin-right: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            font-size: 1.6rem; margin-right: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        /* 资源列表页（默认隐藏） */
-        .resource-page { display: none; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .back-btn { 
-            color: var(--accent-pink); margin-bottom: 20px; display: inline-block; 
-            text-decoration: none; font-weight: bold; cursor: pointer;
+        /* 底部音乐播放器 */
+        .music-player {
+            position: fixed; bottom: 20px; left: 20px; z-index: 1001;
+            background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-radius: 50px; padding: 10px 20px; border: 1px solid white;
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-
-        .item-card {
-            background: rgba(255,255,255,0.5);
-            border-radius: 18px; padding: 15px; margin-bottom: 12px;
-            display: flex; align-items: center; text-decoration: none; color: #666;
-            border: 1px solid rgba(255,255,255,0.8);
+        .disc {
+            width: 30px; height: 30px; background: #333; border-radius: 50%;
+            animation: rotate 3s linear infinite; animation-play-state: paused;
         }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div id="sakura-container"></div>
+    
+    <img src="https://telegraph-image-bak.pages.dev/file/40898555e76313a078e58.png" class="mashiro-peek" alt="椎名真白">
 
     <div id="home-page">
         <div class="magic-banner">
-            <h1>🎨 稚名真白的资源画室</h1>
-            <p style="color: #ba8b91; font-size: 0.8rem; margin-top: 10px;">“今天的资源，也要画得漂亮。”</p>
+            <h1>🎨 资源风的魔法学院</h1>
+            <p style="color: #ba8b91; font-size: 0.8rem; margin-top: 8px;">“真白的画笔下，藏着所有次元的宝藏。”</p>
         </div>
 
-        <div class="category-gate" onclick="showPage('movie')">
-            <div class="icon-circle">🎞️</div>
-            <div><b style="color:#888; font-size:1.1rem;">幻象分院 (影视)</b></div>
+        <div class="category-gate">
+            <div class="icon-box" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);">🎞️</div>
+            <b>幻象分院 (影视资源)</b>
         </div>
 
-        <div class="category-gate" onclick="showPage('tool')">
-            <div class="icon-circle">🧪</div>
-            <div><b style="color:#888; font-size:1.1rem;">炼金术房 (工具)</b></div>
+        <div class="category-gate">
+            <div class="icon-box" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">🧪</div>
+            <b>炼金术房 (实用工具)</b>
         </div>
     </div>
 
-    <div id="movie-page" class="resource-page">
-        <div class="back-btn" onclick="showHome()">← 返回大厅</div>
-        <h2 style="color: #d68189;">🎞️ 幻象分院</h2>
-        <a href="#" class="item-card">
-            <div class="icon-circle" style="width:40px; height:40px; font-size:1.2rem;">🍿</div>
-            <div><b>樱花资源站</b><br><span style="font-size:0.8rem;">收录最新番剧</span></div>
-        </a>
-    </div>
-
-    <div id="tool-page" class="resource-page">
-        <div class="back-btn" onclick="showHome()">← 返回大厅</div>
-        <h2 style="color: #d68189;">🧪 炼金术房</h2>
-        <a href="#" class="item-card">
-            <div class="icon-circle" style="width:40px; height:40px; font-size:1.2rem;">🔧</div>
-            <div><b>魔法扳手</b><br><span style="font-size:0.8rem;">在线文件转换工具</span></div>
-        </a>
+    <div class="music-player" onclick="toggleMusic()">
+        <div class="disc" id="music-disc"></div>
+        <span style="font-size: 0.8rem; color: #d68189;">播放真白的歌单</span>
+        <audio id="bg-music" loop src="https://music.163.com/song/media/outer/url?id=516518.mp3"></audio>
     </div>
 
     <script>
-        // 页面切换魔法
-        function showPage(pageId) {
-            document.getElementById('home-page').style.display = 'none';
-            document.querySelectorAll('.resource-page').forEach(p => p.style.display = 'none');
-            document.getElementById(pageId + '-page').style.display = 'block';
-            window.scrollTo(0,0);
-        }
-        function showHome() {
-            document.querySelectorAll('.resource-page').forEach(p => p.style.display = 'none');
-            document.getElementById('home-page').style.display = 'block';
+        // 音乐控制
+        function toggleMusic() {
+            const audio = document.getElementById('bg-music');
+            const disc = document.getElementById('music-disc');
+            if (audio.paused) {
+                audio.play();
+                disc.style.animationPlayState = 'running';
+            } else {
+                audio.pause();
+                disc.style.animationPlayState = 'paused';
+            }
         }
 
-        // 慢速仙气樱花
+        // 樱花生成逻辑（略，同前但调整了速度）
         function createPetal() {
             const container = document.getElementById('sakura-container');
             const petal = document.createElement('div');
@@ -135,11 +129,11 @@
             const size = Math.random() * 8 + 8 + 'px';
             petal.style.width = size; petal.style.height = size;
             petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.animationDuration = Math.random() * 5 + 6 + 's'; // 放慢到 6-11 秒
+            petal.style.animationDuration = Math.random() * 4 + 7 + 's';
             container.appendChild(petal);
-            setTimeout(() => { petal.remove(); }, 10000);
+            setTimeout(() => { petal.remove(); }, 11000);
         }
-        setInterval(createPetal, 500); // 降低产生频率
+        setInterval(createPetal, 600);
     </script>
 </body>
 </html>
