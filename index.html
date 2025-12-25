@@ -2,70 +2,109 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的资源导航站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我的私藏资源</title>
     <style>
         :root {
-            --bg-color: #f4f7f9;
-            --card-bg: rgba(255, 255, 255, 0.8);
-            --text-color: #333;
-            --accent-color: #007AFF; /* 苹果蓝 */
+            --pink-bg: #fff0f5; /* 樱花粉背景 */
+            --card-bg: rgba(255, 255, 255, 0.7); /* 毛玻璃透明度 */
+            --text-main: #5d5d5d;
+            --accent: #ffb7c5; /* 樱花深粉 */
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: -apple-system, "Helvetica Neue", sans-serif;
+            background: linear-gradient(180deg, var(--pink-bg) 0%, #ffffff 100%);
             margin: 0;
-            padding: 20px;
+            padding: 10px 20px 40px;
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        /* 置顶个人主页样式 */
+        .top-banner {
+            background: var(--accent);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 183, 197, 0.3);
             display: flex;
-            flex-direction: column;
             align-items: center;
+            text-decoration: none;
         }
-        h1 { font-size: 1.5rem; margin-bottom: 20px; }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 800px;
+        .top-banner .avatar { font-size: 40px; margin-right: 15px; }
+        .top-banner h2 { margin: 0; font-size: 1.2rem; }
+
+        /* 分类标题 */
+        .section-title {
+            font-size: 0.9rem;
+            color: #999;
+            margin: 20px 0 10px 5px;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
-        .card {
+
+        /* 列表布局 */
+        .list-container { display: flex; flex-direction: column; gap: 12px; }
+        .item-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
             text-decoration: none;
             color: inherit;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.4);
+            transition: all 0.2s ease;
         }
-        .card:active { transform: scale(0.95); }
-        .card .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
-        .card span { font-weight: 500; font-size: 0.9rem; }
+        .item-card:active { transform: scale(0.97); background: rgba(255,255,255,0.9); }
+        .item-icon {
+            width: 45px; height: 45px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .item-info b { display: block; font-size: 1rem; margin-bottom: 2px; color: #333; }
+        .item-info span { font-size: 0.8rem; color: #888; }
     </style>
 </head>
 <body>
 
-    <h1>我的资源收藏</h1>
-
-    <div class="grid">
-        <a href="https://google.com" class="card" target="_blank">
-            <span class="icon">🔍</span>
-            <span>搜索引擎</span>
-        </a>
-
-        <a href="https://github.com" class="card" target="_blank">
-            <span class="icon">💻</span>
-            <span>GitHub</span>
-        </a>
-
-        <a href="https://v2ex.com" class="card" target="_blank">
-            <span class="icon">🚀</span>
-            <span>创意社区</span>
-        </a>
+    <a href="你的个人主页网址" class="top-banner">
+        <div class="avatar">🌸</div>
+        <div>
+            <h2>我的个人主页</h2>
+            <p style="margin:5px 0 0; opacity: 0.9; font-size: 0.8rem;">欢迎来到我的数字花园</p>
         </div>
+    </a>
+
+    <div class="section-title">🎬 影视探索</div>
+    <div class="list-container">
+        <a href="网址1" class="item-card">
+            <div class="item-icon">📺</div>
+            <div class="item-info">
+                <b>资源站名称</b>
+                <span>高清蓝光在线观看</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="section-title">🔧 实用工具</div>
+    <div class="list-container">
+        <a href="网址2" class="item-card">
+            <div class="item-icon">🛠️</div>
+            <div class="item-info">
+                <b>工具名称</b>
+                <span>非常实用的在线处理工具</span>
+            </div>
+        </a>
+    </div>
 
 </body>
 </html>
