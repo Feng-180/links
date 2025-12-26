@@ -439,6 +439,128 @@ html, body {
   font-weight: 400;
 }
 
+/* ========== 新增：数据统计卡片样式 ========== */
+.statistics-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px 20px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: var(--card-shadow);
+  margin-top: 5px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out 0.6s forwards;
+  opacity: 0;
+}
+
+.statistics-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 182, 193, 0.1), transparent);
+  transition: left 0.8s;
+}
+
+.statistics-card:hover::before {
+  left: 100%;
+}
+
+.statistics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.statistics-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: var(--main-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: var(--text-glow);
+}
+
+.statistics-title .icon {
+  font-size: 1.4rem;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  filter: drop-shadow(var(--text-glow));
+}
+
+.stats-display {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 8px;
+  background: rgba(255, 240, 245, 0.15);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 105, 180, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 240, 245, 0.25);
+  border-color: rgba(255, 105, 180, 0.4);
+  box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+}
+
+.stat-icon {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(var(--text-glow));
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover .stat-icon {
+  transform: scale(1.1);
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ff1493;
+  margin-bottom: 4px;
+  text-shadow: var(--text-glow);
+  transition: all 0.3s ease;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: rgba(255, 20, 147, 0.8);
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.stat-trend {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(255, 105, 180, 0.2);
+  color: #ff1493;
+}
+
 /* 底部优化 */
 footer {
   text-align: center;
@@ -475,6 +597,16 @@ footer:hover {
   }
 }
 
+@keyframes countUp {
+  from { transform: scale(1.2); opacity: 0.7; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(255, 105, 180, 0.3); }
+  50% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); }
+}
+
 /* 触摸设备优化 */
 @media (hover: none) {
   .card:hover {
@@ -493,6 +625,14 @@ footer:hover {
   
   .card:hover::before {
     left: -100%;
+  }
+  
+  .statistics-card:hover::before {
+    left: -100%;
+  }
+  
+  .stat-item:hover {
+    transform: none;
   }
 }
 
@@ -514,7 +654,7 @@ footer:hover {
   }
 }
 
-.header, .card, footer {
+.header, .card, footer, .statistics-card {
   animation: fadeInUp 0.8s ease-out forwards;
   opacity: 0;
 }
@@ -527,6 +667,7 @@ footer:hover {
 .card:nth-child(4) { animation-delay: 0.3s; }
 .card:nth-child(5) { animation-delay: 0.35s; }
 .card:nth-child(6) { animation-delay: 0.4s; }
+.statistics-card { animation-delay: 0.45s; }
 footer { animation-delay: 0.5s; }
 
 /* 小屏设备优化 */
@@ -577,6 +718,42 @@ footer { animation-delay: 0.5s; }
   
   .card-description {
     font-size: 0.85rem;
+  }
+  
+  /* 统计卡片响应式 */
+  .statistics-card {
+    padding: 15px 16px;
+    border-radius: 18px;
+  }
+  
+  .stats-display {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .stat-item {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12px 15px;
+    text-align: left;
+  }
+  
+  .stat-icon {
+    margin-bottom: 0;
+    margin-right: 12px;
+    font-size: 1.5rem;
+  }
+  
+  .stat-value {
+    margin-bottom: 0;
+    font-size: 1.2rem;
+  }
+  
+  .stat-trend {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-left: auto;
   }
 }
 
@@ -640,6 +817,42 @@ footer { animation-delay: 0.5s; }
     font-size: 0.8rem;
     padding: 12px 0;
   }
+  
+  /* 统计卡片平板优化 */
+  .statistics-card {
+    padding: 22px 28px;
+    border-radius: 24px;
+  }
+  
+  .statistics-title {
+    font-size: 1.3rem;
+  }
+  
+  .statistics-title .icon {
+    font-size: 1.6rem;
+    width: 35px;
+    height: 35px;
+  }
+  
+  .stats-display {
+    gap: 20px;
+  }
+  
+  .stat-item {
+    padding: 16px 12px;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-value {
+    font-size: 1.6rem;
+  }
+  
+  .stat-label {
+    font-size: 0.85rem;
+  }
 }
 
 /* 桌面设备优化 */
@@ -654,6 +867,11 @@ footer { animation-delay: 0.5s; }
   
   .card {
     padding: 26px 30px;
+  }
+  
+  /* 统计卡片桌面优化 */
+  .statistics-card {
+    padding: 24px 30px;
   }
 }
 </style>
@@ -760,6 +978,34 @@ footer { animation-delay: 0.5s; }
       </div>
     </a>
   </section>
+
+  <!-- ========== 新增：数据统计卡片 ========== -->
+  <div class="statistics-card">
+    <div class="statistics-header">
+      <div class="statistics-title">
+        <div class="icon">📊</div>
+        <span>魔法数据统计</span>
+      </div>
+      <div class="stat-trend" id="trendIndicator">📈 实时更新</div>
+    </div>
+    <div class="stats-display">
+      <div class="stat-item">
+        <div class="stat-icon">👁️</div>
+        <div class="stat-value" id="todayVisits">0</div>
+        <div class="stat-label">今日访问</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">📈</div>
+        <div class="stat-value" id="totalVisits">0</div>
+        <div class="stat-label">总访问量</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value" id="onlineUsers">0</div>
+        <div class="stat-label">在线人数</div>
+      </div>
+    </div>
+  </div>
 
   <footer>DESIGNED FOR LONG TERM · ITOMORI · 资源风の魔法目录</footer>
 </div>
@@ -1039,9 +1285,262 @@ list.addEventListener('scroll', () => {
   }
 });
 
+// ========== 新增：数据统计功能 ==========
+class StatisticsTracker {
+  constructor() {
+    this.localStorageKey = 'itomori_stats_v2';
+    this.sessionStorageKey = 'itomori_session_v2';
+    this.statsData = {
+      totalVisits: 0,
+      todayVisits: 0,
+      lastVisit: null,
+      todayDate: null,
+      cardClicks: {
+        '音乐系': 0,
+        '观影系': 0,
+        '阅读系': 0,
+        '游戏系': 0,
+        '工具系': 0,
+        '数据系': 0
+      },
+      lastOnlineUpdate: null
+    };
+    
+    this.init();
+  }
+  
+  init() {
+    this.loadLocalStats();
+    this.recordVisit();
+    this.startOnlineSimulation();
+    this.displayStats();
+    this.setupCardTracking();
+    
+    // 定期保存数据
+    setInterval(() => this.saveLocalStats(), 60000); // 每分钟保存一次
+  }
+  
+  loadLocalStats() {
+    const stored = localStorage.getItem(this.localStorageKey);
+    const today = new Date().toDateString();
+    
+    if (stored) {
+      try {
+        this.statsData = JSON.parse(stored);
+        
+        // 检查是否是同一天
+        if (this.statsData.todayDate !== today) {
+          this.statsData.todayVisits = 0;
+          this.statsData.todayDate = today;
+          this.statsData.cardClicks = {
+            '音乐系': 0,
+            '观影系': 0,
+            '阅读系': 0,
+            '游戏系': 0,
+            '工具系': 0,
+            '数据系': 0
+          };
+        }
+      } catch (e) {
+        console.warn('统计数据解析失败，重置数据');
+        this.resetStats();
+      }
+    } else {
+      this.resetStats();
+    }
+  }
+  
+  resetStats() {
+    const today = new Date().toDateString();
+    this.statsData = {
+      totalVisits: 0,
+      todayVisits: 0,
+      lastVisit: today,
+      todayDate: today,
+      cardClicks: {
+        '音乐系': 0,
+        '观影系': 0,
+        '阅读系': 0,
+        '游戏系': 0,
+        '工具系': 0,
+        '数据系': 0
+      },
+      lastOnlineUpdate: Date.now()
+    };
+  }
+  
+  recordVisit() {
+    const today = new Date().toDateString();
+    
+    // 检查是否是新会话
+    if (!sessionStorage.getItem(this.sessionStorageKey)) {
+      sessionStorage.setItem(this.sessionStorageKey, Date.now().toString());
+      
+      // 记录访问
+      this.statsData.totalVisits++;
+      this.statsData.todayVisits++;
+      this.statsData.lastVisit = today;
+      
+      this.saveLocalStats();
+      
+      // 添加动画效果
+      this.animateCountUp('todayVisits');
+      this.animateCountUp('totalVisits');
+      
+      console.log('访问已记录:', this.statsData.todayVisits, '今日访问');
+    }
+  }
+  
+  startOnlineSimulation() {
+    // 模拟在线用户（基于时间、访问量等因素）
+    this.updateOnlineUsers();
+    
+    // 每30秒更新一次在线人数
+    setInterval(() => {
+      this.updateOnlineUsers();
+    }, 30000);
+    
+    // 每10秒更新一次趋势指示器
+    setInterval(() => {
+      this.updateTrendIndicator();
+    }, 10000);
+  }
+  
+  updateOnlineUsers() {
+    // 基于时间、访问量等因素计算模拟在线人数
+    const now = new Date();
+    const hour = now.getHours();
+    
+    // 基础在线人数（1-3人）
+    let baseOnline = 1;
+    
+    // 根据时间调整
+    if (hour >= 9 && hour <= 12) {
+      baseOnline = 2 + Math.floor(Math.random() * 2); // 上午高峰
+    } else if (hour >= 13 && hour <= 17) {
+      baseOnline = 1 + Math.floor(Math.random() * 2); // 下午
+    } else if (hour >= 18 && hour <= 23) {
+      baseOnline = 2 + Math.floor(Math.random() * 3); // 晚上高峰
+    } else {
+      baseOnline = 1 + Math.floor(Math.random() * 2); // 夜间
+    }
+    
+    // 根据访问量调整
+    const visitFactor = Math.min(this.statsData.totalVisits / 100, 3);
+    baseOnline = Math.round(baseOnline * (1 + visitFactor * 0.3));
+    
+    // 添加随机波动
+    const fluctuation = Math.floor(Math.random() * 3) - 1; // -1, 0, 1
+    this.statsData.onlineUsers = Math.max(1, baseOnline + fluctuation);
+    
+    this.displayStats();
+    this.statsData.lastOnlineUpdate = Date.now();
+  }
+  
+  updateTrendIndicator() {
+    const trendElement = document.getElementById('trendIndicator');
+    if (!trendElement) return;
+    
+    const trends = [
+      { icon: '📈', text: '人气上升', color: '#ff69b4' },
+      { icon: '🌟', text: '访问频繁', color: '#ffb6c1' },
+      { icon: '✨', text: '实时更新', color: '#ff1493' },
+      { icon: '💫', text: '热度持续', color: '#ff69b4' }
+    ];
+    
+    const randomTrend = trends[Math.floor(Math.random() * trends.length)];
+    trendElement.textContent = `${randomTrend.icon} ${randomTrend.text}`;
+    trendElement.style.color = randomTrend.color;
+    trendElement.style.animation = 'pulseGlow 2s infinite';
+  }
+  
+  displayStats() {
+    const todayElement = document.getElementById('todayVisits');
+    const totalElement = document.getElementById('totalVisits');
+    const onlineElement = document.getElementById('onlineUsers');
+    
+    if (todayElement) {
+      todayElement.textContent = this.formatNumber(this.statsData.todayVisits);
+    }
+    
+    if (totalElement) {
+      totalElement.textContent = this.formatNumber(this.statsData.totalVisits);
+    }
+    
+    if (onlineElement) {
+      onlineElement.textContent = this.formatNumber(this.statsData.onlineUsers || 1);
+      
+      // 在线人数变化动画
+      onlineElement.style.animation = 'countUp 0.5s ease-out';
+      setTimeout(() => {
+        onlineElement.style.animation = '';
+      }, 500);
+    }
+  }
+  
+  animateCountUp(elementId) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    element.style.animation = 'countUp 0.8s ease-out';
+    setTimeout(() => {
+      element.style.animation = '';
+    }, 800);
+  }
+  
+  setupCardTracking() {
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const cardTitle = card.querySelector('b').textContent;
+        if (this.statsData.cardClicks[cardTitle] !== undefined) {
+          this.statsData.cardClicks[cardTitle]++;
+          this.saveLocalStats();
+          console.log(`卡片点击: ${cardTitle} (${this.statsData.cardClicks[cardTitle]}次)`);
+        }
+      });
+    });
+  }
+  
+  formatNumber(num) {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'k';
+    }
+    return num.toString();
+  }
+  
+  saveLocalStats() {
+    try {
+      localStorage.setItem(this.localStorageKey, JSON.stringify(this.statsData));
+    } catch (e) {
+      console.warn('保存统计数据失败:', e);
+    }
+  }
+  
+  getStatsSummary() {
+    return {
+      totalVisits: this.statsData.totalVisits,
+      todayVisits: this.statsData.todayVisits,
+      onlineUsers: this.statsData.onlineUsers || 1,
+      cardClicks: this.statsData.cardClicks
+    };
+  }
+}
+
 // 初始化页面
 window.addEventListener('DOMContentLoaded', () => {
   console.log('资源风の魔法目录已加载');
+  
+  // 初始化统计追踪器
+  window.statsTracker = new StatisticsTracker();
+  
+  // 页面可见性变化时更新统计
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      setTimeout(() => {
+        window.statsTracker.displayStats();
+      }, 300);
+    }
+  });
   
   // 添加加载完成提示
   setTimeout(() => {
@@ -1050,6 +1549,11 @@ window.addEventListener('DOMContentLoaded', () => {
       card.style.animationPlayState = 'running';
     });
   }, 100);
+  
+  // 控制台欢迎信息
+  console.log('%c🎀 欢迎来到资源风の魔法目录 🎀', 'color: #ff69b4; font-size: 16px; font-weight: bold;');
+  console.log('%c✨ 数据统计功能已启用 ✨', 'color: #ffb6c1; font-size: 14px;');
+  console.log('输入 `statsTracker.getStatsSummary()` 查看统计数据');
 });
 </script>
 
