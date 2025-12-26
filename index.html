@@ -5,13 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>资源风の魔法目录</title>
 
-<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --glass: rgba(255,255,255,0.16);
-  --border: rgba(255,255,255,0.3);
-  --blur: blur(20px);
+  --glass: rgba(255,255,255,0.15);
+  --border: rgba(255,255,255,0.28);
+  --glow: 0 0 12px rgba(255,200,255,0.5), 0 0 24px rgba(200,150,255,0.3);
+  --text-glow: 0 0 8px rgba(255,182,193,0.7);
+  --pink-purple: #d8b4fe;
+  --light-pink: #f9a8d4;
 }
 
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -20,7 +24,7 @@ html, body {
   margin:0;
   width:100%;
   height:100%;
-  font-family:'ZCOOL KuaiLe', cursive;
+  font-family:'ZCOOL KuaiLe', 'Noto Sans SC', sans-serif;
   background:#0a0e14;
   overflow:hidden;
   color:#fff;
@@ -31,17 +35,18 @@ html, body {
   position:fixed;
   inset:0;
   background:url('./jm.jpg') center/cover no-repeat;
+  background:url('./jm.jpg') center/cover no-repeat, url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80') center/cover no-repeat;
   transform:scale(1.05);
   z-index:-10;
-  animation:breathe 40s ease-in-out infinite;
+  animation:breathe 45s ease-in-out infinite;
 }
 
 .film-overlay {
   position:fixed;
   inset:0;
-  background:linear-gradient(to bottom, rgba(13,17,23,0.35), rgba(13,17,23,0.7));
-  backdrop-filter:brightness(0.92) contrast(1.15);
-  -webkit-backdrop-filter:brightness(0.92) contrast(1.15);
+  background:linear-gradient(to bottom, rgba(13,17,23,0.3), rgba(13,17,23,0.65));
+  backdrop-filter:brightness(0.95) contrast(1.18);
+  -webkit-backdrop-filter:brightness(0.95) contrast(1.18);
   z-index:-5;
 }
 
@@ -62,63 +67,56 @@ html, body {
   gap:12px;
   background:var(--glass);
   border:1px solid var(--border);
-  border-radius:22px;
+  border-radius:24px;
   padding:12px 16px;
-  backdrop-filter:var(--blur);
-  -webkit-backdrop-filter:var(--blur);
-  box-shadow:0 8px 32px rgba(0,0,0,0.25);
-  position:relative;
-  overflow:hidden;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:var(--glow);
 }
 
 .header img {
   width:60px;
   height:60px;
   border-radius:50%;
-  border:2px solid rgba(255,255,255,0.9);
+  border:2px solid var(--light-pink);
   object-fit: cover;
-  object-position: center;
-  flex-shrink:0;
-}
-
-.header div {
-  flex:1;
+  box-shadow:0 0 12px rgba(255,182,193,0.6);
 }
 
 .header h1 {
   margin:0;
-  font-size:1.4rem;
-  line-height:1.3;
+  font-size:1.45rem;
+  line-height:1.2;
+  color:var(--pink-purple);
+  text-shadow:var(--text-glow);
   letter-spacing:1px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
 }
 
 .header p {
   margin:2px 0 0;
-  font-size:0.78rem;
-  color:rgba(255,255,255,0.88);
+  font-size:0.8rem;
+  color:rgba(255,255,255,0.9);
+  text-shadow:var(--text-glow);
 }
 
 .music {
   width:44px;
   height:44px;
   border-radius:50%;
-  border:2px solid rgba(255,255,255,0.9);
+  border:2px solid var(--light-pink);
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:1.3rem;
-  background:rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.08);
   transition:all 0.3s;
   cursor:pointer;
-  box-shadow:0 0 12px rgba(255,255,255,0.3);
+  box-shadow:0 0 10px rgba(255,182,193,0.5);
 }
 
 .playing {
-  animation:spin 6s linear infinite;
-  box-shadow:0 0 16px rgba(255,255,255,0.5), 0 0 32px rgba(255,255,255,0.2);
+  animation:spin 5s linear infinite;
+  box-shadow:0 0 16px rgba(255,182,193,0.8), 0 0 28px rgba(216,180,254,0.4);
 }
 
 /* 卡片 */
@@ -138,58 +136,48 @@ html, body {
   padding:16px 18px;
   display:flex;
   align-items:center;
-  gap:16px;
-  backdrop-filter:var(--blur);
-  -webkit-backdrop-filter:var(--blur);
+  gap:14px;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
   transition:all 0.3s ease;
-  box-shadow:0 4px 20px rgba(0,0,0,0.2);
-  min-height:82px;
+  box-shadow:var(--glow);
   text-decoration:none;
   color:inherit;
 }
 
 .card:hover {
-  transform:translateY(-2px) scale(1.02);
+  transform:translateY(-3px) scale(1.02);
   background:rgba(255,255,255,0.22);
-  box-shadow:0 10px 32px rgba(0,0,0,0.3);
-}
-
-.card:active {
-  transform:translateY(0) scale(0.99);
-}
-
-.icon {
-  font-size:2.2rem;
-  min-width:44px;
-  text-align:center;
+  box-shadow:0 12px 36px rgba(0,0,0,0.3), var(--glow);
 }
 
 .card b {
-  font-size:1.12rem;
-  display:block;
+  font-size:1.15rem;
+  color:var(--pink-purple);
+  text-shadow:var(--text-glow);
 }
 
 .card span {
-  font-size:0.76rem;
-  color:rgba(255,255,255,0.78);
+  font-size:0.78rem;
+  color:rgba(255,255,255,0.85);
+  text-shadow:0 0 6px rgba(255,182,193,0.4);
   margin-top:2px;
-  display:block;
 }
 
 /* 底部 */
 footer {
   text-align:center;
   font-size:0.65rem;
-  color:rgba(255,255,255,0.48);
+  color:rgba(255,182,193,0.6);
   padding:6px 0;
-  letter-spacing:0.8px;
+  text-shadow:var(--text-glow);
 }
 
 /* 动画 */
 @keyframes spin { to { transform:rotate(360deg) } }
 @keyframes breathe {
   0%,100% { transform:scale(1.05) }
-  50% { transform:scale(1.08) }
+  50% { transform:scale(1.09) }
 }
 </style>
 </head>
@@ -260,23 +248,13 @@ function toggleMusic() {
     audio.play().then(() => {
       disk.textContent = '💿';
       disk.classList.add('playing');
-    }).catch(err => {
-      console.log('音乐播放失败:', err);
-      alert('音乐加载失败，请检查文件或网络');
-    });
+    }).catch(() => alert('音乐加载失败，请检查文件'));
   } else {
     audio.pause();
     disk.textContent = '🎵';
     disk.classList.remove('playing');
   }
 }
-
-// 自动尝试播放（iOS 可能需要用户交互）
-document.addEventListener('click', () => {
-  if (audio.paused && !audio.currentTime) {
-    toggleMusic();
-  }
-}, { once: true });
 </script>
 
 </body>
