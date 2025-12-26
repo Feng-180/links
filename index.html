@@ -14,7 +14,7 @@
   --glow: 0 0 10px rgba(216,180,254,0.5), 0 0 20px rgba(249,168,212,0.3);
   --text-glow: 0 0 6px rgba(249,168,212,0.6);
   --main-gradient: linear-gradient(135deg, #d8b4fe, #f9a8d4);
-  --cat-ear-glow: 0 0 12px rgba(255,105,180,0.8), 0 0 24px rgba(255,182,193,0.5);
+  --cat-ear-glow: 0 0 12px #ff69b4, 0 0 24px #ff1493;
 }
 
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -29,7 +29,7 @@ html, body {
   color:#fff;
 }
 
-/* 背景 - 永不黑 */
+/* 背景 */
 .master-bg {
   position:fixed;
   inset:0;
@@ -75,7 +75,7 @@ html, body {
   box-shadow:var(--glow);
 }
 
-.header .avatar-wrapper {
+.avatar-wrapper {
   position:relative;
   width:60px;
   height:60px;
@@ -90,30 +90,30 @@ html, body {
   box-shadow:var(--glow);
 }
 
-.header .cat-ears {
+/* 荧光粉色猫耳 */
+.cat-ears {
   position:absolute;
-  top:-10px;
+  top:-12px;
   left:50%;
   transform:translateX(-50%);
   width:80px;
   height:40px;
   pointer-events:none;
-  z-index:1;
 }
 
-.header .cat-ears::before,
-.header .cat-ears::after {
+.cat-ears::before,
+.cat-ears::after {
   content:'';
   position:absolute;
-  width:20px;
-  height:30px;
-  background:linear-gradient(to bottom, #ff69b4, #f9a8d4);
-  border-radius:50% 50% 0 0;
+  width:24px;
+  height:32px;
+  background:linear-gradient(to bottom, #ff69b4, #ff1493);
+  border-radius:50% 50% 0 0 / 60% 60% 0 0;
   box-shadow:var(--cat-ear-glow);
 }
 
-.header .cat-ears::before { left:10px; transform:rotate(-20deg); }
-.header .cat-ears::after { right:10px; transform:rotate(20deg); }
+.cat-ears::before { left:8px; transform:rotate(-25deg); }
+.cat-ears::after { right:8px; transform:rotate(25deg); }
 
 .header div {
   flex:1;
@@ -151,7 +151,7 @@ html, body {
   cursor:pointer;
   box-shadow:0 0 8px rgba(216,180,254,0.5);
   margin-left:auto;
-  margin-right:8px; /* 微调右边距 */
+  margin-right:8px;
 }
 
 .playing {
