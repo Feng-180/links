@@ -14,6 +14,7 @@
   --glow: 0 0 10px rgba(216,180,254,0.5), 0 0 20px rgba(249,168,212,0.3);
   --text-glow: 0 0 6px rgba(249,168,212,0.6);
   --main-gradient: linear-gradient(135deg, #d8b4fe, #f9a8d4);
+  --cat-ear-glow: 0 0 12px rgba(255,105,180,0.8), 0 0 24px rgba(255,182,193,0.5);
 }
 
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -26,10 +27,9 @@ html, body {
   background:#0a0e14;
   overflow:hidden;
   color:#fff;
-  animation:fadeIn 1.2s ease;
 }
 
-/* 背景 - 稳定版，无动画 + 兜底 */
+/* 背景 - 永不黑 */
 .master-bg {
   position:fixed;
   inset:0;
@@ -39,9 +39,9 @@ html, body {
   background-position:center;
   background-repeat:no-repeat;
   z-index:-10;
-  transition:background-image 0.5s ease;
 }
 
+/* 叠加层 */
 .film-overlay {
   position:fixed;
   inset:0;
@@ -49,20 +49,6 @@ html, body {
   backdrop-filter:brightness(0.95) contrast(1.2);
   -webkit-backdrop-filter:brightness(0.95) contrast(1.2);
   z-index:-5;
-}
-
-/* 粒子 */
-.particles {
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:-9;
-  background:transparent;
-  animation:twinkle 15s infinite;
-  box-shadow:
-    20vw 30vh 0 0 #fff, 40vw 50vh 0 0 #fff, 60vw 20vh 0 0 #fff;
-  opacity:0.5;
-  filter:blur(1px);
 }
 
 /* 主体 */
@@ -75,7 +61,7 @@ html, body {
   gap:14px;
 }
 
-/* 头部 - 播放器右挪 */
+/* 头部 */
 .header {
   display:flex;
   align-items:center;
@@ -83,30 +69,97 @@ html, body {
   background:var(--glass);
   border:1px solid var(--border);
   border-radius:24px;
-  padding:12px 16px 12px 16px;
+  padding:12px 16px;
   backdrop-filter:blur(22px);
   -webkit-backdrop-filter:blur(22px);
   box-shadow:var(--glow);
 }
 
+.header .avatar-wrapper {
+  position:relative;
+  width:60px;
+  height:60px;
+}
+
+.header img {
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:2px solid var(--border);
+  object-fit: cover;
+  box-shadow:var(--glow);
+}
+
+.header .cat-ears {
+  position:absolute;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:80px;
+  height:40px;
+  pointer-events:none;
+  z-index:1;
+}
+
+.header .cat-ears::before,
+.header .cat-ears::after {
+  content:'';
+  position:absolute;
+  width:20px;
+  height:30px;
+  background:linear-gradient(to bottom, #ff69b4, #f9a8d4);
+  border-radius:50% 50% 0 0;
+  box-shadow:var(--cat-ear-glow);
+}
+
+.header .cat-ears::before { left:10px; transform:rotate(-20deg); }
+.header .cat-ears::after { right:10px; transform:rotate(20deg); }
+
+.header div {
+  flex:1;
+}
+
+.header h1 {
+  margin:0;
+  font-size:1.45rem;
+  font-weight:700;
+  background:var(--main-gradient);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:var(--text-glow);
+}
+
+.header p {
+  margin:2px 0 0;
+  font-size:0.8rem;
+  color:rgba(255,255,255,0.9);
+  text-shadow:var(--text-glow);
+}
+
+/* 播放器 - 居中旋转光盘 */
 .music {
-  width:44px;
-  height:44px;
+  width:48px;
+  height:48px;
   border-radius:50%;
   border:2px solid var(--border);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:1.3rem;
+  font-size:1.4rem;
   background:var(--glass);
   transition:all 0.3s;
   cursor:pointer;
   box-shadow:0 0 8px rgba(216,180,254,0.5);
-  padding-right:8px; /* 右挪对称 */
   margin-left:auto;
+  margin-right:8px; /* 微调右边距 */
 }
 
-/* 卡片 - 删小字 + 加分类 + 跳转 */
+.playing {
+  animation:spin 6s linear infinite;
+  box-shadow:0 0 16px rgba(216,180,254,0.8), 0 0 28px rgba(249,168,212,0.4);
+}
+
+/* 卡片 */
 .list {
   flex:1;
   display:flex;
@@ -153,35 +206,32 @@ html, body {
   text-shadow:var(--text-glow);
 }
 
-/* 其余样式 */
-header img { width:60px; height:60px; border-radius:50%; border:2px solid var(--border); object-fit: cover; box-shadow:var(--glow); }
+/* 底部 */
+footer {
+  text-align:center;
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.7);
+  padding:6px 0;
+  text-shadow:var(--text-glow);
+}
 
-header h1 { margin:0; font-size:1.45rem; font-weight:700; background:var(--main-gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:var(--text-glow); }
-
-header p { margin:2px 0 0; font-size:0.8rem; color:rgba(255,255,255,0.9); text-shadow:var(--text-glow); }
-
-.playing { animation:spin 5s linear infinite; box-shadow:0 0 14px rgba(216,180,254,0.8), 0 0 24px rgba(249,168,212,0.4); }
-
-footer { text-align:center; font-size:0.65rem; color:rgba(255,255,255,0.7); padding:6px 0; text-shadow:var(--text-glow); }
-
-/* 动画 - 删 breathe */
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+/* 动画 */
 @keyframes spin { to { transform:rotate(360deg); } }
-@keyframes twinkle { 0%,100% { opacity:0.5; } 50% { opacity:0.3; } }
 </style>
 </head>
 
 <body>
 
-<div class="master-bg">
-  <div class="particles"></div>
-</div>
+<div class="master-bg"></div>
 <div class="film-overlay"></div>
 
 <div class="app">
 
   <header class="header">
-    <img src="./ndmz.jpg" alt="avatar">
+    <div class="avatar-wrapper">
+      <img src="./ndmz.jpg" alt="avatar">
+      <div class="cat-ears"></div>
+    </div>
     <div>
       <h1>资源风の魔法目录</h1>
       <p>系守町 · 把重要的东西留住</p>
@@ -190,56 +240,37 @@ footer { text-align:center; font-size:0.65rem; color:rgba(255,255,255,0.7); padd
   </header>
 
   <section class="list">
-    <a href="filim.html" class="card">
-      <div class="icon">☄️</div>
-      <div>
-        <b>观影系</b>
-      </div>
-    </a>
-
-    <a href="tools.html" class="card">
-      <div class="icon">🌟</div>
-      <div>
-        <b>工具系</b>
-      </div>
-    </a>
-
-    <a href="game.html" class="card">
-      <div class="icon">🎮</div>
-      <div>
-        <b>游戏系</b>
-      </div>
-    </a>
-
     <a href="music.html" class="card">
-      <div class="icon">🎶</div>
-      <div>
-        <b>音乐系</b>
-      </div>
+      <div class="icon">🎵</div>
+      <div><b>音乐系</b></div>
+    </a>
+
+    <a href="filim.html" class="card">
+      <div class="icon">🍿</div>
+      <div><b>观影系</b></div>
     </a>
 
     <a href="reading.html" class="card">
       <div class="icon">📖</div>
-      <div>
-        <b>阅读系</b>
-      </div>
-    </a>
- 
-    <a href="data.html" class="card">
-      <div class="icon">📚</div>
-      <div>
-        <b>资料系</b>
-      </div>
+      <div><b>阅读系</b></div>
     </a>
 
-    <a href="private.html" class="card">
-      <div class="icon">🧭</div>
-      <div>
-        <b>私藏系</b>
-      </div>
+    <a href="game.html" class="card">
+      <div class="icon">🎮</div>
+      <div><b>游戏系</b></div>
+    </a>
+
+    <a href="tools.html" class="card">
+      <div class="icon">🌟</div>
+      <div><b>工具系</b></div>
+    </a>
+
+    <a href="data.html" class="card">
+      <div class="icon">📚</div>
+      <div><b>资料系</b></div>
     </a>
   </section>
-  
+
   <footer>DESIGNED FOR LONG TERM · ITOMORI</footer>
 </div>
 
