@@ -2,13 +2,13 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>资源风の魔法目录</title>
 <meta name="description" content="资源风の魔法目录 - 系守町资源集合">
 <meta name="theme-color" content="#fff0f5">
+<meta name="format-detection" content="telephone=no">
 
-<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
-
+<!-- 移除Google字体，使用系统字体提高加载速度 -->
 <style>
 :root {
   --glass: rgba(255, 240, 245, 0.25);
@@ -25,6 +25,7 @@
   -webkit-tap-highlight-color: transparent;
   margin: 0;
   padding: 0;
+  -webkit-text-size-adjust: 100%; /* 防止QQ浏览器字体缩放 */
 }
 
 html, body {
@@ -32,10 +33,25 @@ html, body {
   width: 100%;
   height: 100%;
   min-height: 100vh;
-  font-family: 'ZCOOL KuaiLe', 'Noto Sans SC', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; /* 使用系统字体 */
   background: var(--bg-gradient);
-  overflow: hidden;
+  overflow-x: hidden;
   color: #ff1493;
+  /* 为QQ浏览器添加特定的滚动支持 */
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  touch-action: pan-y; /* 确保垂直滚动 */
+}
+
+/* 解决QQ浏览器滚动问题 */
+html {
+  height: 100%;
+  overflow-y: auto; /* 确保页面可以滚动 */
+}
+
+body {
+  min-height: 100%;
+  position: relative;
 }
 
 /* 樱花背景 + 更多粒子 */
@@ -44,6 +60,8 @@ html, body {
   inset: 0;
   background: var(--bg-gradient);
   z-index: -10;
+  /* 确保不阻止滚动 */
+  pointer-events: none;
 }
 
 .particles-container {
@@ -54,11 +72,12 @@ html, body {
   overflow: hidden;
 }
 
-/* 樱花飘落优化 */
+/* 简化樱花飘落 - 提高性能 */
 .sakura-petals {
   position: absolute;
   width: 100%;
   height: 100%;
+  display: none; /* 默认隐藏，JS控制显示 */
 }
 
 .sakura-petals span {
@@ -68,8 +87,6 @@ html, body {
   color: #ffb6c1;
   opacity: 0.8;
   animation: fall linear infinite;
-  text-shadow: 0 0 8px rgba(255,182,193,0.8);
-  filter: drop-shadow(0 0 4px rgba(255,182,193,0.5));
 }
 
 .sakura-petals span:nth-child(1) { left: 5%; animation-duration: 25s; animation-delay: 0s; }
@@ -78,85 +95,20 @@ html, body {
 .sakura-petals span:nth-child(4) { left: 65%; animation-duration: 28s; animation-delay: 4s; }
 .sakura-petals span:nth-child(5) { left: 85%; animation-duration: 24s; animation-delay: 2s; }
 
-/* 粉色光点粒子优化 */
-.light-particles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.light-particles span {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: linear-gradient(135deg, #ff69b4, #ffb6c1);
-  border-radius: 50%;
-  box-shadow: 0 0 12px #ff69b4;
-  animation: light-float 25s infinite ease-in-out;
-}
-
-.light-particles span:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; animation-duration: 20s; }
-.light-particles span:nth-child(2) { left: 30%; top: 50%; animation-delay: 3s; animation-duration: 18s; }
-.light-particles span:nth-child(3) { left: 60%; top: 30%; animation-delay: 6s; animation-duration: 22s; }
-.light-particles span:nth-child(4) { left: 80%; top: 70%; animation-delay: 9s; animation-duration: 25s; }
-.light-particles span:nth-child(5) { left: 50%; top: 80%; animation-delay: 12s; animation-duration: 19s; }
-
-/* 添加星光效果 */
-.stars {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.stars span {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: white;
-  border-radius: 50%;
-  animation: twinkle 4s infinite alternate;
-  opacity: 0.7;
-}
-
-.stars span:nth-child(1) { left: 20%; top: 10%; animation-delay: 0s; }
-.stars span:nth-child(2) { left: 40%; top: 30%; animation-delay: 1s; }
-.stars span:nth-child(3) { left: 70%; top: 15%; animation-delay: 2s; }
-.stars span:nth-child(4) { left: 90%; top: 40%; animation-delay: 3s; }
-.stars span:nth-child(5) { left: 15%; top: 60%; animation-delay: 4s; }
-
-/* 动画优化 */
-@keyframes fall {
-  0% { transform: translateY(-100vh) rotate(0deg); opacity: 0.8; }
-  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-}
-
-@keyframes light-float {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-  25% { transform: translate(10vw, -15vh) scale(1.2); opacity: 0.8; }
-  50% { transform: translate(-5vw, -25vh) scale(0.8); opacity: 0.4; }
-  75% { transform: translate(15vw, -10vh) scale(1.1); opacity: 0.7; }
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.5); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-/* 主体 - 适配优化 */
+/* 主体 - 修复滚动问题 */
 .app {
   position: relative;
   min-height: 100vh;
-  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   max-width: 480px;
   margin: 0 auto;
+  /* 确保可以滚动 */
+  overflow-x: hidden;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* 头部优化 */
@@ -171,24 +123,8 @@ html, body {
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   box-shadow: var(--glow);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
-  overflow: hidden;
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 182, 193, 0.1), transparent);
-  transition: left 0.8s;
-}
-
-.header:hover::before {
-  left: 100%;
+  flex-shrink: 0; /* 防止被压缩 */
 }
 
 .avatar-wrapper {
@@ -199,22 +135,18 @@ html, body {
   overflow: hidden;
   border: 2px solid rgba(255, 105, 180, 0.5);
   box-shadow: var(--glow);
-  animation: float 6s ease-in-out infinite;
+  flex-shrink: 0; /* 防止被压缩 */
 }
 
 .header img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.header:hover img {
-  transform: scale(1.05);
 }
 
 .header-info {
   flex: 1;
+  min-width: 0; /* 防止文本溢出 */
 }
 
 .header h1 {
@@ -225,12 +157,14 @@ html, body {
   -webkit-text-fill-color: transparent;
   text-shadow: var(--text-glow);
   letter-spacing: 0.5px;
+  word-break: break-word; /* 防止长文本溢出 */
 }
 
 .header p {
   font-size: 0.95rem;
   opacity: 0.9;
   margin-bottom: 5px;
+  word-break: break-word;
 }
 
 .stats {
@@ -238,16 +172,19 @@ html, body {
   gap: 8px;
   font-size: 0.85rem;
   color: rgba(255, 105, 180, 0.8);
+  flex-wrap: wrap; /* 防止溢出 */
 }
 
 .stats span {
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 /* 播放器优化 */
 .music-player {
   position: relative;
+  flex-shrink: 0; /* 防止被压缩 */
 }
 
 .music {
@@ -260,82 +197,43 @@ html, body {
   justify-content: center;
   font-size: 1.6rem;
   background: var(--glass);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
   box-shadow: 0 0 20px rgba(255,105,180,0.6);
   position: relative;
   overflow: hidden;
+  -webkit-appearance: none; /* 移除iOS默认样式 */
 }
 
-.music::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(transparent, #ff69b4, transparent 30%);
-  animation: rotate 4s linear infinite;
-}
-
-.music::after {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  background: var(--glass);
-  border-radius: 50%;
-}
-
-.music > span {
-  position: relative;
-  z-index: 1;
-}
-
-.music:focus {
-  outline: 2px solid #ff69b4;
-  outline-offset: 3px;
-}
-
-.playing {
-  animation: spin 6s linear infinite;
-  box-shadow: 0 0 25px rgba(255,105,180,0.9), 0 0 40px rgba(255,182,193,0.5);
-}
-
-.loading {
-  animation: pulse 1.5s infinite;
-}
-
-/* 卡片列表优化 */
+/* 修复滚动区域 - 关键修改 */
 .list {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* 核心修复：确保滚动区域正确 */
+  min-height: 0; /* 这是关键！让flex容器可以滚动 */
   overflow-y: auto;
-  padding: 4px 4px 20px;
+  -webkit-overflow-scrolling: touch; /* iOS顺滑滚动 */
   scroll-behavior: smooth;
+  padding: 4px 4px 20px;
+  /* 为QQ浏览器添加滚动支持 */
+  touch-action: pan-y;
+  position: relative;
 }
 
 /* 滚动条样式优化 */
 .list::-webkit-scrollbar {
-  width: 8px;
+  width: 6px; /* 更细的滚动条 */
 }
 
 .list::-webkit-scrollbar-track {
-  background: rgba(255, 182, 193, 0.15);
+  background: rgba(255, 182, 193, 0.1);
   border-radius: 10px;
-  margin: 10px 0;
 }
 
 .list::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, #ffb6c1, #ff69b4);
   border-radius: 10px;
-  border: 2px solid rgba(255, 240, 245, 0.3);
-}
-
-.list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #ff69b4, #ff1493);
-  box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
 }
 
 /* 卡片优化 */
@@ -349,38 +247,16 @@ html, body {
   gap: 18px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: var(--card-shadow);
   text-decoration: none;
   color: inherit;
   position: relative;
-  overflow: hidden;
+  flex-shrink: 0; /* 防止卡片被压缩 */
+  min-height: 100px; /* 确保卡片有足够高度 */
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 182, 193, 0.15), transparent);
-  transition: left 0.7s;
-}
-
-.card:hover::before {
-  left: 100%;
-}
-
-.card:focus {
-  outline: 2px solid #ff69b4;
-  outline-offset: 3px;
-}
-
-.card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(255, 105, 180, 0.2), var(--glow);
-  border-color: rgba(255, 105, 180, 0.5);
+.card:active {
+  background: rgba(255, 240, 245, 0.35); /* 触摸反馈 */
 }
 
 .icon {
@@ -391,27 +267,7 @@ html, body {
   align-items: center;
   justify-content: center;
   filter: drop-shadow(var(--text-glow));
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-}
-
-.icon::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: rgba(255, 182, 193, 0.1);
-  transform: scale(0);
-  transition: transform 0.4s;
-}
-
-.card:hover .icon::after {
-  transform: scale(1.3);
-}
-
-.card:hover .icon {
-  transform: scale(1.15) rotate(5deg);
+  flex-shrink: 0;
 }
 
 .card b {
@@ -422,21 +278,20 @@ html, body {
   -webkit-text-fill-color: transparent;
   text-shadow: var(--text-glow);
   letter-spacing: 0.5px;
-  position: relative;
-  z-index: 1;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .card-content {
   flex: 1;
+  min-width: 0; /* 防止文本溢出 */
 }
 
 .card-description {
   font-size: 0.9rem;
   color: rgba(255, 20, 147, 0.7);
-  margin-top: 5px;
   display: block;
-  font-family: 'Noto Sans SC', sans-serif;
-  font-weight: 400;
+  word-break: break-word;
 }
 
 /* ========== 统计卡片样式 ========== */
@@ -449,25 +304,9 @@ html, body {
   -webkit-backdrop-filter: blur(20px);
   box-shadow: var(--card-shadow);
   margin-bottom: 8px;
-  animation: fadeInUp 0.8s ease-out 0.6s forwards;
-  opacity: 0;
   position: relative;
-  overflow: hidden;
-}
-
-.statistics-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 182, 193, 0.1), transparent);
-  transition: left 0.7s;
-}
-
-.statistics-card:hover::before {
-  left: 100%;
+  flex-shrink: 0; /* 确保显示 */
+  display: block !important; /* 强制显示 */
 }
 
 .stats-display {
@@ -483,24 +322,16 @@ html, body {
   align-items: center;
   gap: 6px;
   text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.stat-item:hover {
-  transform: translateY(-3px);
 }
 
 .stat-icon {
   font-size: 1.8rem;
   filter: drop-shadow(var(--text-glow));
-  animation: float 4s ease-in-out infinite;
-  animation-delay: calc(var(--item-index) * 0.5s);
 }
 
 .stat-text {
   font-size: 0.85rem;
   color: rgba(255, 20, 147, 0.8);
-  font-family: 'Noto Sans SC', sans-serif;
   font-weight: 500;
 }
 
@@ -511,28 +342,9 @@ html, body {
   color: #ff1493;
   font-size: 1.1rem;
   text-shadow: var(--text-glow);
-  transition: all 0.3s ease;
-}
-
-.stat-counter {
-  position: relative;
   display: inline-block;
-}
-
-.stat-counter::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #ff69b4, transparent);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
-.stat-item:hover .stat-counter::after {
-  transform: scaleX(1);
+  min-width: 40px; /* 确保数字显示完整 */
+  text-align: center;
 }
 
 /* 底部优化 */
@@ -547,70 +359,19 @@ footer {
   margin-top: 10px;
   border: 1px solid var(--border);
   backdrop-filter: blur(10px);
-  transition: all 0.3s;
-}
-
-footer:hover {
-  color: #ff69b4;
-  box-shadow: var(--glow);
+  flex-shrink: 0; /* 防止被压缩 */
 }
 
 /* 动画 */
-@keyframes spin { 
-  to { transform: rotate(360deg); } 
+@keyframes fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 0.8; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* 触摸设备优化 */
-@media (hover: none) {
-  .card:hover {
-    transform: none;
-  }
-  
-  .card:active {
-    transform: scale(0.98);
-    transition: transform 0.1s;
-    background: rgba(255, 240, 245, 0.35);
-  }
-  
-  .header:hover::before {
-    left: -100%;
-  }
-  
-  .card:hover::before {
-    left: -100%;
-  }
-  
-  .statistics-card:hover::before {
-    left: -100%;
-  }
-  
-  .stat-item:hover {
-    transform: none;
-  }
-}
-
-/* 错误状态 */
-.error {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* 添加淡入动画优化 */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -618,32 +379,20 @@ footer:hover {
   }
 }
 
-@keyframes countUp {
-  from { 
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.header, .card, footer, .statistics-card {
-  animation: fadeInUp 0.8s ease-out forwards;
-  opacity: 0;
-}
-
 /* 为每个卡片设置不同的延迟 */
-.header { animation-delay: 0.1s; }
-.card:nth-child(1) { animation-delay: 0.15s; }
-.card:nth-child(2) { animation-delay: 0.2s; }
-.card:nth-child(3) { animation-delay: 0.25s; }
-.card:nth-child(4) { animation-delay: 0.3s; }
-.card:nth-child(5) { animation-delay: 0.35s; }
-.card:nth-child(6) { animation-delay: 0.4s; }
-.statistics-card { animation-delay: 0.5s; }
-footer { animation-delay: 0.6s; }
+.header { animation: fadeInUp 0.8s ease-out 0.1s forwards; opacity: 0; }
+.card:nth-child(1) { animation: fadeInUp 0.8s ease-out 0.15s forwards; opacity: 0; }
+.card:nth-child(2) { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
+.card:nth-child(3) { animation: fadeInUp 0.8s ease-out 0.25s forwards; opacity: 0; }
+.card:nth-child(4) { animation: fadeInUp 0.8s ease-out 0.3s forwards; opacity: 0; }
+.card:nth-child(5) { animation: fadeInUp 0.8s ease-out 0.35s forwards; opacity: 0; }
+.card:nth-child(6) { animation: fadeInUp 0.8s ease-out 0.4s forwards; opacity: 0; }
+.statistics-card { 
+  animation: fadeInUp 0.8s ease-out 0.5s forwards; 
+  opacity: 0;
+  display: block !important; /* 强制显示 */
+}
+footer { animation: fadeInUp 0.8s ease-out 0.6s forwards; opacity: 0; }
 
 /* 小屏设备优化 */
 @media (max-width: 380px) {
@@ -679,6 +428,7 @@ footer { animation-delay: 0.6s; }
   .card {
     padding: 16px 18px;
     border-radius: 20px;
+    min-height: 90px;
   }
   
   .icon {
@@ -727,104 +477,25 @@ footer { animation-delay: 0.6s; }
   }
 }
 
-/* 平板设备优化 */
-@media (min-width: 768px) {
-  .app {
-    max-width: 600px;
-    padding-top: max(24px, env(safe-area-inset-top));
-    padding-bottom: max(24px, env(safe-area-inset-bottom));
-    gap: 20px;
-  }
-  
-  .header {
-    padding: 20px 28px;
-    border-radius: 28px;
-  }
-  
-  .avatar-wrapper {
-    width: 80px;
-    height: 80px;
-  }
-  
-  .header h1 {
-    font-size: 1.8rem;
-  }
-  
-  .header p {
-    font-size: 1.05rem;
-  }
-  
-  .music {
-    width: 64px;
-    height: 64px;
-    font-size: 1.8rem;
-  }
-  
+/* 修复QQ浏览器特定问题 */
+@media screen and (-webkit-min-device-pixel-ratio:0) and (max-device-width: 1024px) {
+  /* 针对WebKit内核的移动浏览器优化 */
   .list {
-    gap: 20px;
+    -webkit-transform: translateZ(0); /* 硬件加速 */
+    transform: translateZ(0);
   }
   
   .card {
-    padding: 24px 28px;
-    border-radius: 26px;
-  }
-  
-  .icon {
-    font-size: 2.8rem;
-    min-width: 60px;
-    height: 60px;
-  }
-  
-  .card b {
-    font-size: 1.4rem;
-  }
-  
-  .card-description {
-    font-size: 1rem;
-  }
-  
-  .statistics-card {
-    padding: 20px 24px;
-    border-radius: 22px;
-  }
-  
-  .stat-icon {
-    font-size: 2rem;
-  }
-  
-  .stat-text {
-    font-size: 0.95rem;
-  }
-  
-  #todayVisits,
-  #totalVisits,
-  #onlineUsers {
-    font-size: 1.2rem;
-  }
-  
-  footer {
-    font-size: 0.8rem;
-    padding: 12px 0;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 }
 
-/* 桌面设备优化 */
-@media (min-width: 1024px) {
-  .app {
-    max-width: 650px;
-  }
-  
-  .header {
-    padding: 24px 32px;
-  }
-  
-  .card {
-    padding: 26px 30px;
-  }
-  
-  .statistics-card {
-    padding: 22px 28px;
-  }
+/* 确保在QQ浏览器中统计卡片可见 */
+.qq-browser-fix {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 </style>
 </head>
@@ -834,20 +505,6 @@ footer { animation-delay: 0.6s; }
 <div class="master-bg">
   <div class="particles-container">
     <div class="sakura-petals">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <div class="light-particles">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <div class="stars">
       <span></span>
       <span></span>
       <span></span>
@@ -931,18 +588,18 @@ footer { animation-delay: 0.6s; }
     </a>
   </section>
 
-  <!-- 新增的统计卡片 -->
-  <div class="statistics-card">
+  <!-- 统计卡片 - 确保在QQ浏览器中显示 -->
+  <div class="statistics-card qq-browser-fix" id="statsCard">
     <div class="stats-display">
-      <div class="stat-item" style="--item-index: 0">
+      <div class="stat-item">
         <span class="stat-icon">👁️</span>
         <span class="stat-text">今日访问: <span id="todayVisits" class="stat-counter">0</span></span>
       </div>
-      <div class="stat-item" style="--item-index: 1">
+      <div class="stat-item">
         <span class="stat-icon">📈</span>
         <span class="stat-text">总访问: <span id="totalVisits" class="stat-counter">0</span></span>
       </div>
-      <div class="stat-item" style="--item-index: 2">
+      <div class="stat-item">
         <span class="stat-icon">👤</span>
         <span class="stat-text">在线: <span id="onlineUsers" class="stat-counter">0</span></span>
       </div>
@@ -957,615 +614,339 @@ footer { animation-delay: 0.6s; }
 </audio>
 
 <script>
-const audio = document.getElementById('bgm');
-const disk = document.getElementById('disk');
-const diskSpan = disk.querySelector('span');
-let isPlaying = false;
-let isProcessing = false;
-
-// ========== 数据统计功能 ==========
-class StatisticsTracker {
-  constructor() {
-    // 本地存储键名
-    this.localStorageKey = 'itomori_visit_stats';
-    this.sessionStorageKey = 'itomori_session';
-    this.onlineStatusKey = 'itomori_online_status';
-    
-    // 统计数据
-    this.statsData = {
-      totalVisits: 0,
-      todayVisits: 0,
-      onlineUsers: 1,
-      lastVisit: null,
-      lastOnlineUpdate: null,
-      visitHistory: []
-    };
-    
-    // 初始化
-    this.init();
-  }
+// 简化版本 - 确保QQ浏览器兼容
+(function() {
+  'use strict';
   
-  init() {
-    this.loadLocalStats();
-    this.recordVisit();
-    this.startOnlineTracker();
-    this.displayStats();
+  // ========== 核心修复：确保页面可以滚动 ==========
+  function fixQQBrowserScroll() {
+    // 检测是否是QQ浏览器
+    const isQQBrowser = /MQQBrowser|QQ\//i.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
     
-    // 每30秒更新一次在线状态
-    setInterval(() => this.updateOnlineStatus(), 30000);
-    
-    // 页面可见性变化时更新
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) {
-        this.updateOnlineStatus();
-        this.displayStats();
+    if (isQQBrowser && isAndroid) {
+      console.log('检测到安卓QQ浏览器，应用滚动修复');
+      
+      // 修复1: 确保body可以滚动
+      document.body.style.overflow = 'auto';
+      document.body.style.height = 'auto';
+      document.body.style.minHeight = '100vh';
+      document.body.style.position = 'relative';
+      
+      // 修复2: 确保.app容器可以滚动
+      const app = document.querySelector('.app');
+      if (app) {
+        app.style.overflowY = 'auto';
+        app.style.overflowX = 'hidden';
+        app.style.webkitOverflowScrolling = 'touch';
+        app.style.height = 'auto';
+        app.style.minHeight = '100vh';
       }
-    });
-  }
-  
-  loadLocalStats() {
-    const today = new Date().toDateString();
-    const stored = localStorage.getItem(this.localStorageKey);
-    
-    if (stored) {
-      try {
-        this.statsData = JSON.parse(stored);
-        
-        // 如果是新的一天，重置今日访问
-        if (this.statsData.lastVisit !== today) {
-          this.statsData.todayVisits = 0;
-          this.statsData.lastVisit = today;
-        }
-        
-        // 清理旧的访问历史（保留最近30天）
-        this.cleanVisitHistory();
-      } catch (e) {
-        console.log('统计数据解析失败，重新初始化');
-        this.initDefaultStats();
+      
+      // 修复3: 确保.list容器可以滚动
+      const list = document.querySelector('.list');
+      if (list) {
+        list.style.minHeight = '0';
+        list.style.flex = '1 1 auto';
+        list.style.overflowY = 'auto';
+        list.style.webkitOverflowScrolling = 'touch';
+        list.style.touchAction = 'pan-y';
       }
-    } else {
-      this.initDefaultStats();
-    }
-    
-    this.statsData.lastVisit = today;
-  }
-  
-  initDefaultStats() {
-    const today = new Date().toDateString();
-    this.statsData = {
-      totalVisits: 0,
-      todayVisits: 0,
-      onlineUsers: 1,
-      lastVisit: today,
-      lastOnlineUpdate: Date.now(),
-      visitHistory: []
-    };
-  }
-  
-  cleanVisitHistory() {
-    const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
-    this.statsData.visitHistory = this.statsData.visitHistory.filter(
-      visit => visit.timestamp > thirtyDaysAgo
-    );
-  }
-  
-  recordVisit() {
-    // 检查是否是新会话
-    if (!sessionStorage.getItem(this.sessionStorageKey)) {
-      sessionStorage.setItem(this.sessionStorageKey, Date.now().toString());
       
-      this.statsData.totalVisits++;
-      this.statsData.todayVisits++;
-      
-      // 记录访问历史
-      this.statsData.visitHistory.push({
-        timestamp: Date.now(),
-        page: window.location.pathname,
-        referrer: document.referrer || 'direct'
-      });
-      
-      // 保存到本地存储
-      this.saveLocalStats();
-      
-      // 添加庆祝动画
-      this.celebrateNewVisit();
+      // 修复4: 强制显示统计卡片
+      const statsCard = document.getElementById('statsCard');
+      if (statsCard) {
+        statsCard.style.display = 'block';
+        statsCard.style.visibility = 'visible';
+        statsCard.style.opacity = '1';
+        statsCard.classList.add('qq-browser-fix');
+      }
     }
   }
   
-  startOnlineTracker() {
-    // 设置在线状态
-    localStorage.setItem(this.onlineStatusKey, Date.now().toString());
+  // ========== 简化版数据统计 ==========
+  function initStatistics() {
+    console.log('初始化统计功能');
     
-    // 监听其他标签页的在线状态
-    window.addEventListener('storage', (e) => {
-      if (e.key === this.onlineStatusKey) {
-        this.updateOnlineCount();
-      }
-    });
-    
-    // 页面卸载时更新在线状态
-    window.addEventListener('beforeunload', () => {
-      this.updateOnlineStatus(false);
-    });
-  }
-  
-  updateOnlineStatus(isOnline = true) {
-    localStorage.setItem(this.onlineStatusKey, Date.now().toString());
-    
-    // 计算在线用户数
-    this.updateOnlineCount();
-    
-    // 更新最后在线时间
-    this.statsData.lastOnlineUpdate = Date.now();
-    this.saveLocalStats();
-  }
-  
-  updateOnlineCount() {
-    // 模拟在线用户计算（实际项目中应该从服务器获取）
-    const now = Date.now();
-    const fiveMinutesAgo = now - (5 * 60 * 1000);
-    
-    // 随机生成在线用户数（在真实项目中应通过后端API获取）
-    const baseOnline = Math.floor(Math.random() * 5) + 1;
-    
-    // 确保至少有一个在线用户（当前用户）
-    this.statsData.onlineUsers = Math.max(baseOnline + 1, 1);
-    
-    // 更新显示
-    this.displayStats();
-  }
-  
-  displayStats() {
+    // 确保DOM元素存在
     const todayElement = document.getElementById('todayVisits');
     const totalElement = document.getElementById('totalVisits');
     const onlineElement = document.getElementById('onlineUsers');
     
-    if (todayElement) {
-      this.animateCounter(todayElement, this.statsData.todayVisits);
+    if (!todayElement || !totalElement || !onlineElement) {
+      console.error('统计元素未找到，重新创建');
+      createStatsElements();
+      return;
     }
     
-    if (totalElement) {
-      this.animateCounter(totalElement, this.statsData.totalVisits);
-    }
+    // 加载统计
+    loadStatistics();
     
-    if (onlineElement) {
-      this.animateCounter(onlineElement, this.statsData.onlineUsers);
-      
-      // 在线用户数变化时添加脉冲效果
-      onlineElement.style.animation = 'pulse 0.6s ease';
-      setTimeout(() => {
-        onlineElement.style.animation = '';
-      }, 600);
+    // 显示统计卡片
+    const statsCard = document.getElementById('statsCard');
+    if (statsCard) {
+      statsCard.style.display = 'block';
+      statsCard.style.opacity = '1';
     }
   }
   
-  animateCounter(element, targetValue) {
-    const current = parseInt(element.textContent) || 0;
-    if (current === targetValue) return;
-    
-    // 平滑动画
-    let start = null;
-    const duration = 800;
-    
-    const animate = (timestamp) => {
-      if (!start) start = timestamp;
-      const progress = timestamp - start;
-      const percentage = Math.min(progress / duration, 1);
-      
-      // 缓动函数
-      const easeOut = 1 - Math.pow(1 - percentage, 3);
-      const currentValue = Math.floor(current + (targetValue - current) * easeOut);
-      
-      element.textContent = this.formatNumber(currentValue);
-      
-      if (percentage < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        element.textContent = this.formatNumber(targetValue);
-        element.style.animation = 'countUp 0.5s ease-out';
-        setTimeout(() => {
-          element.style.animation = '';
-        }, 500);
-      }
-    };
-    
-    requestAnimationFrame(animate);
-  }
-  
-  celebrateNewVisit() {
-    // 创建庆祝粒子
-    const colors = ['#ff69b4', '#ff1493', '#ffb6c1', '#ff6b9d'];
-    
-    for (let i = 0; i < 15; i++) {
-      setTimeout(() => {
-        const particle = document.createElement('div');
-        particle.style.cssText = `
-          position: fixed;
-          width: 10px;
-          height: 10px;
-          background: ${colors[Math.floor(Math.random() * colors.length)]};
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 1000;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          box-shadow: 0 0 10px currentColor;
-          animation: celebrate 1.5s ease-out forwards;
-        `;
-        
-        document.body.appendChild(particle);
-        
-        // 动画结束后移除
-        setTimeout(() => particle.remove(), 1500);
-      }, i * 100);
+  function createStatsElements() {
+    // 确保统计卡片存在
+    const statsCard = document.getElementById('statsCard');
+    if (!statsCard) {
+      console.log('统计卡片不存在，跳过创建');
+      return;
     }
     
-    // 添加庆祝动画样式
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes celebrate {
-        0% {
-          transform: translate(-50%, -50%) scale(1);
-          opacity: 1;
-        }
-        100% {
-          transform: translate(
-            ${(Math.random() - 0.5) * 200}px,
-            ${(Math.random() - 0.5) * 200}px
-          ) scale(0);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-    setTimeout(() => style.remove(), 2000);
+    // 确保内部元素存在
+    const statsDisplay = statsCard.querySelector('.stats-display');
+    if (!statsDisplay) {
+      console.log('创建统计显示区域');
+      statsCard.innerHTML = `
+        <div class="stats-display">
+          <div class="stat-item">
+            <span class="stat-icon">👁️</span>
+            <span class="stat-text">今日访问: <span id="todayVisits" class="stat-counter">0</span></span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">📈</span>
+            <span class="stat-text">总访问: <span id="totalVisits" class="stat-counter">0</span></span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">👤</span>
+            <span class="stat-text">在线: <span id="onlineUsers" class="stat-counter">0</span></span>
+          </div>
+        </div>
+      `;
+    }
   }
   
-  saveLocalStats() {
+  function loadStatistics() {
     try {
-      localStorage.setItem(this.localStorageKey, JSON.stringify(this.statsData));
-    } catch (e) {
-      console.log('保存统计数据失败，可能是存储空间不足');
-    }
-  }
-  
-  formatNumber(num) {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + 'M';
-    }
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'k';
-    }
-    return num.toString();
-  }
-  
-  // 获取统计数据（可用于调试）
-  getStats() {
-    return { ...this.statsData };
-  }
-}
-
-// ========== 原有音乐播放器代码 ==========
-// 音频错误处理
-audio.addEventListener('error', () => {
-  console.warn('音频加载失败');
-  diskSpan.textContent = '❌';
-  disk.classList.add('error');
-  disk.setAttribute('aria-label', '音频加载失败');
-  isProcessing = false;
-});
-
-// 音频加载成功
-audio.addEventListener('canplaythrough', () => {
-  console.log('音频加载成功');
-  disk.classList.remove('loading');
-});
-
-// 键盘支持
-disk.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    toggleMusic();
-  }
-});
-
-// 点击/触摸支持
-disk.addEventListener('click', toggleMusic);
-
-// 页面可见性变化处理
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden && !audio.paused) {
-    audio.pause();
-    diskSpan.textContent = '♪';
-    disk.classList.remove('playing');
-    isPlaying = false;
-    isProcessing = false;
-  }
-});
-
-// 音乐切换函数
-function toggleMusic() {
-  if (isProcessing) return;
-  
-  isProcessing = true;
-  
-  if (audio.paused) {
-    // 显示加载状态
-    disk.classList.add('loading');
-    
-    // 尝试播放
-    const playPromise = audio.play();
-    
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          diskSpan.textContent = '💿';
-          disk.classList.remove('loading');
-          disk.classList.add('playing');
-          disk.classList.remove('error');
-          disk.setAttribute('aria-label', '暂停音乐');
-          isPlaying = true;
-          isProcessing = false;
-          
-          // 添加波纹效果
-          createRippleEffect();
-        })
-        .catch(error => {
-          console.error('播放失败:', error);
-          diskSpan.textContent = '♪';
-          disk.classList.remove('loading');
-          disk.classList.add('error');
-          disk.setAttribute('aria-label', '播放失败，点击重试');
-          isPlaying = false;
-          isProcessing = false;
-          
-          // 如果是因为用户交互限制，显示提示
-          if (error.name === 'NotAllowedError') {
-            showMusicHint();
-          }
-        });
-    }
-  } else {
-    // 暂停音乐
-    audio.pause();
-    diskSpan.textContent = '♪';
-    disk.classList.remove('playing');
-    disk.setAttribute('aria-label', '播放音乐');
-    isPlaying = false;
-    isProcessing = false;
-  }
-}
-
-// 创建波纹效果
-function createRippleEffect() {
-  const ripple = document.createElement('div');
-  ripple.style.cssText = `
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 105, 180, 0.2);
-    border-radius: 50%;
-    top: 0;
-    left: 0;
-    transform: scale(0);
-    animation: ripple 1s ease-out;
-    z-index: 0;
-  `;
-  
-  disk.appendChild(ripple);
-  
-  // 添加波纹动画
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes ripple {
-      to {
-        transform: scale(2.5);
-        opacity: 0;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-  
-  // 移除元素
-  setTimeout(() => {
-    ripple.remove();
-    style.remove();
-  }, 1000);
-}
-
-// 显示音乐提示
-function showMusicHint() {
-  const hint = document.createElement('div');
-  hint.textContent = '请点击页面任意位置后重试播放';
-  hint.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 105, 180, 0.9);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    z-index: 1000;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(255, 105, 180, 0.3);
-    animation: fadeInUp 0.3s ease-out;
-  `;
-  
-  document.body.appendChild(hint);
-  
-  setTimeout(() => {
-    hint.style.animation = 'fadeOut 0.3s ease-out';
-    setTimeout(() => hint.remove(), 300);
-  }, 3000);
-}
-
-// 预加载音频
-window.addEventListener('load', () => {
-  audio.load().catch(e => console.warn('音频预加载失败:', e));
-  
-  // 添加点击事件以解除浏览器音频限制
-  document.addEventListener('click', () => {
-    if (audio.paused && !isPlaying) {
-      // 在用户交互后尝试静音播放以解除限制
-      audio.volume = 0;
-      audio.play().then(() => {
-        audio.pause();
-        audio.volume = 1;
-      }).catch(() => {
-        // 忽略错误
-      });
-    }
-  }, { once: true });
-});
-
-// ========== 初始化页面功能 ==========
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('资源风の魔法目录已加载');
-  
-  // 初始化统计追踪器
-  window.statsTracker = new StatisticsTracker();
-  
-  // 添加卡片点击统计
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', () => {
-      const cardTitle = card.querySelector('b').textContent;
-      console.log(`点击了: ${cardTitle}`);
+      // 获取本地存储的统计
+      const stats = JSON.parse(localStorage.getItem('itomori_stats')) || {
+        total: 0,
+        today: 0,
+        lastVisit: null
+      };
       
-      // 可以在这里添加更详细的点击统计
-      if (window.statsTracker) {
-        const stats = window.statsTracker.getStats();
-        console.log('当前统计:', stats);
-      }
-    });
-  });
-  
-  // 优化粒子动画性能
-  adjustParticlesForPerformance();
-  
-  // 添加卡片悬停效果增强
-  document.querySelectorAll('.card').forEach((card, index) => {
-    card.style.setProperty('--card-index', index);
-    
-    // 鼠标悬停效果
-    card.addEventListener('mouseenter', () => {
-      const icon = card.querySelector('.icon');
-      if (icon) {
-        icon.style.transform = 'scale(1.15) rotate(5deg)';
-      }
-    });
-    
-    card.addEventListener('mouseleave', () => {
-      const icon = card.querySelector('.icon');
-      if (icon) {
-        icon.style.transform = 'scale(1) rotate(0deg)';
-      }
-    });
-    
-    // 点击效果
-    card.addEventListener('mousedown', () => {
-      card.style.transform = 'translateY(-3px) scale(0.98)';
-    });
-    
-    card.addEventListener('mouseup', () => {
-      card.style.transform = 'translateY(-6px) scale(1.02)';
-    });
-    
-    card.addEventListener('touchstart', () => {
-      card.style.transform = 'scale(0.98)';
-      card.style.transition = 'transform 0.1s';
-    });
-    
-    card.addEventListener('touchend', () => {
-      card.style.transform = 'scale(1)';
-      setTimeout(() => {
-        card.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-      }, 100);
-    });
-  });
-  
-  // 页面滚动效果
-  let lastScrollTop = 0;
-  const list = document.querySelector('.list');
-  
-  if (list) {
-    list.addEventListener('scroll', () => {
-      const scrollTop = list.scrollTop;
-      const direction = scrollTop > lastScrollTop ? 'down' : 'up';
-      lastScrollTop = scrollTop;
+      const today = new Date().toDateString();
       
-      // 添加轻微的视差效果
-      const header = document.querySelector('.header');
-      if (direction === 'down' && scrollTop > 10) {
-        header.style.transform = `translateY(${Math.min(scrollTop * 0.1, 20)}px)`;
-        header.style.opacity = Math.max(1 - scrollTop * 0.002, 0.8);
+      // 如果是新的一天，重置今日统计
+      if (stats.lastVisit !== today) {
+        stats.today = 0;
+        stats.lastVisit = today;
+      }
+      
+      // 增加访问次数
+      if (!sessionStorage.getItem('itomori_session')) {
+        sessionStorage.setItem('itomori_session', 'true');
+        stats.total += 1;
+        stats.today += 1;
+        
+        // 保存到本地存储
+        localStorage.setItem('itomori_stats', JSON.stringify(stats));
+        
+        // 动画效果
+        animateCount('todayVisits', stats.today);
+        animateCount('totalVisits', stats.total);
       } else {
-        header.style.transform = 'translateY(0)';
-        header.style.opacity = '1';
+        // 如果已有会话，只显示不增加
+        document.getElementById('todayVisits').textContent = stats.today;
+        document.getElementById('totalVisits').textContent = stats.total;
+      }
+      
+      // 设置在线人数（模拟）
+      const onlineUsers = Math.max(1, Math.floor(Math.random() * 5) + 1);
+      document.getElementById('onlineUsers').textContent = onlineUsers;
+      
+    } catch (error) {
+      console.error('统计加载失败:', error);
+      // 设置默认值
+      document.getElementById('todayVisits').textContent = '1';
+      document.getElementById('totalVisits').textContent = '1';
+      document.getElementById('onlineUsers').textContent = '1';
+    }
+  }
+  
+  function animateCount(elementId, target) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    let current = parseInt(element.textContent) || 0;
+    if (current === target) return;
+    
+    element.textContent = target;
+    element.style.transform = 'scale(1.2)';
+    element.style.color = '#ff1493';
+    
+    setTimeout(() => {
+      element.style.transform = 'scale(1)';
+      element.style.color = '';
+    }, 300);
+  }
+  
+  // ========== 简化版音乐播放器 ==========
+  function initMusicPlayer() {
+    const audio = document.getElementById('bgm');
+    const disk = document.getElementById('disk');
+    
+    if (!audio || !disk) return;
+    
+    disk.addEventListener('click', function() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          disk.querySelector('span').textContent = '💿';
+          disk.classList.add('playing');
+        }).catch(error => {
+          console.log('播放失败:', error);
+          // 显示提示
+          showToast('请先点击页面任意位置，然后重试播放');
+        });
+      } else {
+        audio.pause();
+        disk.querySelector('span').textContent = '♪';
+        disk.classList.remove('playing');
+      }
+    });
+    
+    // 页面点击解除音频限制
+    document.addEventListener('click', function initAudio() {
+      if (audio.paused) {
+        audio.volume = 0;
+        audio.play().then(() => {
+          audio.pause();
+          audio.volume = 1;
+        }).catch(() => {});
+      }
+      document.removeEventListener('click', initAudio);
+    });
+  }
+  
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 105, 180, 0.9);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 14px;
+      z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: fadeInUp 0.3s ease-out;
+      white-space: nowrap;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.animation = 'fadeOut 0.3s ease-out';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+  
+  // ========== 页面初始化 ==========
+  function initPage() {
+    console.log('页面初始化开始');
+    
+    // 1. 先修复QQ浏览器滚动问题
+    fixQQBrowserScroll();
+    
+    // 2. 初始化统计功能
+    setTimeout(() => {
+      initStatistics();
+    }, 100);
+    
+    // 3. 初始化音乐播放器
+    setTimeout(() => {
+      initMusicPlayer();
+    }, 200);
+    
+    // 4. 检查并修复布局
+    setTimeout(() => {
+      checkLayout();
+    }, 300);
+    
+    // 5. 添加加载完成提示
+    setTimeout(() => {
+      console.log('页面初始化完成');
+      document.body.classList.add('loaded');
+    }, 500);
+  }
+  
+  function checkLayout() {
+    // 检查列表是否可滚动
+    const list = document.querySelector('.list');
+    if (list && list.scrollHeight <= list.clientHeight) {
+      console.log('列表内容高度正常');
+    }
+    
+    // 检查统计卡片是否可见
+    const statsCard = document.getElementById('statsCard');
+    if (statsCard) {
+      const rect = statsCard.getBoundingClientRect();
+      console.log('统计卡片位置:', rect.top, rect.height);
+      if (rect.height === 0) {
+        console.log('统计卡片高度为0，修复中...');
+        statsCard.style.height = 'auto';
+        statsCard.style.minHeight = '80px';
+      }
+    }
+    
+    // 确保所有卡片可见
+    document.querySelectorAll('.card').forEach(card => {
+      if (card.offsetParent === null) {
+        console.log('发现隐藏卡片，修复中...');
+        card.style.display = 'flex';
+        card.style.visibility = 'visible';
       }
     });
   }
   
-  // 添加统计卡片悬停效果
-  const statsItems = document.querySelectorAll('.stat-item');
-  statsItems.forEach((item, index) => {
-    item.addEventListener('mouseenter', () => {
-      const counter = item.querySelector('.stat-counter');
-      if (counter) {
-        counter.style.transform = 'scale(1.1)';
-        counter.style.color = '#ff1493';
-      }
-    });
+  // ========== 启动一切 ==========
+  // DOM加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPage);
+  } else {
+    initPage();
+  }
+  
+  // 页面完全加载后再次检查
+  window.addEventListener('load', function() {
+    console.log('页面完全加载，最终检查');
     
-    item.addEventListener('mouseleave', () => {
-      const counter = item.querySelector('.stat-counter');
-      if (counter) {
-        counter.style.transform = 'scale(1)';
-        counter.style.color = '';
+    // 最终确保统计可见
+    const statsCard = document.getElementById('statsCard');
+    if (statsCard) {
+      statsCard.style.display = 'block';
+      statsCard.style.visibility = 'visible';
+      statsCard.style.opacity = '1';
+    }
+    
+    // 触发一次滚动以激活滚动区域
+    setTimeout(() => {
+      const list = document.querySelector('.list');
+      if (list && list.scrollHeight > list.clientHeight) {
+        list.scrollTop = 1;
+        list.scrollTop = 0;
       }
-    });
+    }, 100);
   });
   
-  // 添加加载完成提示
-  setTimeout(() => {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      card.style.animationPlayState = 'running';
-    });
-  }, 100);
-});
-
-// 优化粒子动画性能
-function adjustParticlesForPerformance() {
-  const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const particles = document.querySelectorAll('.light-particles span, .sakura-petals span, .stars span');
+  // 添加调试信息
+  window.debugInfo = function() {
+    console.log('当前浏览器:', navigator.userAgent);
+    console.log('滚动区域高度:', document.querySelector('.list')?.scrollHeight);
+    console.log('可视区域高度:', document.querySelector('.list')?.clientHeight);
+    console.log('统计卡片:', document.getElementById('statsCard')?.getBoundingClientRect());
+  };
   
-  if (isMobile) {
-    // 在移动设备上减少粒子数量
-    particles.forEach((particle, index) => {
-      if (index > 2) {
-        particle.style.display = 'none';
-      }
-    });
-    
-    // 减少动画复杂度
-    document.querySelectorAll('.sakura-petals span').forEach(span => {
-      span.style.animationDuration = `${parseFloat(span.style.animationDuration || '20s') * 1.5}s`;
-    });
-  } else {
-    // 在桌面设备上恢复所有粒子
-    particles.forEach(particle => {
-      particle.style.display = '';
-    });
-  }
-}
-
-window.addEventListener('resize', adjustParticlesForPerformance);
-
-// 添加调试模式（在控制台输入 window.statsTracker.getStats() 查看统计数据）
-console.log('统计系统已加载，使用 window.statsTracker.getStats() 查看数据');
+})();
 </script>
 
 </body>
