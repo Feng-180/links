@@ -9,9 +9,9 @@
 
 <style>
 :root {
-  --glass: rgba(255,255,255,0.15);
-  --border: rgba(255,255,255,0.3);
-  --blur: blur(20px);
+  --glass: rgba(255,255,255,0.18);
+  --border: rgba(255,255,255,0.35);
+  --blur: blur(24px);
 }
 
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -21,25 +21,27 @@ html, body {
   width:100%;
   height:100%;
   font-family:'ZCOOL KuaiLe', cursive;
-  background:#0d1117;
+  background:#0a0e14;
   overflow:hidden;
+  color:#fff;
 }
 
 /* 背景 */
 .master-bg {
   position:fixed;
   inset:0;
-  background:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=2000') center/cover no-repeat;
+  background:url('./jm.jpg') center/cover no-repeat;
   transform:scale(1.05);
   z-index:-10;
-  animation:breathe 30s ease-in-out infinite;
+  animation:breathe 35s ease-in-out infinite;
 }
 
 .film-overlay {
   position:fixed;
   inset:0;
-  background:linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
-  backdrop-filter:brightness(0.9) contrast(1.15);
+  background:linear-gradient(to bottom, rgba(13,17,23,0.4), rgba(13,17,23,0.75));
+  backdrop-filter:brightness(0.9) contrast(1.2);
+  -webkit-backdrop-filter:brightness(0.9) contrast(1.2);
   z-index:-5;
 }
 
@@ -47,7 +49,7 @@ html, body {
 .app {
   position:relative;
   height:100vh;
-  padding:calc(16px + env(safe-area-inset-top)) 16px 16px;
+  padding:calc(12px + env(safe-area-inset-top)) 16px 12px;
   display:flex;
   flex-direction:column;
   gap:16px;
@@ -60,55 +62,58 @@ html, body {
   gap:12px;
   background:var(--glass);
   border:1px solid var(--border);
-  border-radius:20px;
+  border-radius:22px;
   padding:12px 16px;
   backdrop-filter:var(--blur);
   -webkit-backdrop-filter:var(--blur);
-  margin-bottom:0;
-  box-shadow:0 8px 32px rgba(0,0,0,0.25);
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
 }
 
 .header img {
-  width:60px;
-  height:60px;
+  width:64px;
+  height:64px;
   border-radius:50%;
-  border:2px solid #fff;
+  border:2px solid rgba(255,255,255,0.8);
   object-fit: cover;
   object-position: center;
+  flex-shrink:0;
+}
+
+.header div {
+  flex:1;
 }
 
 .header h1 {
   margin:0;
-  font-size:1.4rem;
-  color:#fff;
-  letter-spacing:1.5px;
+  font-size:1.35rem;
+  letter-spacing:1px;
 }
 
 .header p {
   margin:2px 0 0;
-  font-size:0.8rem;
+  font-size:0.78rem;
   color:rgba(255,255,255,0.85);
 }
 
 .music {
-  margin-left:auto;
-  width:40px;
-  height:40px;
+  width:48px;
+  height:48px;
   border-radius:50%;
-  border:1.5px solid #fff;
+  border:2px solid #fff;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:1.3rem;
-  transition: all 0.3s;
+  font-size:1.4rem;
+  transition:all 0.3s;
+  cursor:pointer;
 }
 
 .playing {
   animation:spin 5s linear infinite;
-  box-shadow:0 0 16px rgba(255,255,255,0.6);
+  box-shadow:0 0 20px rgba(255,255,255,0.6);
 }
 
-/* 目录卡片 */
+/* 卡片列表 */
 .list {
   flex:1;
   display:flex;
@@ -121,46 +126,51 @@ html, body {
 .card {
   background:var(--glass);
   border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px 20px;
+  border-radius:20px;
+  padding:16px 20px;
   display:flex;
   align-items:center;
   gap:16px;
   backdrop-filter:var(--blur);
   -webkit-backdrop-filter:var(--blur);
-  transition: all 0.3s ease;
-  box-shadow:0 4px 20px rgba(0,0,0,0.2);
-  min-height:80px;
+  transition:all 0.3s ease;
+  box-shadow:0 6px 24px rgba(0,0,0,0.25);
+  min-height:88px;
 }
 
 .card:hover {
-  transform:translateY(-4px) scale(1.02);
-  background:rgba(255,255,255,0.22);
-  box-shadow:0 12px 32px rgba(0,0,0,0.3);
+  transform:translateY(-3px) scale(1.02);
+  background:rgba(255,255,255,0.25);
+  box-shadow:0 12px 40px rgba(0,0,0,0.35);
+}
+
+.card:active {
+  transform:translateY(0) scale(0.98);
 }
 
 .icon {
-  font-size:2rem;
-  min-width:40px;
+  font-size:2.2rem;
+  min-width:48px;
+  text-align:center;
 }
 
 .card b {
-  color:#fff;
-  font-size:1.1rem;
+  font-size:1.15rem;
+  display:block;
 }
 
 .card span {
-  display:block;
-  font-size:0.75rem;
+  font-size:0.78rem;
   color:rgba(255,255,255,0.75);
   margin-top:2px;
+  display:block;
 }
 
 /* 底部 */
 footer {
   text-align:center;
   font-size:0.65rem;
-  color:rgba(255,255,255,0.45);
+  color:rgba(255,255,255,0.5);
   padding:8px 0;
   letter-spacing:1px;
 }
@@ -182,7 +192,7 @@ footer {
 <div class="app">
 
   <header class="header" onclick="toggleMusic()">
-    <img src="https://images.unsplash.com/photo-1507003211169-0a1cb467e9d6?auto=format&fit=crop&w=200&q=80" alt="avatar">
+    <img src="./ndmz.jpg" alt="avatar">
     <div>
       <h1>资源风の魔法目录</h1>
       <p>系守町 · 把重要的东西留住</p>
@@ -191,16 +201,16 @@ footer {
   </header>
 
   <section class="list">
-    <div class="card">
+    <a href="filim.html" class="card" style="text-decoration:none; color:inherit;">
       <div class="icon">☄️</div>
       <div>
         <b>观影系</b>
         <span>电影 · 剧集 · 片单与记录</span>
       </div>
-    </div>
+    </a>
 
     <div class="card">
-      <div class="icon">🌠</div>
+      <div class="icon">🌟</div>
       <div>
         <b>工具系</b>
         <span>效率工具 · AI · 常用服务</span>
@@ -228,22 +238,22 @@ footer {
 </div>
 
 <audio id="bgm" loop preload="auto">
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <source src="./ndmz.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 const audio = document.getElementById('bgm');
 const disk = document.getElementById('disk');
 
-function toggleMusic(){
-  if(audio.paused){
-    audio.play().then(()=>{
-      disk.textContent='💿';
+function toggleMusic() {
+  if (audio.paused) {
+    audio.play().then(() => {
+      disk.textContent = '💿';
       disk.classList.add('playing');
-    });
-  }else{
+    }).catch(e => console.log('播放失败:', e));
+  } else {
     audio.pause();
-    disk.textContent='🎵';
+    disk.textContent = '🎵';
     disk.classList.remove('playing');
   }
 }
