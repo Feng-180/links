@@ -29,7 +29,7 @@ html, body {
   color:#fff;
 }
 
-/* 背景 */
+/* 背景 - 永不黑 */
 .master-bg {
   position:fixed;
   inset:0;
@@ -88,16 +88,18 @@ html, body {
   border:2px solid var(--border);
   object-fit: cover;
   box-shadow:var(--glow);
+  position:relative;
+  z-index:2;
 }
 
-/* 荧光粉色猫耳 */
+/* 荧光粉色猫耳 - 调整形状更可爱 */
 .cat-ears {
   position:absolute;
-  top:-12px;
+  top:-14px;
   left:50%;
   transform:translateX(-50%);
-  width:80px;
-  height:40px;
+  width:70px;
+  height:35px;
   pointer-events:none;
 }
 
@@ -105,15 +107,15 @@ html, body {
 .cat-ears::after {
   content:'';
   position:absolute;
-  width:24px;
-  height:32px;
+  width:22px;
+  height:28px;
   background:linear-gradient(to bottom, #ff69b4, #ff1493);
-  border-radius:50% 50% 0 0 / 60% 60% 0 0;
+  border-radius:60% 60% 0 0 / 80% 80% 0 0;
   box-shadow:var(--cat-ear-glow);
 }
 
-.cat-ears::before { left:8px; transform:rotate(-25deg); }
-.cat-ears::after { right:8px; transform:rotate(25deg); }
+.cat-ears::before { left:6px; transform:rotate(-30deg); }
+.cat-ears::after { right:6px; transform:rotate(30deg); }
 
 .header div {
   flex:1;
@@ -136,7 +138,7 @@ html, body {
   text-shadow:var(--text-glow);
 }
 
-/* 播放器 - 居中旋转光盘 */
+/* 播放器 - 纯圆形 + 居中旋转 */
 .music {
   width:48px;
   height:48px;
