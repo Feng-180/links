@@ -1,207 +1,161 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>资源风の魔法学院 - 你的名字</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>资源风の魔法目录</title>
 
 <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
 
 <style>
-:root {
-    --glass: rgba(255,255,255,0.12);
-    --border: rgba(255,255,255,0.25);
+:root{
+  --glass: rgba(255,255,255,0.12);
+  --border: rgba(255,255,255,0.25);
 }
 
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100vh;
-    font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
-    background: #0d1117;
-}
-
-body {
-    overflow-x: hidden;
-    overflow-y: auto;
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  font-family:'ZCOOL KuaiLe', cursive;
+  background:#0d1117;
+  overflow:hidden;
 }
 
 /* 背景 */
-.master-bg {
-    position: fixed;
-    inset: 0;
-    background: url('jm.jpg') no-repeat center center;
-    background-size: cover;
-    z-index: -10;
-    transform: scale(1.02);
-    animation: slowBreathe 22s ease-in-out infinite;
+.master-bg{
+  position:fixed;
+  inset:0;
+  background:url('jm.jpg') center/cover no-repeat;
+  transform:scale(1.05);
+  z-index:-10;
+  animation:breathe 25s ease-in-out infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .master-bg {
-        animation: none;
-    }
-}
-
-.film-overlay {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.35));
-    backdrop-filter: saturate(1.2) contrast(1.1);
-    -webkit-backdrop-filter: saturate(1.2) contrast(1.1);
-    z-index: -5;
-}
-
-/* 流星 */
-.star {
-    position: fixed;
-    top: -5%;
-    left: 80%;
-    width: 2px;
-    height: 160px;
-    background: linear-gradient(to bottom, rgba(255,255,255,.8), transparent);
-    transform: rotate(45deg);
-    opacity: 0;
-    z-index: -2;
-    animation: shoot 9s ease-in-out infinite;
+.film-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.25);
+  backdrop-filter:brightness(.95) contrast(1.1);
+  z-index:-5;
 }
 
 /* 主体 */
-.app-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: calc(24px + env(safe-area-inset-top)) 20px 20px;
+.app{
+  position:relative;
+  height:100vh;
+  padding:calc(20px + env(safe-area-inset-top)) 20px 20px;
+  display:flex;
+  flex-direction:column;
 }
 
-/* 顶部 */
-.header-card {
-    background: var(--glass);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 18px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,.25);
-    margin-bottom: 24px;
-    transition: transform .2s;
+/* 头部 */
+.header{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:16px;
+  backdrop-filter:blur(22px);
+  margin-bottom:22px;
 }
 
-.header-card:active {
-    transform: scale(.98);
+.header img{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:2px solid #fff;
 }
 
-.avatar {
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    object-fit: cover;
+.header h1{
+  margin:0;
+  font-size:1.25rem;
+  color:#fff;
+  letter-spacing:2px;
 }
 
-.header-info {
-    margin-left: 15px;
-    flex: 1;
+.header p{
+  margin:4px 0 0;
+  font-size:.75rem;
+  color:rgba(255,255,255,.75);
 }
 
-.header-info h1 {
-    margin: 0;
-    font-size: 1.25rem;
-    color: #fff;
-    letter-spacing: 2px;
+.music{
+  margin-left:auto;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1.5px solid #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.2rem;
 }
 
-.header-info p {
-    margin: 4px 0 0;
-    font-size: .75rem;
-    color: rgba(255,255,255,.8);
+.playing{
+  animation:spin 6s linear infinite;
+  box-shadow:0 0 12px #fff;
 }
 
-.music-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.15);
-    border: 1.5px solid #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
+/* 目录卡片 */
+.list{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
 }
 
-.is-playing {
-    animation: diskRotate 5s linear infinite;
-    box-shadow: 0 0 15px #fff;
+.card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:22px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  backdrop-filter:blur(16px);
+  transition:.25s;
 }
 
-/* 卡片 */
-.list-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+.card:active{
+  transform:scale(.96);
+  background:rgba(255,255,255,.22);
 }
 
-.magic-card {
-    background: var(--glass);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 22px;
-    display: flex;
-    align-items: center;
-    transition: .3s;
+.icon{
+  font-size:1.6rem;
 }
 
-.magic-card:active {
-    transform: scale(.96);
-    background: rgba(255,255,255,.25);
+.card b{
+  color:#fff;
+  font-size:1.05rem;
 }
 
-.card-icon {
-    font-size: 1.6rem;
-    margin-right: 18px;
+.card span{
+  display:block;
+  font-size:.7rem;
+  color:rgba(255,255,255,.7);
+  margin-top:4px;
 }
 
-.card-text {
-    font-size: 1.05rem;
-    color: #fff;
-    font-weight: bold;
-}
-
-footer {
-    text-align: center;
-    font-size: .65rem;
-    color: rgba(255,255,255,.5);
-    padding: 16px;
-    letter-spacing: 1.5px;
+/* 底部 */
+footer{
+  text-align:center;
+  font-size:.6rem;
+  color:rgba(255,255,255,.5);
+  padding:12px;
+  letter-spacing:1px;
 }
 
 /* 动画 */
-@keyframes slowBreathe {
-    0%,100% { transform: scale(1.02); }
-    50% { transform: scale(1.08); }
-}
-
-@keyframes diskRotate {
-    from { transform: rotate(0); }
-    to { transform: rotate(360deg); }
-}
-
-@keyframes shoot {
-    0% { opacity: 0; }
-    10% { opacity: 1; }
-    25% { transform: translate(-100vw,100vh) rotate(45deg); opacity: 0; }
-    100% { opacity: 0; }
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes breathe{
+  0%,100%{transform:scale(1.05)}
+  50%{transform:scale(1.1)}
 }
 </style>
 </head>
@@ -210,70 +164,75 @@ footer {
 
 <div class="master-bg"></div>
 <div class="film-overlay"></div>
-<div class="star" style="animation-delay:2s"></div>
-<div class="star" style="animation-delay:6s; left:60%; height:200px"></div>
 
-<div class="app-container">
+<div class="app">
 
-<header class="header-card" onclick="toggleMusic()">
-    <img src="ndmz.jpg" class="avatar" alt="头像">
-    <div class="header-info">
-        <h1>资源风の魔法学院</h1>
-        <p>系守町 · 重要的事，不能忘记的事</p>
+  <header class="header" onclick="toggleMusic()">
+    <img src="ndmz.jpg" alt="avatar">
+    <div>
+      <h1>资源风の魔法目录</h1>
+      <p>系守町 · 把重要的东西留住</p>
     </div>
-    <div id="disk" class="music-btn">🎵</div>
-</header>
+    <div id="disk" class="music">🎵</div>
+  </header>
 
-<div class="list-area">
-    <div class="magic-card" onclick="location.href='film.html'">
-        <div class="card-icon">☄️</div>
-        <div class="card-text">系守分院（影视资源）</div>
+  <section class="list">
+    <div class="card">
+      <div class="icon">☄️</div>
+      <div>
+        <b>观影系</b>
+        <span>电影 · 剧集 · 片单与记录</span>
+      </div>
     </div>
 
-    <div class="magic-card" onclick="location.href='tools.html'">
-        <div class="card-icon">🌠</div>
-        <div class="card-text">星轨实验室（实用工具）</div>
+    <div class="card">
+      <div class="icon">🌠</div>
+      <div>
+        <b>工具系</b>
+        <span>效率工具 · AI · 常用服务</span>
+      </div>
     </div>
-</div>
 
-<footer>DESIGNED FOR FENG-180 · ITOMORI</footer>
+    <div class="card">
+      <div class="icon">📚</div>
+      <div>
+        <b>资料系</b>
+        <span>教程 · 文档 · 可复用知识</span>
+      </div>
+    </div>
 
+    <div class="card">
+      <div class="icon">🧭</div>
+      <div>
+        <b>私藏系</b>
+        <span>只留下我长期在用的</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>DESIGNED FOR LONG TERM · ITOMORI</footer>
 </div>
 
 <audio id="bgm" loop preload="auto">
-    <source src="ndmz.mp3" type="audio/mpeg">
+  <source src="ndmz.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 const audio = document.getElementById('bgm');
 const disk = document.getElementById('disk');
 
-/* 记忆用户选择 */
-if (localStorage.getItem('mute') === '1') {
-    audio.muted = true;
+function toggleMusic(){
+  if(audio.paused){
+    audio.play().then(()=>{
+      disk.textContent='💿';
+      disk.classList.add('playing');
+    });
+  }else{
+    audio.pause();
+    disk.textContent='🎵';
+    disk.classList.remove('playing');
+  }
 }
-
-function toggleMusic() {
-    if (audio.paused) {
-        audio.muted = false;
-        audio.play().then(() => {
-            disk.textContent = '💿';
-            disk.classList.add('is-playing');
-            localStorage.removeItem('mute');
-        });
-    } else {
-        audio.pause();
-        disk.textContent = '🎵';
-        disk.classList.remove('is-playing');
-        localStorage.setItem('mute','1');
-    }
-}
-
-/* iOS 音频权限解锁 */
-document.addEventListener('touchstart', function unlock() {
-    audio.play().then(() => audio.pause());
-    document.removeEventListener('touchstart', unlock);
-});
 </script>
 
 </body>
