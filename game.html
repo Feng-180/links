@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>游戏系 - 资源风の魔法目录</title>
+    <meta name="description" content="游戏资源导航 - 游戏平台、游戏社区、游戏下载、游戏工具">
     <meta name="theme-color" content="#fff0f5">
     
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
@@ -76,7 +77,7 @@
     /* 页面头部 */
     .page-header {
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
         position: relative;
     }
 
@@ -100,10 +101,262 @@
         margin: 0 auto;
     }
 
+    /* 搜索容器 */
+    .search-container {
+        max-width: 800px;
+        margin: 30px auto 50px;
+        position: relative;
+        padding: 0 20px;
+    }
+
+    .search-input-wrapper {
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 18px 60px 18px 25px;
+        border: 2px solid var(--border);
+        border-radius: 30px;
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        font-family: inherit;
+        font-size: 1.1rem;
+        color: #ff1493;
+        box-shadow: var(--glow);
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #9370DB;
+        box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.3), var(--glow);
+        transform: translateY(-2px);
+    }
+
+    .search-input::placeholder {
+        color: rgba(255, 20, 147, 0.6);
+    }
+
+    .search-button {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--game-gradient);
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        color: white;
+        font-size: 1.3rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(147, 112, 219, 0.4);
+    }
+
+    .search-button:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 20px rgba(147, 112, 219, 0.6);
+    }
+
+    .keyboard-shortcut {
+        position: absolute;
+        right: 75px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8rem;
+        color: rgba(255, 20, 147, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(255, 240, 245, 0.3);
+        padding: 4px 8px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+    }
+
+    .kbd-key {
+        background: rgba(255, 20, 147, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 105, 180, 0.3);
+        font-family: monospace;
+        font-size: 0.75rem;
+    }
+
+    .result-count {
+        margin-top: 15px;
+        text-align: center;
+        color: #9370DB;
+        font-size: 0.95rem;
+        padding: 10px 20px;
+        background: var(--glass);
+        border-radius: 15px;
+        display: inline-block;
+        border: 1px solid var(--border);
+        backdrop-filter: blur(5px);
+        box-shadow: var(--glow);
+        transition: all 0.3s;
+    }
+
+    .no-results {
+        margin-top: 30px;
+        text-align: center;
+        padding: 25px;
+        background: var(--glass);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        color: #ff1493;
+        font-size: 1.1rem;
+        backdrop-filter: blur(10px);
+        box-shadow: var(--glow);
+        display: none;
+    }
+
+    .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 20px;
+        right: 20px;
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        border: 1px solid var(--border);
+        box-shadow: var(--glow);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+        margin-top: 10px;
+    }
+
+    .search-suggestions.show {
+        display: block;
+    }
+
+    .suggestion-item {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255, 105, 180, 0.1);
+        transition: all 0.2s;
+        color: #ff1493;
+        font-size: 0.95rem;
+    }
+
+    .suggestion-item:last-child {
+        border-bottom: none;
+    }
+
+    .suggestion-item:hover {
+        background: rgba(147, 112, 219, 0.1);
+        padding-left: 25px;
+        color: #9370DB;
+    }
+
+    .search-history {
+        margin-top: 25px;
+        background: var(--glass);
+        border-radius: 15px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--glow);
+        display: none;
+    }
+
+    .history-title {
+        font-size: 0.9rem;
+        color: #9370DB;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    .clear-history {
+        background: none;
+        border: none;
+        color: #ff69b4;
+        cursor: pointer;
+        font-size: 0.8rem;
+        text-decoration: underline;
+        padding: 5px 10px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .clear-history:hover {
+        background: rgba(255, 105, 180, 0.1);
+    }
+
+    .history-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .history-item {
+        padding: 8px 16px;
+        background: rgba(147, 112, 219, 0.15);
+        border-radius: 12px;
+        font-size: 0.85rem;
+        color: #9370DB;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 1px solid rgba(147, 112, 219, 0.3);
+    }
+
+    .history-item:hover {
+        background: rgba(147, 112, 219, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(147, 112, 219, 0.2);
+    }
+
+    /* 平台选择器 */
+    .platform-selector {
+        display: flex;
+        gap: 12px;
+        margin: 25px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .platform-btn {
+        padding: 10px 20px;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        color: #ff1493;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .platform-btn:hover {
+        background: rgba(147, 112, 219, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .platform-btn.active {
+        background: var(--game-gradient);
+        color: white;
+        border-color: #9370DB;
+    }
+
     /* 内容网格 */
     .content-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 25px;
         margin-bottom: 50px;
     }
@@ -117,12 +370,32 @@
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         box-shadow: var(--glow);
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 1;
+        transform: translateY(0);
+        animation: cardAppear 0.6s ease forwards;
+    }
+
+    @keyframes cardAppear {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .resource-card:hover {
-        transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 12px 30px rgba(255,105,180,0.3);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(147, 112, 219, 0.2), var(--glow);
+    }
+
+    .resource-card.hidden {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
     }
 
     .resource-card h2 {
@@ -134,22 +407,46 @@
         color: #9370DB;
     }
 
+    .resource-card h2 .icon {
+        font-size: 1.8rem;
+    }
+
     /* 资源列表 */
     .resource-list {
         list-style: none;
     }
 
     .resource-list li {
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         position: relative;
-        padding-left: 24px;
+        padding-left: 32px;
+        opacity: 0;
+        transform: translateX(-10px);
+        animation: listItemAppear 0.5s ease forwards;
+        animation-delay: calc(var(--index) * 0.1s);
+    }
+
+    @keyframes listItemAppear {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
     }
 
     .resource-list li:before {
         content: '🎮';
         position: absolute;
         left: 0;
-        color: #8A2BE2;
+        top: 2px;
+        color: #9370DB;
+        font-size: 1.2rem;
+        animation: controllerBounce 2s infinite;
+    }
+
+    @keyframes controllerBounce {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-3px) rotate(-5deg); }
+        75% { transform: translateY(-3px) rotate(5deg); }
     }
 
     .resource-list a {
@@ -157,159 +454,159 @@
         text-decoration: none;
         font-size: 1.1rem;
         display: block;
-        padding: 8px 0;
+        padding: 10px 15px 10px 5px;
         transition: all 0.3s;
-        border-radius: 8px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .resource-list a:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(147, 112, 219, 0.1), transparent);
+        transition: left 0.5s;
     }
 
     .resource-list a:hover {
         color: #9370DB;
-        padding-left: 10px;
-        background: rgba(255, 182, 193, 0.1);
+        padding-left: 15px;
+        background: rgba(147, 112, 219, 0.05);
+        border-color: rgba(147, 112, 219, 0.3);
+        transform: translateX(5px);
     }
 
-    /* 热门游戏 */
-    .featured-games {
-        margin-top: 60px;
+    .resource-list a:hover:before {
+        left: 100%;
+    }
+
+    .resource-list .description {
+        font-size: 0.85rem;
+        color: rgba(255, 20, 147, 0.7);
+        margin-top: 5px;
+        margin-left: 5px;
+        line-height: 1.4;
+        display: block;
+    }
+
+    /* 特色游戏 */
+    .featured-section {
+        margin-top: 70px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #9370DB;
+        font-size: 2rem;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0 20px;
+    }
+
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 20%;
+        right: 20%;
+        height: 3px;
+        background: var(--game-gradient);
+        border-radius: 2px;
     }
 
     .game-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
         margin-top: 20px;
     }
 
     .game-card {
         background: var(--glass);
-        border-radius: 15px;
+        border-radius: 20px;
         overflow: hidden;
         border: 1px solid var(--border);
-        transition: all 0.3s;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         box-shadow: var(--glow);
+        opacity: 1;
+        transform: translateY(0);
+        animation: cardAppear 0.6s ease forwards;
+        animation-delay: calc(var(--game-index) * 0.1s);
+    }
+
+    .game-card.hidden {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
     }
 
     .game-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 25px 50px rgba(147, 112, 219, 0.25), var(--glow);
     }
 
     .game-cover {
         width: 100%;
         height: 220px;
         object-fit: cover;
-        background: linear-gradient(45deg, #9370DB, #8A2BE2);
+        background: linear-gradient(135deg, #9370DB, #8A2BE2);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 3rem;
+        font-size: 4rem;
         position: relative;
+        overflow: hidden;
+    }
+
+    .game-cover:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        animation: shine 3s infinite;
     }
 
     .game-info {
-        padding: 15px;
+        padding: 20px;
     }
 
     .game-info h4 {
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         color: #9370DB;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
     .game-info p {
         font-size: 0.9rem;
-        opacity: 0.7;
-        margin-bottom: 8px;
+        opacity: 0.8;
+        margin-bottom: 12px;
+        line-height: 1.5;
     }
 
     .game-tags {
         display: flex;
-        gap: 5px;
+        gap: 8px;
         flex-wrap: wrap;
-        margin-top: 10px;
     }
 
     .game-tag {
-        background: rgba(147, 112, 219, 0.2);
-        padding: 3px 8px;
-        border-radius: 10px;
-        font-size: 0.8rem;
+        background: rgba(147, 112, 219, 0.15);
         color: #9370DB;
-    }
-
-    /* 平台标签 */
-    .platform-tags {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-top: 30px;
-        justify-content: center;
-    }
-
-    .platform-tag {
-        padding: 8px 16px;
-        background: var(--glass);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        text-decoration: none;
-        color: #ff1493;
-        transition: all 0.3s;
-        font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .platform-tag:hover {
-        background: var(--game-gradient);
-        color: white;
-        transform: translateY(-3px);
-    }
-
-    /* 响应式设计 */
-    @media (max-width: 768px) {
-        .page-header h1 {
-            font-size: 2.2rem;
-        }
-        
-        .content-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .game-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        
-        .back-btn {
-            margin: 10px;
-            padding: 10px 18px;
-        }
-        
-        .platform-tags {
-            gap: 8px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .game-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .page-header h1 {
-            font-size: 1.8rem;
-        }
-    }
-
-    /* 游戏手柄动画 */
-    @keyframes controllerVibrate {
-        0% { transform: rotate(0deg); }
-        25% { transform: rotate(-5deg); }
-        50% { transform: rotate(0deg); }
-        75% { transform: rotate(5deg); }
-        100% { transform: rotate(0deg); }
-    }
-
-    .page-header h1 span:first-child {
-        animation: controllerVibrate 2s ease-in-out infinite;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        border: 1px solid rgba(147, 112, 219, 0.3);
     }
 
     /* 游戏评分 */
@@ -317,25 +614,171 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        margin-top: 5px;
+        margin-bottom: 10px;
     }
 
     .star {
         color: #FFD700;
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 
     /* 特价标签 */
     .sale-badge {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 15px;
+        right: 15px;
         background: linear-gradient(135deg, #FF4500, #FF6347);
         color: white;
-        padding: 3px 8px;
-        border-radius: 10px;
-        font-size: 0.8rem;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
         font-weight: bold;
+        z-index: 2;
+        box-shadow: 0 3px 10px rgba(255, 69, 0, 0.3);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 1024px) {
+        .content-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .game-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 2.2rem;
+        }
+        
+        .search-container {
+            margin: 20px auto 40px;
+            padding: 0 15px;
+        }
+        
+        .search-input {
+            padding: 16px 55px 16px 20px;
+            font-size: 1rem;
+        }
+        
+        .search-button {
+            width: 44px;
+            height: 44px;
+            right: 12px;
+        }
+        
+        .keyboard-shortcut {
+            display: none;
+        }
+        
+        .content-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .game-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .back-btn {
+            margin: 10px;
+            padding: 10px 18px;
+        }
+        
+        .platform-selector {
+            gap: 8px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-header h1 {
+            font-size: 1.8rem;
+            flex-wrap: wrap;
+        }
+        
+        .game-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .search-input {
+            font-size: 0.95rem;
+        }
+        
+        .resource-list li {
+            padding-left: 28px;
+        }
+        
+        .platform-btn span:last-child {
+            display: none;
+        }
+    }
+
+    /* 动画 */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    .page-header h1 span:first-child {
+        animation: float 4s ease-in-out infinite;
+        display: inline-block;
+    }
+
+    .page-header h1 span:last-child {
+        animation: float 4s ease-in-out infinite reverse;
+        display: inline-block;
+    }
+
+    /* 高亮匹配 */
+    .highlight {
+        background: linear-gradient(120deg, rgba(147, 112, 219, 0.3), rgba(138, 43, 226, 0.3));
+        padding: 0 4px;
+        border-radius: 4px;
+        color: #9370DB;
+        font-weight: bold;
+    }
+
+    /* 页面加载动画 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-container {
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* 游戏平台徽章 */
+    .platform-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 10px;
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+
+    .badge-pc {
+        background: rgba(30, 144, 255, 0.2);
+        color: #1E90FF;
+    }
+
+    .badge-console {
+        background: rgba(50, 205, 50, 0.2);
+        color: #32CD32;
+    }
+
+    .badge-mobile {
+        background: rgba(255, 140, 0, 0.2);
+        color: #FF8C00;
+    }
+
+    .badge-free {
+        background: rgba(255, 105, 180, 0.2);
+        color: #ff69b4;
     }
     </style>
 </head>
@@ -355,84 +798,201 @@
             <p>虚拟世界的冒险者，在这里开启你的史诗旅程。探索、战斗、创造无限可能。</p>
         </header>
 
-        <div class="platform-tags">
-            <a href="#" class="platform-tag">🎮 PC游戏</a>
-            <a href="#" class="platform-tag">📱 手游</a>
-            <a href="#" class="platform-tag">🎮 主机游戏</a>
-            <a href="#" class="platform-tag">🕹️ 独立游戏</a>
-            <a href="#" class="platform-tag">👾 怀旧游戏</a>
-            <a href="#" class="platform-tag">🎲 桌游</a>
+        <!-- 搜索区域 -->
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" class="search-input" placeholder="搜索游戏资源、平台、类型或工具..." id="gameSearchInput">
+                <button class="search-button" id="searchButton">🔍</button>
+                <div class="keyboard-shortcut">
+                    <span class="kbd-key">Ctrl</span> + <span class="kbd-key">K</span> 快速搜索
+                </div>
+            </div>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+            <div class="result-count" id="resultCount"></div>
+            <div class="no-results" id="noResults">没有找到相关的游戏资源</div>
+            <div class="search-history" id="searchHistory">
+                <div class="history-title">
+                    <span>最近搜索</span>
+                    <button class="clear-history" id="clearHistory">清除历史</button>
+                </div>
+                <div class="history-items" id="historyItems"></div>
+            </div>
+        </div>
+
+        <!-- 平台选择器 -->
+        <div class="platform-selector">
+            <button class="platform-btn active" data-platform="all">
+                <span>🎮</span><span>全部平台</span>
+            </button>
+            <button class="platform-btn" data-platform="pc">
+                <span>💻</span><span>PC游戏</span>
+            </button>
+            <button class="platform-btn" data-platform="console">
+                <span>🎮</span><span>主机游戏</span>
+            </button>
+            <button class="platform-btn" data-platform="mobile">
+                <span>📱</span><span>手游</span>
+            </button>
+            <button class="platform-btn" data-platform="tools">
+                <span>🔧</span><span>游戏工具</span>
+            </button>
         </div>
 
         <div class="content-grid">
-            <div class="resource-card">
-                <h2>🛒 游戏商店平台</h2>
+            <div class="resource-card" data-platform="pc">
+                <h2><span class="icon">🛒</span> 游戏商店平台</h2>
                 <ul class="resource-list">
-                    <li><a href="https://store.steampowered.com" target="_blank">Steam - 全球最大PC游戏平台</a></li>
-                    <li><a href="https://www.epicgames.com/store" target="_blank">Epic Games Store - 每周免费游戏</a></li>
-                    <li><a href="https://store.playstation.com" target="_blank">PlayStation Store - PS游戏商店</a></li>
-                    <li><a href="https://www.xbox.com/en-US/microsoft-store" target="_blank">Microsoft Store - Xbox游戏</a></li>
-                    <li><a href="https://www.nintendo.com/store" target="_blank">Nintendo eShop - 任天堂游戏</a></li>
-                    <li><a href="https://store.ubi.com" target="_blank">Ubisoft Store - 育碧游戏</a></li>
+                    <li style="--index: 0">
+                        <a href="https://store.steampowered.com" target="_blank">Steam</a>
+                        <span class="description">- 全球最大的PC游戏数字发行平台</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://www.epicgames.com/store" target="_blank">Epic Games Store</a>
+                        <span class="description">- 每周提供免费游戏，开发者友好</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://store.playstation.com" target="_blank">PlayStation Store</a>
+                        <span class="description">- PlayStation官方游戏商店</span>
+                        <span class="platform-badge badge-console">主机</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.xbox.com/en-US/microsoft-store" target="_blank">Microsoft Store</a>
+                        <span class="description">- Xbox游戏和Windows应用商店</span>
+                        <span class="platform-badge badge-console">主机</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.nintendo.com/store" target="_blank">Nintendo eShop</a>
+                        <span class="description">- 任天堂Switch游戏商店</span>
+                        <span class="platform-badge badge-console">主机</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://store.ubi.com" target="_blank">Ubisoft Store</a>
+                        <span class="description">- 育碧游戏官方商店</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
                 </ul>
             </div>
 
-            <div class="resource-card">
-                <h2>🎪 游戏社区与资讯</h2>
+            <div class="resource-card" data-platform="all">
+                <h2><span class="icon">🎪</span> 游戏社区与资讯</h2>
                 <ul class="resource-list">
-                    <li><a href="https://www.reddit.com/r/gaming" target="_blank">Reddit Gaming - 游戏讨论社区</a></li>
-                    <li><a href="https://www.ign.com" target="_blank">IGN - 游戏新闻与评测</a></li>
-                    <li><a href="https://www.gamespot.com" target="_blank">GameSpot - 游戏资讯网站</a></li>
-                    <li><a href="https://www.pcgamer.com" target="_blank">PC Gamer - PC游戏专门站</a></li>
-                    <li><a href="https://www.resetera.com" target="_blank">ResetEra - 游戏论坛</a></li>
-                    <li><a href="https://www.giantbomb.com" target="_blank">Giant Bomb - 游戏百科全书</a></li>
+                    <li style="--index: 0">
+                        <a href="https://www.reddit.com/r/gaming" target="_blank">Reddit Gaming</a>
+                        <span class="description">- 全球最大的游戏讨论社区</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://www.ign.com" target="_blank">IGN</a>
+                        <span class="description">- 游戏新闻、评测和攻略网站</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://www.gamespot.com" target="_blank">GameSpot</a>
+                        <span class="description">- 综合游戏资讯和评论网站</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.pcgamer.com" target="_blank">PC Gamer</a>
+                        <span class="description">- PC游戏专门新闻和评测</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.resetera.com" target="_blank">ResetEra</a>
+                        <span class="description">- 游戏开发者和玩家论坛</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://www.giantbomb.com" target="_blank">Giant Bomb</a>
+                        <span class="description">- 游戏百科全书和视频内容</span>
+                    </li>
                 </ul>
             </div>
 
-            <div class="resource-card">
-                <h2>🎮 游戏下载与资源</h2>
+            <div class="resource-card" data-platform="pc">
+                <h2><span class="icon">🎮</span> 游戏下载与资源</h2>
                 <ul class="resource-list">
-                    <li><a href="https://www.gog.com" target="_blank">GOG - DRM免费游戏平台</a></li>
-                    <li><a href="https://itch.io" target="_blank">itch.io - 独立游戏市场</a></li>
-                    <li><a href="https://www.humblebundle.com" target="_blank">Humble Bundle - 游戏慈善包</a></li>
-                    <li><a href="https://www.fanatical.com" target="_blank">Fanatical - 游戏折扣平台</a></li>
-                    <li><a href="https://www.greenmangaming.com" target="_blank">Green Man Gaming - 游戏零售商</a></li>
-                    <li><a href="https://www.gamersgate.com" target="_blank">GamersGate - 数字游戏分发</a></li>
+                    <li style="--index: 0">
+                        <a href="https://www.gog.com" target="_blank">GOG</a>
+                        <span class="description">- DRM免费游戏平台，经典游戏</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://itch.io" target="_blank">itch.io</a>
+                        <span class="description">- 独立游戏市场和开发者平台</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://www.humblebundle.com" target="_blank">Humble Bundle</a>
+                        <span class="description">- 游戏慈善包和折扣商店</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.fanatical.com" target="_blank">Fanatical</a>
+                        <span class="description">- 游戏折扣和捆绑包平台</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.greenmangaming.com" target="_blank">Green Man Gaming</a>
+                        <span class="description">- 数字游戏零售商，经常有折扣</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://www.gamersgate.com" target="_blank">GamersGate</a>
+                        <span class="description">- 数字游戏分发平台</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
                 </ul>
             </div>
 
-            <div class="resource-card">
-                <h2>🔧 游戏工具与模组</h2>
+            <div class="resource-card" data-platform="tools">
+                <h2><span class="icon">🔧</span> 游戏工具与模组</h2>
                 <ul class="resource-list">
-                    <li><a href="https://www.nexusmods.com" target="_blank">Nexus Mods - 游戏模组社区</a></li>
-                    <li><a href="https://www.moddb.com" target="_blank">Mod DB - 游戏模组数据库</a></li>
-                    <li><a href="https://www.cheatengine.org" target="_blank">Cheat Engine - 游戏修改工具</a></li>
-                    <li><a href="https://www.speedrun.com" target="_blank">Speedrun.com - 速通社区</a></li>
-                    <li><a href="https://www.pcgamingwiki.com" target="_blank">PCGamingWiki - PC游戏百科</a></li>
-                    <li><a href="https://www.wemod.com" target="_blank">WeMod - 游戏修改器平台</a></li>
+                    <li style="--index: 0">
+                        <a href="https://www.nexusmods.com" target="_blank">Nexus Mods</a>
+                        <span class="description">- 最大的游戏模组社区网站</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://www.moddb.com" target="_blank">Mod DB</a>
+                        <span class="description">- 游戏模组和独立游戏数据库</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://www.cheatengine.org" target="_blank">Cheat Engine</a>
+                        <span class="description">- 内存扫描和游戏修改工具</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.speedrun.com" target="_blank">Speedrun.com</a>
+                        <span class="description">- 游戏速通记录和社区</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.pcgamingwiki.com" target="_blank">PCGamingWiki</a>
+                        <span class="description">- PC游戏故障排除和优化指南</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://www.wemod.com" target="_blank">WeMod</a>
+                        <span class="description">- 游戏修改器和作弊器平台</span>
+                        <span class="platform-badge badge-pc">PC</span>
+                    </li>
                 </ul>
             </div>
         </div>
 
-        <section class="featured-games">
-            <h2 style="text-align: center; margin-bottom: 30px; color: #9370DB;">✨ 热门游戏推荐</h2>
+        <section class="featured-section">
+            <h2 class="section-title">✨ 热门游戏推荐</h2>
             <div class="game-grid">
-                <div class="game-card">
+                <div class="game-card" style="--game-index: 0" data-platform="pc">
                     <div class="game-cover">
                         🏹
                         <div class="sale-badge">-50%</div>
                     </div>
                     <div class="game-info">
-                        <h4>《森林之心》</h4>
-                        <p>开放世界冒险游戏</p>
                         <div class="game-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">☆</span>
-                            <span>4.2/5</span>
+                            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                            <span style="margin-left: 5px; font-size: 0.9rem;">8.2/10</span>
                         </div>
+                        <h4>《森林之心》</h4>
+                        <p>开放世界冒险游戏，探索神秘森林，揭开古老秘密...</p>
                         <div class="game-tags">
                             <span class="game-tag">冒险</span>
                             <span class="game-tag">开放世界</span>
@@ -440,21 +1000,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="game-card">
+                <div class="game-card" style="--game-index: 1" data-platform="pc">
                     <div class="game-cover">
                         🔮
                     </div>
                     <div class="game-info">
-                        <h4>《魔法学院》</h4>
-                        <p>角色扮演魔法游戏</p>
                         <div class="game-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span>4.8/5</span>
+                            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                            <span style="margin-left: 5px; font-size: 0.9rem;">9.1/10</span>
                         </div>
+                        <h4>《魔法学院》</h4>
+                        <p>角色扮演魔法游戏，学习古老法术，对抗黑暗势力...</p>
                         <div class="game-tags">
                             <span class="game-tag">RPG</span>
                             <span class="game-tag">魔法</span>
@@ -462,22 +1018,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="game-card">
+                <div class="game-card" style="--game-index: 2" data-platform="console">
                     <div class="game-cover">
                         🚀
                         <div class="sale-badge">新品</div>
                     </div>
                     <div class="game-info">
-                        <h4>《星际征服者》</h4>
-                        <p>太空策略模拟游戏</p>
                         <div class="game-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">☆</span>
-                            <span>4.5/5</span>
+                            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                            <span style="margin-left: 5px; font-size: 0.9rem;">8.7/10</span>
                         </div>
+                        <h4>《星际征服者》</h4>
+                        <p>太空策略模拟游戏，建立星际帝国，探索未知星系...</p>
                         <div class="game-tags">
                             <span class="game-tag">策略</span>
                             <span class="game-tag">太空</span>
@@ -485,21 +1037,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="game-card">
+                <div class="game-card" style="--game-index: 3" data-platform="mobile">
                     <div class="game-cover">
                         🧩
+                        <div class="sale-badge">免费</div>
                     </div>
                     <div class="game-info">
-                        <h4>《解谜时光机》</h4>
-                        <p>益智解谜冒险游戏</p>
                         <div class="game-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">☆</span>
-                            <span>4.3/5</span>
+                            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                            <span style="margin-left: 5px; font-size: 0.9rem;">8.4/10</span>
                         </div>
+                        <h4>《解谜时光机》</h4>
+                        <p>益智解谜冒险游戏，穿越不同时代，解决历史谜题...</p>
                         <div class="game-tags">
                             <span class="game-tag">解谜</span>
                             <span class="game-tag">益智</span>
@@ -510,93 +1059,396 @@
             </div>
         </section>
 
-        <div class="resource-card" style="margin-top: 50px;">
-            <h2>🎮 游戏开发资源</h2>
-            <ul class="resource-list">
-                <li><a href="https://unity.com" target="_blank">Unity - 跨平台游戏引擎</a></li>
-                <li><a href="https://www.unrealengine.com" target="_blank">Unreal Engine - 3A游戏引擎</a></li>
-                <li><a href="https://www.godotengine.org" target="_blank">Godot - 开源游戏引擎</a></li>
-                <li><a href="https://kenney.nl" target="_blank">Kenney Assets - 免费游戏素材</a></li>
-                <li><a href="https://opengameart.org" target="_blank">OpenGameArt - 开源游戏美术</a></li>
-                <li><a href="https://freesound.org" target="_blank">Freesound - 免费音效库</a></li>
+        <div class="resource-card" style="margin-top: 50px; grid-column: 1 / -1;" data-platform="tools">
+            <h2><span class="icon">🎮</span> 游戏开发资源</h2>
+            <ul class="resource-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <li style="--index: 0">
+                    <a href="https://unity.com" target="_blank">Unity</a>
+                    <span class="description">- 跨平台游戏引擎，2D/3D开发</span>
+                    <span class="platform-badge badge-pc">PC</span>
+                </li>
+                <li style="--index: 1">
+                    <a href="https://www.unrealengine.com" target="_blank">Unreal Engine</a>
+                    <span class="description">- 3A级游戏引擎，逼真图形</span>
+                    <span class="platform-badge badge-pc">PC</span>
+                </li>
+                <li style="--index: 2">
+                    <a href="https://www.godotengine.org" target="_blank">Godot</a>
+                    <span class="description">- 开源游戏引擎，轻量级</span>
+                    <span class="platform-badge badge-pc">PC</span>
+                </li>
+                <li style="--index: 3">
+                    <a href="https://kenney.nl" target="_blank">Kenney Assets</a>
+                    <span class="description">- 免费游戏素材和资源</span>
+                    <span class="platform-badge badge-free">免费</span>
+                </li>
+                <li style="--index: 4">
+                    <a href="https://opengameart.org" target="_blank">OpenGameArt</a>
+                    <span class="description">- 开源游戏美术资源</span>
+                    <span class="platform-badge badge-free">免费</span>
+                </li>
+                <li style="--index: 5">
+                    <a href="https://freesound.org" target="_blank">Freesound</a>
+                    <span class="description">- 免费音效和音乐库</span>
+                    <span class="platform-badge badge-free">免费</span>
+                </li>
             </ul>
         </div>
 
-        <footer style="text-align: center; margin-top: 60px; padding: 20px; opacity: 0.7;">
-            <p>🎮 游戏是通往另一个世界的门 | DESIGNED WITH ⚔️</p>
-            <p style="font-size: 0.8rem; margin-top: 10px;">探索 · 战斗 · 创造</p>
+        <footer style="text-align: center; margin-top: 80px; padding: 30px; opacity: 0.8;">
+            <p style="font-size: 1.1rem; margin-bottom: 10px;">🎮 游戏是通往另一个世界的门 | DESIGNED WITH ⚔️</p>
+            <p style="font-size: 0.9rem;">探索 · 战斗 · 创造 · 分享</p>
+            <div style="margin-top: 20px; font-size: 0.8rem; color: rgba(255, 105, 180, 0.7);">
+                共收录 32 个游戏资源 | 最后更新: 2024年1月
+            </div>
         </footer>
     </div>
 
     <script>
-    // 页面滚动效果
-    const resourceCards = document.querySelectorAll('.resource-card');
-    const gameCards = document.querySelectorAll('.game-card');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+    // 搜索功能实现
+    class GameSearch {
+        constructor() {
+            this.searchInput = document.getElementById('gameSearchInput');
+            this.searchButton = document.getElementById('searchButton');
+            this.searchSuggestions = document.getElementById('searchSuggestions');
+            this.resultCount = document.getElementById('resultCount');
+            this.noResults = document.getElementById('noResults');
+            this.searchHistory = document.getElementById('searchHistory');
+            this.historyItems = document.getElementById('historyItems');
+            this.clearHistoryBtn = document.getElementById('clearHistory');
+            this.platformButtons = document.querySelectorAll('.platform-btn');
+            
+            // 所有可搜索的元素
+            this.allCards = document.querySelectorAll('.resource-card, .game-card');
+            this.allLinks = document.querySelectorAll('.resource-list a');
+            this.allTextItems = [...this.allCards, ...this.allLinks];
+            
+            // 搜索历史
+            this.history = JSON.parse(localStorage.getItem('gameSearchHistory')) || [];
+            
+            this.init();
+        }
+
+        init() {
+            this.bindEvents();
+            this.updateHistoryDisplay();
+            
+            // 为每个列表项添加索引
+            document.querySelectorAll('.resource-list li').forEach((li, index) => {
+                li.style.setProperty('--index', index);
+            });
+            
+            // 为游戏卡片添加索引
+            document.querySelectorAll('.game-card').forEach((card, index) => {
+                card.style.setProperty('--game-index', index);
+            });
+            
+            // 初始化平台筛选
+            this.setupPlatformFilter();
+        }
+
+        bindEvents() {
+            // 输入搜索
+            this.searchInput.addEventListener('input', (e) => {
+                this.handleSearch(e.target.value);
+                this.showSuggestions(e.target.value);
+            });
+            
+            // 搜索按钮点击
+            this.searchButton.addEventListener('click', () => {
+                this.handleSearch(this.searchInput.value);
+            });
+            
+            // Enter键搜索
+            this.searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    this.handleSearch(this.searchInput.value);
+                    this.hideSuggestions();
+                } else if (e.key === 'Escape') {
+                    this.hideSuggestions();
+                }
+            });
+            
+            // 全局快捷键 Ctrl+K
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    this.searchInput.focus();
+                }
+            });
+            
+            // 清除历史
+            this.clearHistoryBtn.addEventListener('click', () => {
+                this.clearHistory();
+            });
+            
+            // 点击页面其他区域隐藏建议
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    this.hideSuggestions();
+                }
+            });
+        }
+
+        setupPlatformFilter() {
+            this.platformButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 更新按钮状态
+                    this.platformButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // 筛选卡片
+                    const platform = btn.dataset.platform;
+                    this.filterByPlatform(platform);
+                });
+            });
+        }
+
+        filterByPlatform(platform) {
+            let visibleCount = 0;
+            
+            this.allCards.forEach(card => {
+                if (platform === 'all' || card.dataset.platform === platform) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            // 更新结果计数
+            if (platform !== 'all') {
+                const platformNames = {
+                    'pc': 'PC游戏',
+                    'console': '主机游戏',
+                    'mobile': '手游',
+                    'tools': '游戏工具'
+                };
+                
+                this.resultCount.style.display = 'block';
+                this.resultCount.innerHTML = `找到 <span class="highlight">${visibleCount}</span> 个${platformNames[platform]}资源`;
+            } else {
+                this.resultCount.style.display = 'none';
             }
-        });
-    }, { threshold: 0.1 });
+        }
 
-    resourceCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.6s ease';
-        observer.observe(card);
-    });
-
-    gameCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.6s ease';
-        observer.observe(card);
-    });
-
-    // 平台标签点击效果
-    const platformTags = document.querySelectorAll('.platform-tag');
-    platformTags.forEach(tag => {
-        tag.addEventListener('click', function(e) {
-            e.preventDefault();
+        handleSearch(query) {
+            const searchTerm = query.toLowerCase().trim();
             
-            // 移除其他标签的激活状态
-            platformTags.forEach(t => t.classList.remove('active'));
+            if (!searchTerm) {
+                this.resetSearch();
+                return;
+            }
             
-            // 添加当前标签的激活状态
-            this.classList.add('active');
+            // 保存到历史记录
+            this.saveToHistory(searchTerm);
             
-            // 添加点击效果
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1) translateY(-3px)';
-            }, 150);
-        });
-    });
+            let matchCount = 0;
+            let totalItems = 0;
+            
+            // 搜索资源卡片
+            this.allCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const matches = text.includes(searchTerm);
+                
+                if (matches) {
+                    card.classList.remove('hidden');
+                    matchCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+                totalItems++;
+            });
+            
+            // 高亮匹配的链接
+            this.highlightMatches(searchTerm);
+            
+            // 显示结果
+            this.showResults(matchCount, searchTerm);
+        }
 
-    // 游戏卡片悬停效果
-    gameCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            const cover = card.querySelector('.game-cover');
-            cover.style.transform = 'scale(1.05)';
-            cover.style.transition = 'transform 0.3s ease';
+        highlightMatches(searchTerm) {
+            this.allLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    link.innerHTML = link.textContent.replace(regex, '<span class="highlight">$1</span>');
+                }
+            });
+        }
+
+        showResults(count, searchTerm) {
+            if (count === 0) {
+                this.resultCount.style.display = 'none';
+                this.noResults.style.display = 'block';
+                this.noResults.innerHTML = `没有找到包含 "<span class="highlight">${searchTerm}</span>" 的游戏资源`;
+            } else {
+                this.resultCount.style.display = 'block';
+                this.resultCount.innerHTML = `找到 <span class="highlight">${count}</span> 个包含 "<span class="highlight">${searchTerm}</span>" 的资源`;
+                this.noResults.style.display = 'none';
+            }
+        }
+
+        resetSearch() {
+            this.allCards.forEach(card => {
+                card.classList.remove('hidden');
+            });
+            
+            // 移除高亮
+            this.allLinks.forEach(link => {
+                link.innerHTML = link.textContent;
+            });
+            
+            this.resultCount.style.display = 'none';
+            this.noResults.style.display = 'none';
+        }
+
+        showSuggestions(query) {
+            if (!query) {
+                this.hideSuggestions();
+                return;
+            }
+            
+            const suggestions = this.getSuggestions(query);
+            if (suggestions.length === 0) {
+                this.hideSuggestions();
+                return;
+            }
+            
+            this.searchSuggestions.innerHTML = suggestions.map(suggestion => 
+                `<div class="suggestion-item">${this.highlightText(suggestion, query)}</div>`
+            ).join('');
+            
+            this.searchSuggestions.classList.add('show');
+            
+            // 添加点击事件
+            this.searchSuggestions.querySelectorAll('.suggestion-item').forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    this.searchInput.value = suggestions[index].replace(/<[^>]*>/g, '');
+                    this.handleSearch(this.searchInput.value);
+                    this.hideSuggestions();
+                });
+            });
+        }
+
+        getSuggestions(query) {
+            const suggestions = new Set();
+            const searchTerm = query.toLowerCase();
+            
+            // 从资源链接获取建议
+            this.allLinks.forEach(link => {
+                const text = link.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            // 从卡片标题获取建议
+            document.querySelectorAll('.resource-card h2').forEach(title => {
+                const text = title.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            // 从游戏标题获取建议
+            document.querySelectorAll('.game-info h4').forEach(title => {
+                const text = title.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            return Array.from(suggestions).slice(0, 8);
+        }
+
+        highlightText(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        hideSuggestions() {
+            this.searchSuggestions.classList.remove('show');
+        }
+
+        saveToHistory(query) {
+            // 移除重复项
+            this.history = this.history.filter(item => item !== query);
+            
+            // 添加到开头
+            this.history.unshift(query);
+            
+            // 限制数量
+            if (this.history.length > 8) {
+                this.history = this.history.slice(0, 8);
+            }
+            
+            // 保存到本地存储
+            localStorage.setItem('gameSearchHistory', JSON.stringify(this.history));
+            
+            // 更新显示
+            this.updateHistoryDisplay();
+        }
+
+        updateHistoryDisplay() {
+            if (this.history.length === 0) {
+                this.searchHistory.style.display = 'none';
+                return;
+            }
+            
+            this.historyItems.innerHTML = this.history.map(item => 
+                `<div class="history-item">${item}</div>`
+            ).join('');
+            
+            this.searchHistory.style.display = 'block';
+            
+            // 添加点击事件
+            this.historyItems.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    this.searchInput.value = item.textContent;
+                    this.handleSearch(item.textContent);
+                });
+            });
+        }
+
+        clearHistory() {
+            this.history = [];
+            localStorage.removeItem('gameSearchHistory');
+            this.updateHistoryDisplay();
+        }
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        // 初始化搜索
+        const gameSearch = new GameSearch();
+        
+        // 游戏卡片悬停效果
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const cover = this.querySelector('.game-cover');
+                cover.style.transform = 'scale(1.05)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const cover = this.querySelector('.game-cover');
+                cover.style.transform = 'scale(1)';
+            });
         });
         
-        card.addEventListener('mouseleave', () => {
-            const cover = card.querySelector('.game-cover');
-            cover.style.transform = 'scale(1)';
+        // 平台按钮动画效果
+        document.querySelectorAll('.platform-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                const icon = this.querySelector('span:first-child');
+                icon.style.transform = 'rotate(15deg) scale(1.2)';
+                icon.style.transition = 'transform 0.3s ease';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('span:first-child');
+                icon.style.transform = 'rotate(0deg) scale(1)';
+            });
         });
-    });
-
-    // 模拟游戏手柄震动
-    const gameHeader = document.querySelector('.page-header h1');
-    gameHeader.addEventListener('mouseenter', () => {
-        gameHeader.style.animation = 'controllerVibrate 0.5s ease-in-out';
-        setTimeout(() => {
-            gameHeader.style.animation = '';
-        }, 500);
     });
     </script>
 </body>
