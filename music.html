@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>音乐系 - 资源风の魔法目录</title>
+    <meta name="description" content="音乐资源导航 - 在线音乐平台、音乐工具、乐谱教程、创作社区">
     <meta name="theme-color" content="#fff0f5">
-    
+    
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
-    
+    
     <style>
     :root {
         --glass: rgba(255, 240, 245, 0.25);
@@ -19,8 +20,8 @@
         --music-gradient: linear-gradient(135deg, #87CEEB, #9370DB);
     }
 
-    * { 
-        box-sizing: border-box; 
+    * { 
+        box-sizing: border-box; 
         -webkit-tap-highlight-color: transparent;
         margin: 0;
         padding: 0;
@@ -66,7 +67,7 @@
 
     /* 页面容器 */
     .page-container {
-        max-width: 1000px;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 80px 20px 40px;
         position: relative;
@@ -76,7 +77,7 @@
     /* 页面头部 */
     .page-header {
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
         position: relative;
     }
 
@@ -100,10 +101,227 @@
         margin: 0 auto;
     }
 
+    /* 搜索容器 */
+    .search-container {
+        max-width: 800px;
+        margin: 30px auto 50px;
+        position: relative;
+        padding: 0 20px;
+    }
+
+    .search-input-wrapper {
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 18px 60px 18px 25px;
+        border: 2px solid var(--border);
+        border-radius: 30px;
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        font-family: inherit;
+        font-size: 1.1rem;
+        color: #ff1493;
+        box-shadow: var(--glow);
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #87CEEB;
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.3), var(--glow);
+        transform: translateY(-2px);
+    }
+
+    .search-input::placeholder {
+        color: rgba(255, 20, 147, 0.6);
+    }
+
+    .search-button {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--music-gradient);
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        color: white;
+        font-size: 1.3rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(135, 206, 235, 0.4);
+    }
+
+    .search-button:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 20px rgba(135, 206, 235, 0.6);
+    }
+
+    .keyboard-shortcut {
+        position: absolute;
+        right: 75px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8rem;
+        color: rgba(255, 20, 147, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(255, 240, 245, 0.3);
+        padding: 4px 8px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+    }
+
+    .kbd-key {
+        background: rgba(255, 20, 147, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 105, 180, 0.3);
+        font-family: monospace;
+        font-size: 0.75rem;
+    }
+
+    .result-count {
+        margin-top: 15px;
+        text-align: center;
+        color: #87CEEB;
+        font-size: 0.95rem;
+        padding: 10px 20px;
+        background: var(--glass);
+        border-radius: 15px;
+        display: inline-block;
+        border: 1px solid var(--border);
+        backdrop-filter: blur(5px);
+        box-shadow: var(--glow);
+        transition: all 0.3s;
+    }
+
+    .no-results {
+        margin-top: 30px;
+        text-align: center;
+        padding: 25px;
+        background: var(--glass);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        color: #ff1493;
+        font-size: 1.1rem;
+        backdrop-filter: blur(10px);
+        box-shadow: var(--glow);
+        display: none;
+    }
+
+    .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 20px;
+        right: 20px;
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        border: 1px solid var(--border);
+        box-shadow: var(--glow);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+        margin-top: 10px;
+    }
+
+    .search-suggestions.show {
+        display: block;
+    }
+
+    .suggestion-item {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255, 105, 180, 0.1);
+        transition: all 0.2s;
+        color: #ff1493;
+        font-size: 0.95rem;
+    }
+
+    .suggestion-item:last-child {
+        border-bottom: none;
+    }
+
+    .suggestion-item:hover {
+        background: rgba(135, 206, 235, 0.1);
+        padding-left: 25px;
+        color: #87CEEB;
+    }
+
+    .search-history {
+        margin-top: 25px;
+        background: var(--glass);
+        border-radius: 15px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--glow);
+        display: none;
+    }
+
+    .history-title {
+        font-size: 0.9rem;
+        color: #87CEEB;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    .clear-history {
+        background: none;
+        border: none;
+        color: #ff69b4;
+        cursor: pointer;
+        font-size: 0.8rem;
+        text-decoration: underline;
+        padding: 5px 10px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .clear-history:hover {
+        background: rgba(255, 105, 180, 0.1);
+    }
+
+    .history-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .history-item {
+        padding: 8px 16px;
+        background: rgba(135, 206, 235, 0.15);
+        border-radius: 12px;
+        font-size: 0.85rem;
+        color: #87CEEB;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 1px solid rgba(135, 206, 235, 0.3);
+    }
+
+    .history-item:hover {
+        background: rgba(135, 206, 235, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(135, 206, 235, 0.2);
+    }
+
     /* 内容网格 */
     .content-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 25px;
         margin-bottom: 50px;
     }
@@ -117,12 +335,32 @@
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         box-shadow: var(--glow);
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 1;
+        transform: translateY(0);
+        animation: cardAppear 0.6s ease forwards;
+    }
+
+    @keyframes cardAppear {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .resource-card:hover {
-        transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 12px 30px rgba(255,105,180,0.3);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(135, 206, 235, 0.2), var(--glow);
+    }
+
+    .resource-card.hidden {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
     }
 
     .resource-card h2 {
@@ -131,7 +369,11 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        color: #9370DB;
+        color: #87CEEB;
+    }
+
+    .resource-card h2 .icon {
+        font-size: 1.8rem;
     }
 
     /* 资源列表 */
@@ -140,16 +382,35 @@
     }
 
     .resource-list li {
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         position: relative;
-        padding-left: 24px;
+        padding-left: 32px;
+        opacity: 0;
+        transform: translateX(-10px);
+        animation: listItemAppear 0.5s ease forwards;
+        animation-delay: calc(var(--index) * 0.1s);
+    }
+
+    @keyframes listItemAppear {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
     }
 
     .resource-list li:before {
-        content: '♪';
+        content: '🎵';
         position: absolute;
         left: 0;
-        color: #ff69b4;
+        top: 2px;
+        color: #87CEEB;
+        font-size: 1.2rem;
+        animation: noteBounce 2s infinite;
+    }
+
+    @keyframes noteBounce {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-3px) rotate(5deg); }
     }
 
     .resource-list a {
@@ -157,106 +418,212 @@
         text-decoration: none;
         font-size: 1.1rem;
         display: block;
-        padding: 8px 0;
+        padding: 10px 15px 10px 5px;
         transition: all 0.3s;
-        border-radius: 8px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .resource-list a:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(135, 206, 235, 0.1), transparent);
+        transition: left 0.5s;
     }
 
     .resource-list a:hover {
-        color: #9370DB;
-        padding-left: 10px;
-        background: rgba(255, 182, 193, 0.1);
+        color: #87CEEB;
+        padding-left: 15px;
+        background: rgba(135, 206, 235, 0.05);
+        border-color: rgba(135, 206, 235, 0.3);
+        transform: translateX(5px);
+    }
+
+    .resource-list a:hover:before {
+        left: 100%;
+    }
+
+    .resource-list .description {
+        font-size: 0.85rem;
+        color: rgba(255, 20, 147, 0.7);
+        margin-top: 5px;
+        margin-left: 5px;
+        line-height: 1.4;
+        display: block;
     }
 
     /* 特色专辑 */
-    .featured-albums {
-        margin-top: 60px;
+    .featured-section {
+        margin-top: 70px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #87CEEB;
+        font-size: 2rem;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0 20px;
+    }
+
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 20%;
+        right: 20%;
+        height: 3px;
+        background: var(--music-gradient);
+        border-radius: 2px;
     }
 
     .album-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
         margin-top: 20px;
     }
 
     .album-card {
         background: var(--glass);
-        border-radius: 15px;
+        border-radius: 20px;
         overflow: hidden;
         border: 1px solid var(--border);
-        transition: all 0.3s;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         box-shadow: var(--glow);
+        opacity: 1;
+        transform: translateY(0);
+        animation: cardAppear 0.6s ease forwards;
+        animation-delay: calc(var(--album-index) * 0.1s);
+    }
+
+    .album-card.hidden {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
     }
 
     .album-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 25px 50px rgba(135, 206, 235, 0.25), var(--glow);
     }
 
     .album-cover {
         width: 100%;
-        height: 200px;
+        height: 220px;
         object-fit: cover;
-        background: linear-gradient(45deg, #87CEEB, #9370DB);
+        background: linear-gradient(135deg, #87CEEB, #9370DB);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 3rem;
+        font-size: 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .album-cover:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
     }
 
     .album-info {
-        padding: 15px;
+        padding: 20px;
     }
 
     .album-info h4 {
-        margin-bottom: 5px;
-        color: #9370DB;
+        margin-bottom: 8px;
+        color: #87CEEB;
+        font-size: 1.2rem;
     }
 
     .album-info p {
         font-size: 0.9rem;
-        opacity: 0.7;
+        opacity: 0.8;
+        margin-bottom: 12px;
+        line-height: 1.5;
     }
 
-    /* 音乐播放器 */
-    .music-player {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--glass);
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
+    .album-tags {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid var(--border);
-        backdrop-filter: blur(10px);
-        box-shadow: var(--glow);
-        cursor: pointer;
-        z-index: 100;
-        font-size: 1.5rem;
-        transition: all 0.3s;
+        gap: 8px;
+        flex-wrap: wrap;
     }
 
-    .music-player:hover {
-        transform: scale(1.1);
+    .album-tag {
+        background: rgba(135, 206, 235, 0.15);
+        color: #87CEEB;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        border: 1px solid rgba(135, 206, 235, 0.3);
     }
 
     /* 响应式设计 */
+    @media (max-width: 1024px) {
+        .content-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .album-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
     @media (max-width: 768px) {
         .page-header h1 {
             font-size: 2.2rem;
         }
-        
+        
+        .search-container {
+            margin: 20px auto 40px;
+            padding: 0 15px;
+        }
+        
+        .search-input {
+            padding: 16px 55px 16px 20px;
+            font-size: 1rem;
+        }
+        
+        .search-button {
+            width: 44px;
+            height: 44px;
+            right: 12px;
+        }
+        
+        .keyboard-shortcut {
+            display: none;
+        }
+        
         .content-grid {
             grid-template-columns: 1fr;
+            gap: 20px;
         }
-        
+        
         .album-grid {
             grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
         }
-        
+        
         .back-btn {
             margin: 10px;
             padding: 10px 18px;
@@ -264,23 +631,57 @@
     }
 
     @media (max-width: 480px) {
+        .page-header h1 {
+            font-size: 1.8rem;
+            flex-wrap: wrap;
+        }
+        
         .album-grid {
             grid-template-columns: 1fr;
         }
-        
-        .page-header h1 {
-            font-size: 1.8rem;
+        
+        .search-input {
+            font-size: 0.95rem;
+        }
+        
+        .resource-list li {
+            padding-left: 28px;
         }
     }
 
     /* 动画 */
     @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
     }
 
-    .page-header h1 {
-        animation: float 3s ease-in-out infinite;
+    .page-header h1 span:first-child {
+        animation: float 4s ease-in-out infinite;
+        display: inline-block;
+    }
+
+    .page-header h1 span:last-child {
+        animation: float 4s ease-in-out infinite reverse;
+        display: inline-block;
+    }
+
+    /* 高亮匹配 */
+    .highlight {
+        background: linear-gradient(120deg, rgba(135, 206, 235, 0.3), rgba(147, 112, 219, 0.3));
+        padding: 0 4px;
+        border-radius: 4px;
+        color: #87CEEB;
+        font-weight: bold;
+    }
+
+    /* 页面加载动画 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-container {
+        animation: fadeIn 0.8s ease-out;
     }
     </style>
 </head>
@@ -300,96 +701,213 @@
             <p>听觉的艺术，心灵的共鸣。在这里发现属于你的音乐魔法。</p>
         </header>
 
+        <!-- 搜索区域 -->
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" class="search-input" placeholder="搜索音乐资源、平台、工具或专辑..." id="musicSearchInput">
+                <button class="search-button" id="searchButton">🔍</button>
+                <div class="keyboard-shortcut">
+                    <span class="kbd-key">Ctrl</span> + <span class="kbd-key">K</span> 快速搜索
+                </div>
+            </div>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+            <div class="result-count" id="resultCount"></div>
+            <div class="no-results" id="noResults">没有找到相关的音乐资源</div>
+            <div class="search-history" id="searchHistory">
+                <div class="history-title">
+                    <span>最近搜索</span>
+                    <button class="clear-history" id="clearHistory">清除历史</button>
+                </div>
+                <div class="history-items" id="historyItems"></div>
+            </div>
+        </div>
+
         <div class="content-grid">
             <div class="resource-card">
-                <h2>🎧 在线音乐平台</h2>
+                <h2><span class="icon">🎧</span> 在线音乐平台</h2>
                 <ul class="resource-list">
-                    <li><a href="https://music.163.com" target="_blank">网易云音乐 - 发现音乐新世界</a></li>
-                    <li><a href="https://y.qq.com" target="_blank">QQ音乐 - 海量正版曲库</a></li>
-                    <li><a href="https://www.spotify.com" target="_blank">Spotify - 全球音乐流媒体</a></li>
-                    <li><a href="https://music.apple.com" target="_blank">Apple Music - 高品质音乐服务</a></li>
-                    <li><a href="https://soundcloud.com" target="_blank">SoundCloud - 独立音乐人社区</a></li>
-                    <li><a href="https://www.youtube.com/music" target="_blank">YouTube Music - 视频音乐体验</a></li>
+                    <li style="--index: 0">
+                        <a href="https://music.163.com" target="_blank">网易云音乐</a>
+                        <span class="description">- 发现音乐新世界，个性化推荐算法强大</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://y.qq.com" target="_blank">QQ音乐</a>
+                        <span class="description">- 海量正版曲库，支持高清无损音质</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://www.spotify.com" target="_blank">Spotify</a>
+                        <span class="description">- 全球最大的音乐流媒体平台</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://music.apple.com" target="_blank">Apple Music</a>
+                        <span class="description">- 苹果生态高品质音乐服务</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://soundcloud.com" target="_blank">SoundCloud</a>
+                        <span class="description">- 独立音乐人创作分享社区</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://www.youtube.com/music" target="_blank">YouTube Music</a>
+                        <span class="description">- 整合YouTube视频的音乐体验</span>
+                    </li>
                 </ul>
             </div>
 
             <div class="resource-card">
-                <h2>🔧 音乐工具</h2>
+                <h2><span class="icon">🔧</span> 音乐工具</h2>
                 <ul class="resource-list">
-                    <li><a href="https://www.audacityteam.org" target="_blank">Audacity - 免费音频编辑器</a></li>
-                    <li><a href="https://www.landr.com" target="_blank">LANDR - AI母带处理</a></li>
-                    <li><a href="https://www.musescore.org" target="_blank">MuseScore - 乐谱制作软件</a></li>
-                    <li><a href="https://www.flexi-music.com" target="_blank">FlexiMusic - 音频格式转换</a></li>
-                    <li><a href="https://www.karaoke-version.com" target="_blank">Karaoke Version - 卡拉OK制作</a></li>
-                    <li><a href="https://www.ultimate-guitar.com" target="_blank">Ultimate Guitar - 吉他谱库</a></li>
+                    <li style="--index: 0">
+                        <a href="https://www.audacityteam.org" target="_blank">Audacity</a>
+                        <span class="description">- 免费开源的音频编辑软件</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://www.landr.com" target="_blank">LANDR</a>
+                        <span class="description">- AI智能母带处理工具</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://www.musescore.org" target="_blank">MuseScore</a>
+                        <span class="description">- 免费乐谱制作与分享平台</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.flexi-music.com" target="_blank">FlexiMusic</a>
+                        <span class="description">- 多功能音频格式转换工具</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.karaoke-version.com" target="_blank">Karaoke Version</a>
+                        <span class="description">- 专业卡拉OK伴奏制作</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://www.ultimate-guitar.com" target="_blank">Ultimate Guitar</a>
+                        <span class="description">- 全球最大吉他谱库</span>
+                    </li>
                 </ul>
             </div>
 
             <div class="resource-card">
-                <h2>🎼 乐谱与教程</h2>
+                <h2><span class="icon">🎼</span> 乐谱与教程</h2>
                 <ul class="resource-list">
-                    <li><a href="https://imslp.org" target="_blank">IMSLP - 古典乐谱图书馆</a></li>
-                    <li><a href="https://www.musicnotes.com" target="_blank">Musicnotes - 现代乐谱商店</a></li>
-                    <li><a href="https://www.8notes.com" target="_blank">8notes - 免费乐谱资源</a></li>
-                    <li><a href="https://www.songsterr.com" target="_blank">Songsterr - 乐队总谱与TAB谱</a></li>
-                    <li><a href="https://www.justinguitar.com" target="_blank">Justin Guitar - 免费吉他教程</a></li>
-                    <li><a href="https://pianonanny.com" target="_blank">Piano Nanny - 钢琴入门教程</a></li>
+                    <li style="--index: 0">
+                        <a href="https://imslp.org" target="_blank">IMSLP</a>
+                        <span class="description">- 国际乐谱库，古典音乐免费资源</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://www.musicnotes.com" target="_blank">Musicnotes</a>
+                        <span class="description">- 现代乐谱商店与数字乐谱</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://www.8notes.com" target="_blank">8notes</a>
+                        <span class="description">- 免费乐谱资源与音乐教程</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.songsterr.com" target="_blank">Songsterr</a>
+                        <span class="description">- 乐队总谱与TAB谱播放器</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.justinguitar.com" target="_blank">Justin Guitar</a>
+                        <span class="description">- 免费吉他教程与课程</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://pianonanny.com" target="_blank">Piano Nanny</a>
+                        <span class="description">- 钢琴入门免费教程</span>
+                    </li>
                 </ul>
             </div>
 
             <div class="resource-card">
-                <h2>🎹 创作与社区</h2>
+                <h2><span class="icon">🎹</span> 创作与社区</h2>
                 <ul class="resource-list">
-                    <li><a href="https://bandcamp.com" target="_blank">Bandcamp - 独立音乐平台</a></li>
-                    <li><a href="https://www.chosic.com" target="_blank">Chosic - 音乐发现工具</a></li>
-                    <li><a href="https://www.music-map.com" target="_blank">Music-Map - 音乐家关联发现</a></li>
-                    <li><a href="https://www.midiworld.com" target="_blank">MIDI World - MIDI文件资源</a></li>
-                    <li><a href="https://www.freesound.org" target="_blank">Freesound - 免费音效库</a></li>
-                    <li><a href="https://www.kompoz.com" target="_blank">Kompoz - 在线音乐协作</a></li>
+                    <li style="--index: 0">
+                        <a href="https://bandcamp.com" target="_blank">Bandcamp</a>
+                        <span class="description">- 独立音乐人直接销售平台</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://www.chosic.com" target="_blank">Chosic</a>
+                        <span class="description">- 音乐发现与分类工具</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://www.music-map.com" target="_blank">Music-Map</a>
+                        <span class="description">- 相似音乐家关联发现工具</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.midiworld.com" target="_blank">MIDI World</a>
+                        <span class="description">- MIDI文件资源与下载</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.freesound.org" target="_blank">Freesound</a>
+                        <span class="description">- 免费音效与采样库</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://www.kompoz.com" target="_blank">Kompoz</a>
+                        <span class="description">- 在线音乐协作创作平台</span>
+                    </li>
                 </ul>
             </div>
         </div>
 
-        <section class="featured-albums">
-            <h2 style="text-align: center; margin-bottom: 30px; color: #9370DB;">✨ 精选专辑推荐</h2>
+        <section class="featured-section">
+            <h2 class="section-title">✨ 精选专辑推荐</h2>
             <div class="album-grid">
-                <div class="album-card">
-                    <div class="album-cover">🎸</div>
+                <div class="album-card" style="--album-index: 0">
+                    <div class="album-cover">🌌</div>
                     <div class="album-info">
-                        <h4>《风的记忆》</h4>
-                        <p>治愈系轻音乐专辑</p>
+                        <h4>《星尘回音》</h4>
+                        <p>一部关于时间与记忆的科幻音乐专辑，探索宇宙深处的秘密...</p>
+                        <div class="album-tags">
+                            <span class="album-tag">氛围音乐</span>
+                            <span class="album-tag">电子</span>
+                            <span class="album-tag">2023</span>
+                        </div>
                     </div>
                 </div>
-                <div class="album-card">
+                <div class="album-card" style="--album-index: 1">
                     <div class="album-cover">🎹</div>
                     <div class="album-info">
                         <h4>《星空钢琴曲》</h4>
-                        <p>夜间助眠钢琴精选</p>
+                        <p>治愈系钢琴独奏专辑，适合工作、学习与放松时聆听...</p>
+                        <div class="album-tags">
+                            <span class="album-tag">钢琴</span>
+                            <span class="album-tag">治愈</span>
+                            <span class="album-tag">纯音乐</span>
+                        </div>
                     </div>
                 </div>
-                <div class="album-card">
+                <div class="album-card" style="--album-index: 2">
                     <div class="album-cover">🎻</div>
                     <div class="album-info">
                         <h4>《古典时光机》</h4>
-                        <p>巴洛克时期名曲集</p>
+                        <p>巴洛克时期经典作品精选，重现古典音乐黄金时代...</p>
+                        <div class="album-tags">
+                            <span class="album-tag">古典</span>
+                            <span class="album-tag">巴洛克</span>
+                            <span class="album-tag">交响乐</span>
+                        </div>
                     </div>
                 </div>
-                <div class="album-card">
+                <div class="album-card" style="--album-index: 3">
                     <div class="album-cover">🎤</div>
                     <div class="album-info">
                         <h4>《城市民谣》</h4>
-                        <p>现代民谣原创合集</p>
+                        <p>现代民谣原创合集，唱出城市生活的点滴与情感...</p>
+                        <div class="album-tags">
+                            <span class="album-tag">民谣</span>
+                            <span class="album-tag">原创</span>
+                            <span class="album-tag">华语</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <footer style="text-align: center; margin-top: 60px; padding: 20px; opacity: 0.7;">
-            <p>🎵 音乐是唯一通用的语言 | DESIGNED WITH ♪</p>
-            <p style="font-size: 0.8rem; margin-top: 10px;">探索 · 聆听 · 分享</p>
+        <footer style="text-align: center; margin-top: 80px; padding: 30px; opacity: 0.8;">
+            <p style="font-size: 1.1rem; margin-bottom: 10px;">🎵 音乐是唯一通用的语言 | DESIGNED WITH ♪</p>
+            <p style="font-size: 0.9rem;">探索 · 聆听 · 分享 · 创造</p>
+            <div style="margin-top: 20px; font-size: 0.8rem; color: rgba(255, 105, 180, 0.7);">
+                共收录 24 个音乐资源 | 最后更新: 2024年1月
+            </div>
         </footer>
     </div>
 
+    <!-- 音乐播放器 -->
     <div class="music-player" id="musicPlayer">
         ♪
     </div>
@@ -399,65 +917,354 @@
     </audio>
 
     <script>
-    // 音乐播放器控制
-    const audio = document.getElementById('bgm');
-    const musicPlayer = document.getElementById('musicPlayer');
-    let isPlaying = false;
-
-    musicPlayer.addEventListener('click', toggleMusic);
-    musicPlayer.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggleMusic();
+    // 搜索功能实现
+    class MusicSearch {
+        constructor() {
+            this.searchInput = document.getElementById('musicSearchInput');
+            this.searchButton = document.getElementById('searchButton');
+            this.searchSuggestions = document.getElementById('searchSuggestions');
+            this.resultCount = document.getElementById('resultCount');
+            this.noResults = document.getElementById('noResults');
+            this.searchHistory = document.getElementById('searchHistory');
+            this.historyItems = document.getElementById('historyItems');
+            this.clearHistoryBtn = document.getElementById('clearHistory');
+            
+            // 所有可搜索的元素
+            this.allItems = document.querySelectorAll('.resource-card, .album-card');
+            this.allLinks = document.querySelectorAll('.resource-list a');
+            this.allTextItems = [...this.allItems, ...this.allLinks];
+            
+            // 搜索历史
+            this.history = JSON.parse(localStorage.getItem('musicSearchHistory')) || [];
+            
+            this.init();
         }
-    });
 
-    function toggleMusic() {
-        if (isPlaying) return;
-        
-        isPlaying = true;
-        
-        if (audio.paused) {
-            audio.play().then(() => {
-                musicPlayer.textContent = '🎵';
-                musicPlayer.style.background = 'linear-gradient(135deg, #87CEEB, #9370DB)';
-                isPlaying = false;
-            }).catch(err => {
-                console.error('播放失败:', err);
-                musicPlayer.textContent = '❌';
-                isPlaying = false;
+        init() {
+            this.bindEvents();
+            this.updateHistoryDisplay();
+            
+            // 为每个列表项添加索引
+            document.querySelectorAll('.resource-list li').forEach((li, index) => {
+                li.style.setProperty('--index', index);
             });
-        } else {
-            audio.pause();
-            musicPlayer.textContent = '♪';
-            musicPlayer.style.background = 'var(--glass)';
-            isPlaying = false;
+            
+            // 为专辑卡片添加索引
+            document.querySelectorAll('.album-card').forEach((card, index) => {
+                card.style.setProperty('--album-index', index);
+            });
+        }
+
+        bindEvents() {
+            // 输入搜索
+            this.searchInput.addEventListener('input', (e) => {
+                this.handleSearch(e.target.value);
+                this.showSuggestions(e.target.value);
+            });
+            
+            // 搜索按钮点击
+            this.searchButton.addEventListener('click', () => {
+                this.handleSearch(this.searchInput.value);
+            });
+            
+            // Enter键搜索
+            this.searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    this.handleSearch(this.searchInput.value);
+                    this.hideSuggestions();
+                } else if (e.key === 'Escape') {
+                    this.hideSuggestions();
+                }
+            });
+            
+            // 全局快捷键 Ctrl+K
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    this.searchInput.focus();
+                }
+            });
+            
+            // 清除历史
+            this.clearHistoryBtn.addEventListener('click', () => {
+                this.clearHistory();
+            });
+            
+            // 点击页面其他区域隐藏建议
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    this.hideSuggestions();
+                }
+            });
+        }
+
+        handleSearch(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                this.resetSearch();
+                return;
+            }
+            
+            // 保存到历史记录
+            this.saveToHistory(searchTerm);
+            
+            let matchCount = 0;
+            let totalItems = 0;
+            
+            // 搜索资源卡片
+            this.allItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const matches = text.includes(searchTerm);
+                
+                if (matches) {
+                    item.classList.remove('hidden');
+                    matchCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+                totalItems++;
+            });
+            
+            // 高亮匹配的链接
+            this.highlightMatches(searchTerm);
+            
+            // 显示结果
+            this.showResults(matchCount, searchTerm);
+        }
+
+        highlightMatches(searchTerm) {
+            this.allLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    link.innerHTML = link.textContent.replace(regex, '<span class="highlight">$1</span>');
+                }
+            });
+        }
+
+        showResults(count, searchTerm) {
+            if (count === 0) {
+                this.resultCount.style.display = 'none';
+                this.noResults.style.display = 'block';
+                this.noResults.innerHTML = `没有找到包含 "<span class="highlight">${searchTerm}</span>" 的资源`;
+            } else {
+                this.resultCount.style.display = 'block';
+                this.resultCount.innerHTML = `找到 <span class="highlight">${count}</span> 个包含 "<span class="highlight">${searchTerm}</span>" 的资源`;
+                this.noResults.style.display = 'none';
+            }
+        }
+
+        resetSearch() {
+            this.allItems.forEach(item => {
+                item.classList.remove('hidden');
+            });
+            
+            // 移除高亮
+            this.allLinks.forEach(link => {
+                link.innerHTML = link.textContent;
+            });
+            
+            this.resultCount.style.display = 'none';
+            this.noResults.style.display = 'none';
+        }
+
+        showSuggestions(query) {
+            if (!query) {
+                this.hideSuggestions();
+                return;
+            }
+            
+            const suggestions = this.getSuggestions(query);
+            if (suggestions.length === 0) {
+                this.hideSuggestions();
+                return;
+            }
+            
+            this.searchSuggestions.innerHTML = suggestions.map(suggestion => 
+                `<div class="suggestion-item">${this.highlightText(suggestion, query)}</div>`
+            ).join('');
+            
+            this.searchSuggestions.classList.add('show');
+            
+            // 添加点击事件
+            this.searchSuggestions.querySelectorAll('.suggestion-item').forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    this.searchInput.value = suggestions[index].replace(/<[^>]*>/g, '');
+                    this.handleSearch(this.searchInput.value);
+                    this.hideSuggestions();
+                });
+            });
+        }
+
+        getSuggestions(query) {
+            const suggestions = new Set();
+            const searchTerm = query.toLowerCase();
+            
+            // 从资源链接获取建议
+            this.allLinks.forEach(link => {
+                const text = link.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            // 从卡片标题获取建议
+            document.querySelectorAll('.resource-card h2').forEach(title => {
+                const text = title.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            // 从专辑标题获取建议
+            document.querySelectorAll('.album-info h4').forEach(title => {
+                const text = title.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            return Array.from(suggestions).slice(0, 8);
+        }
+
+        highlightText(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        hideSuggestions() {
+            this.searchSuggestions.classList.remove('show');
+        }
+
+        saveToHistory(query) {
+            // 移除重复项
+            this.history = this.history.filter(item => item !== query);
+            
+            // 添加到开头
+            this.history.unshift(query);
+            
+            // 限制数量
+            if (this.history.length > 8) {
+                this.history = this.history.slice(0, 8);
+            }
+            
+            // 保存到本地存储
+            localStorage.setItem('musicSearchHistory', JSON.stringify(this.history));
+            
+            // 更新显示
+            this.updateHistoryDisplay();
+        }
+
+        updateHistoryDisplay() {
+            if (this.history.length === 0) {
+                this.searchHistory.style.display = 'none';
+                return;
+            }
+            
+            this.historyItems.innerHTML = this.history.map(item => 
+                `<div class="history-item">${item}</div>`
+            ).join('');
+            
+            this.searchHistory.style.display = 'block';
+            
+            // 添加点击事件
+            this.historyItems.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    this.searchInput.value = item.textContent;
+                    this.handleSearch(item.textContent);
+                });
+            });
+        }
+
+        clearHistory() {
+            this.history = [];
+            localStorage.removeItem('musicSearchHistory');
+            this.updateHistoryDisplay();
         }
     }
 
-    // 页面滚动效果
-    const resourceCards = document.querySelectorAll('.resource-card');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        // 初始化搜索
+        const musicSearch = new MusicSearch();
+        
+        // 音乐播放器
+        const audio = document.getElementById('bgm');
+        const musicPlayer = document.getElementById('musicPlayer');
+        let isPlaying = false;
+
+        musicPlayer.addEventListener('click', toggleMusic);
+        musicPlayer.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleMusic();
             }
         });
-    }, { threshold: 0.1 });
 
-    resourceCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.6s ease';
-        observer.observe(card);
+        function toggleMusic() {
+            if (isPlaying) return;
+            
+            isPlaying = true;
+            
+            if (audio.paused) {
+                audio.play().then(() => {
+                    musicPlayer.textContent = '🎵';
+                    musicPlayer.style.background = 'linear-gradient(135deg, #87CEEB, #9370DB)';
+                    isPlaying = false;
+                }).catch(err => {
+                    console.error('播放失败:', err);
+                    musicPlayer.textContent = '❌';
+                    isPlaying = false;
+                });
+            } else {
+                audio.pause();
+                musicPlayer.textContent = '♪';
+                musicPlayer.style.background = 'var(--glass)';
+                isPlaying = false;
+            }
+        }
+
+        // 为音乐播放器添加样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .music-player {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: var(--glass);
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid var(--border);
+                backdrop-filter: blur(10px);
+                box-shadow: var(--glow);
+                cursor: pointer;
+                z-index: 100;
+                font-size: 1.5rem;
+                transition: all 0.3s;
+            }
+            
+            .music-player:hover {
+                transform: scale(1.1);
+                box-shadow: 0 8px 25px rgba(135, 206, 235, 0.4);
+            }
+            
+            @media (max-width: 768px) {
+                .music-player {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 1.3rem;
+                    bottom: 15px;
+                    right: 15px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     });
-
-    // 设置音乐播放器可访问性
-    musicPlayer.setAttribute('role', 'button');
-    musicPlayer.setAttribute('tabindex', '0');
-    musicPlayer.setAttribute('aria-label', '播放/暂停背景音乐');
     </script>
 </body>
 </html>
