@@ -9,9 +9,9 @@
 
 <style>
 :root {
-  --glass: rgba(255,255,255,0.18);
-  --border: rgba(255,255,255,0.35);
-  --blur: blur(24px);
+  --glass: rgba(255,255,255,0.16);
+  --border: rgba(255,255,255,0.3);
+  --blur: blur(20px);
 }
 
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -33,15 +33,15 @@ html, body {
   background:url('./jm.jpg') center/cover no-repeat;
   transform:scale(1.05);
   z-index:-10;
-  animation:breathe 35s ease-in-out infinite;
+  animation:breathe 40s ease-in-out infinite;
 }
 
 .film-overlay {
   position:fixed;
   inset:0;
-  background:linear-gradient(to bottom, rgba(13,17,23,0.4), rgba(13,17,23,0.75));
-  backdrop-filter:brightness(0.9) contrast(1.2);
-  -webkit-backdrop-filter:brightness(0.9) contrast(1.2);
+  background:linear-gradient(to bottom, rgba(13,17,23,0.35), rgba(13,17,23,0.7));
+  backdrop-filter:brightness(0.92) contrast(1.15);
+  -webkit-backdrop-filter:brightness(0.92) contrast(1.15);
   z-index:-5;
 }
 
@@ -49,10 +49,10 @@ html, body {
 .app {
   position:relative;
   height:100vh;
-  padding:calc(12px + env(safe-area-inset-top)) 16px 12px;
+  padding:calc(16px + env(safe-area-inset-top)) 16px 12px;
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:14px;
 }
 
 /* 头部 */
@@ -66,14 +66,16 @@ html, body {
   padding:12px 16px;
   backdrop-filter:var(--blur);
   -webkit-backdrop-filter:var(--blur);
-  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  box-shadow:0 8px 32px rgba(0,0,0,0.25);
+  position:relative;
+  overflow:hidden;
 }
 
 .header img {
-  width:64px;
-  height:64px;
+  width:60px;
+  height:60px;
   border-radius:50%;
-  border:2px solid rgba(255,255,255,0.8);
+  border:2px solid rgba(255,255,255,0.9);
   object-fit: cover;
   object-position: center;
   flex-shrink:0;
@@ -85,40 +87,46 @@ html, body {
 
 .header h1 {
   margin:0;
-  font-size:1.35rem;
+  font-size:1.4rem;
+  line-height:1.3;
   letter-spacing:1px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .header p {
   margin:2px 0 0;
   font-size:0.78rem;
-  color:rgba(255,255,255,0.85);
+  color:rgba(255,255,255,0.88);
 }
 
 .music {
-  width:48px;
-  height:48px;
+  width:44px;
+  height:44px;
   border-radius:50%;
-  border:2px solid #fff;
+  border:2px solid rgba(255,255,255,0.9);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:1.4rem;
+  font-size:1.3rem;
+  background:rgba(255,255,255,0.1);
   transition:all 0.3s;
   cursor:pointer;
+  box-shadow:0 0 12px rgba(255,255,255,0.3);
 }
 
 .playing {
-  animation:spin 5s linear infinite;
-  box-shadow:0 0 20px rgba(255,255,255,0.6);
+  animation:spin 6s linear infinite;
+  box-shadow:0 0 16px rgba(255,255,255,0.5), 0 0 32px rgba(255,255,255,0.2);
 }
 
-/* 卡片列表 */
+/* 卡片 */
 .list {
   flex:1;
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:16px;
   overflow-y:auto;
   padding:0 4px;
 }
@@ -127,41 +135,43 @@ html, body {
   background:var(--glass);
   border:1px solid var(--border);
   border-radius:20px;
-  padding:16px 20px;
+  padding:16px 18px;
   display:flex;
   align-items:center;
   gap:16px;
   backdrop-filter:var(--blur);
   -webkit-backdrop-filter:var(--blur);
   transition:all 0.3s ease;
-  box-shadow:0 6px 24px rgba(0,0,0,0.25);
-  min-height:88px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+  min-height:82px;
+  text-decoration:none;
+  color:inherit;
 }
 
 .card:hover {
-  transform:translateY(-3px) scale(1.02);
-  background:rgba(255,255,255,0.25);
-  box-shadow:0 12px 40px rgba(0,0,0,0.35);
+  transform:translateY(-2px) scale(1.02);
+  background:rgba(255,255,255,0.22);
+  box-shadow:0 10px 32px rgba(0,0,0,0.3);
 }
 
 .card:active {
-  transform:translateY(0) scale(0.98);
+  transform:translateY(0) scale(0.99);
 }
 
 .icon {
   font-size:2.2rem;
-  min-width:48px;
+  min-width:44px;
   text-align:center;
 }
 
 .card b {
-  font-size:1.15rem;
+  font-size:1.12rem;
   display:block;
 }
 
 .card span {
-  font-size:0.78rem;
-  color:rgba(255,255,255,0.75);
+  font-size:0.76rem;
+  color:rgba(255,255,255,0.78);
   margin-top:2px;
   display:block;
 }
@@ -170,9 +180,9 @@ html, body {
 footer {
   text-align:center;
   font-size:0.65rem;
-  color:rgba(255,255,255,0.5);
-  padding:8px 0;
-  letter-spacing:1px;
+  color:rgba(255,255,255,0.48);
+  padding:6px 0;
+  letter-spacing:0.8px;
 }
 
 /* 动画 */
@@ -191,17 +201,17 @@ footer {
 
 <div class="app">
 
-  <header class="header" onclick="toggleMusic()">
+  <header class="header">
     <img src="./ndmz.jpg" alt="avatar">
     <div>
       <h1>资源风の魔法目录</h1>
       <p>系守町 · 把重要的东西留住</p>
     </div>
-    <div id="disk" class="music">🎵</div>
+    <div id="disk" class="music" onclick="toggleMusic()">🎵</div>
   </header>
 
   <section class="list">
-    <a href="filim.html" class="card" style="text-decoration:none; color:inherit;">
+    <a href="filim.html" class="card">
       <div class="icon">☄️</div>
       <div>
         <b>观影系</b>
@@ -250,13 +260,23 @@ function toggleMusic() {
     audio.play().then(() => {
       disk.textContent = '💿';
       disk.classList.add('playing');
-    }).catch(e => console.log('播放失败:', e));
+    }).catch(err => {
+      console.log('音乐播放失败:', err);
+      alert('音乐加载失败，请检查文件或网络');
+    });
   } else {
     audio.pause();
     disk.textContent = '🎵';
     disk.classList.remove('playing');
   }
 }
+
+// 自动尝试播放（iOS 可能需要用户交互）
+document.addEventListener('click', () => {
+  if (audio.paused && !audio.currentTime) {
+    toggleMusic();
+  }
+}, { once: true });
 </script>
 
 </body>
