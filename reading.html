@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>阅读系 - 资源风の魔法目录</title>
+    <meta name="description" content="阅读资源导航 - 电子书、阅读平台、书评社区、文学资源、在线阅读">
     <meta name="theme-color" content="#fff0f5">
     
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
@@ -16,7 +17,7 @@
         --text-glow: 0 0 8px rgba(255, 182, 193, 0.7);
         --main-gradient: linear-gradient(135deg, #ffb6c1, #ff69b4);
         --bg-gradient: linear-gradient(to bottom, #fff0f5, #ffe4e1);
-        --reading-gradient: linear-gradient(135deg, #32CD32, #228B22);
+        --reading-gradient: linear-gradient(135deg, #90EE90, #32CD32);
     }
 
     * { 
@@ -33,7 +34,7 @@
         min-height: 100vh;
         font-family: 'ZCOOL KuaiLe', 'Noto Sans SC', sans-serif;
         background: var(--bg-gradient);
-        color: #ff1493;
+        color: #228B22;
         overflow-x: hidden;
     }
 
@@ -47,7 +48,7 @@
         border: 1px solid var(--border);
         border-radius: 20px;
         text-decoration: none;
-        color: #ff1493;
+        color: #228B22;
         margin: 20px;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
@@ -61,7 +62,7 @@
 
     .back-btn:hover {
         transform: translateX(-5px);
-        box-shadow: 0 6px 20px rgba(255,105,180,0.4);
+        box-shadow: 0 6px 20px rgba(144, 238, 144, 0.4);
     }
 
     /* 页面容器 */
@@ -76,7 +77,7 @@
     /* 页面头部 */
     .page-header {
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
         position: relative;
     }
 
@@ -98,12 +99,203 @@
         opacity: 0.8;
         max-width: 600px;
         margin: 0 auto;
+        font-family: 'Noto Sans SC', sans-serif;
+        line-height: 1.6;
+    }
+
+    /* 搜索容器 */
+    .search-container {
+        max-width: 800px;
+        margin: 30px auto 50px;
+        position: relative;
+        padding: 0 20px;
+    }
+
+    .search-input-wrapper {
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 18px 60px 18px 25px;
+        border: 2px solid var(--border);
+        border-radius: 30px;
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        font-family: inherit;
+        font-size: 1.1rem;
+        color: #228B22;
+        box-shadow: var(--glow);
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #90EE90;
+        box-shadow: 0 0 0 3px rgba(144, 238, 144, 0.3), var(--glow);
+        transform: translateY(-2px);
+    }
+
+    .search-input::placeholder {
+        color: rgba(34, 139, 34, 0.6);
+    }
+
+    .search-button {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--reading-gradient);
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        color: white;
+        font-size: 1.3rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(144, 238, 144, 0.4);
+    }
+
+    .search-button:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 20px rgba(144, 238, 144, 0.6);
+    }
+
+    .keyboard-shortcut {
+        position: absolute;
+        right: 75px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8rem;
+        color: rgba(34, 139, 34, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(255, 240, 245, 0.3);
+        padding: 4px 8px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+    }
+
+    .kbd-key {
+        background: rgba(34, 139, 34, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid rgba(144, 238, 144, 0.3);
+        font-family: monospace;
+        font-size: 0.75rem;
+    }
+
+    .result-count {
+        margin-top: 15px;
+        text-align: center;
+        color: #90EE90;
+        font-size: 0.95rem;
+        padding: 10px 20px;
+        background: var(--glass);
+        border-radius: 15px;
+        display: inline-block;
+        border: 1px solid var(--border);
+        backdrop-filter: blur(5px);
+        box-shadow: var(--glow);
+        transition: all 0.3s;
+    }
+
+    .no-results {
+        margin-top: 30px;
+        text-align: center;
+        padding: 25px;
+        background: var(--glass);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        color: #228B22;
+        font-size: 1.1rem;
+        backdrop-filter: blur(10px);
+        box-shadow: var(--glow);
+        display: none;
+    }
+
+    .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 20px;
+        right: 20px;
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        border: 1px solid var(--border);
+        box-shadow: var(--glow);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+        margin-top: 10px;
+    }
+
+    .search-suggestions.show {
+        display: block;
+    }
+
+    .suggestion-item {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(144, 238, 144, 0.1);
+        transition: all 0.2s;
+        color: #228B22;
+        font-size: 0.95rem;
+    }
+
+    .suggestion-item:last-child {
+        border-bottom: none;
+    }
+
+    .suggestion-item:hover {
+        background: rgba(144, 238, 144, 0.1);
+        padding-left: 25px;
+        color: #90EE90;
+    }
+
+    /* 分类筛选 */
+    .category-filter {
+        display: flex;
+        gap: 12px;
+        margin: 25px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .category-btn {
+        padding: 10px 20px;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        color: #228B22;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        backdrop-filter: blur(5px);
+    }
+
+    .category-btn:hover {
+        background: rgba(144, 238, 144, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .category-btn.active {
+        background: var(--reading-gradient);
+        color: white;
+        border-color: #90EE90;
     }
 
     /* 内容网格 */
     .content-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 25px;
         margin-bottom: 50px;
     }
@@ -117,12 +309,32 @@
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         box-shadow: var(--glow);
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 1;
+        transform: translateY(0);
+        animation: cardAppear 0.6s ease forwards;
+    }
+
+    @keyframes cardAppear {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .resource-card:hover {
-        transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 12px 30px rgba(255,105,180,0.3);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(144, 238, 144, 0.2), var(--glow);
+    }
+
+    .resource-card.hidden {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
     }
 
     .resource-card h2 {
@@ -131,7 +343,11 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        color: #228B22;
+        color: #90EE90;
+    }
+
+    .resource-card h2 .icon {
+        font-size: 1.8rem;
     }
 
     /* 资源列表 */
@@ -140,121 +356,187 @@
     }
 
     .resource-list li {
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         position: relative;
-        padding-left: 24px;
+        padding-left: 32px;
+        opacity: 0;
+        transform: translateX(-10px);
+        animation: listItemAppear 0.5s ease forwards;
+        animation-delay: calc(var(--index) * 0.1s);
+    }
+
+    @keyframes listItemAppear {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
     }
 
     .resource-list li:before {
         content: '📖';
         position: absolute;
         left: 0;
-        color: #32CD32;
+        top: 2px;
+        color: #90EE90;
+        font-size: 1.2rem;
+        animation: bookFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes bookFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-5px) rotate(5deg); }
     }
 
     .resource-list a {
-        color: #ff1493;
+        color: #228B22;
         text-decoration: none;
         font-size: 1.1rem;
         display: block;
-        padding: 8px 0;
+        padding: 10px 15px 10px 5px;
         transition: all 0.3s;
-        border-radius: 8px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .resource-list a:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(144, 238, 144, 0.1), transparent);
+        transition: left 0.5s;
     }
 
     .resource-list a:hover {
-        color: #228B22;
-        padding-left: 10px;
-        background: rgba(255, 182, 193, 0.1);
+        color: #90EE90;
+        padding-left: 15px;
+        background: rgba(144, 238, 144, 0.05);
+        border-color: rgba(144, 238, 144, 0.3);
+        transform: translateX(5px);
     }
 
-    /* 特色书籍 */
-    .featured-books {
-        margin-top: 60px;
+    .resource-list a:hover:before {
+        left: 100%;
+    }
+
+    .resource-list .description {
+        font-size: 0.85rem;
+        color: rgba(34, 139, 34, 0.7);
+        margin-top: 5px;
+        margin-left: 5px;
+        line-height: 1.4;
+        display: block;
+    }
+
+    /* 特色推荐 */
+    .featured-section {
+        margin-top: 70px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #90EE90;
+        font-size: 2rem;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0 20px;
+    }
+
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 20%;
+        right: 20%;
+        height: 3px;
+        background: var(--reading-gradient);
+        border-radius: 2px;
     }
 
     .book-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
         margin-top: 20px;
     }
 
     .book-card {
         background: var(--glass);
-        border-radius: 15px;
+        border-radius: 20px;
         overflow: hidden;
         border: 1px solid var(--border);
-        transition: all 0.3s;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         box-shadow: var(--glow);
+        opacity: 1;
+        transform: translateY(0);
+        animation: cardAppear 0.6s ease forwards;
+        animation-delay: calc(var(--book-index) * 0.1s);
+        padding: 25px;
+        text-align: center;
+    }
+
+    .book-card.hidden {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
     }
 
     .book-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 25px 50px rgba(144, 238, 144, 0.25), var(--glow);
     }
 
-    .book-cover {
-        width: 100%;
-        height: 280px;
-        object-fit: cover;
-        background: linear-gradient(45deg, #32CD32, #228B22);
+    .book-icon {
+        font-size: 3.5rem;
+        margin-bottom: 15px;
+        height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 3rem;
-        position: relative;
+        color: #90EE90;
+        animation: bookPulse 2s ease-in-out infinite;
     }
 
-    .book-info {
-        padding: 15px;
+    @keyframes bookPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
     }
 
     .book-info h4 {
-        margin-bottom: 5px;
-        color: #228B22;
-        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: #90EE90;
+        font-size: 1.3rem;
     }
 
     .book-info p {
         font-size: 0.9rem;
-        opacity: 0.7;
-        margin-bottom: 8px;
+        opacity: 0.8;
+        margin-bottom: 15px;
+        line-height: 1.5;
     }
 
-    .book-author {
-        color: #32CD32;
-        font-weight: bold;
-    }
-
-    .book-rating {
-        color: #FFD700;
-        margin-top: 5px;
-    }
-
-    /* 分类标签 */
-    .category-tags {
+    .book-tags {
         display: flex;
-        gap: 10px;
+        gap: 8px;
         flex-wrap: wrap;
-        margin-top: 30px;
         justify-content: center;
+        margin-top: 15px;
     }
 
-    .category-tag {
-        padding: 8px 16px;
-        background: var(--glass);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        text-decoration: none;
-        color: #ff1493;
-        transition: all 0.3s;
-        font-size: 0.9rem;
-    }
-
-    .category-tag:hover {
-        background: var(--reading-gradient);
-        color: white;
-        transform: translateY(-3px);
+    .book-tag {
+        background: rgba(144, 238, 144, 0.15);
+        color: #90EE90;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        border: 1px solid rgba(144, 238, 144, 0.3);
     }
 
     /* 响应式设计 */
@@ -263,12 +545,33 @@
             font-size: 2.2rem;
         }
         
+        .search-container {
+            margin: 20px auto 40px;
+            padding: 0 15px;
+        }
+        
+        .search-input {
+            padding: 16px 55px 16px 20px;
+            font-size: 1rem;
+        }
+        
+        .search-button {
+            width: 44px;
+            height: 44px;
+            right: 12px;
+        }
+        
+        .keyboard-shortcut {
+            display: none;
+        }
+        
         .content-grid {
             grid-template-columns: 1fr;
+            gap: 20px;
         }
         
         .book-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
         }
         
         .back-btn {
@@ -276,55 +579,51 @@
             padding: 10px 18px;
         }
         
-        .category-tags {
+        .category-filter {
             gap: 8px;
         }
     }
 
     @media (max-width: 480px) {
+        .page-header h1 {
+            font-size: 1.8rem;
+        }
+        
         .book-grid {
             grid-template-columns: 1fr;
         }
         
-        .page-header h1 {
-            font-size: 1.8rem;
+        .search-input {
+            font-size: 0.95rem;
+        }
+        
+        .resource-list li {
+            padding-left: 28px;
+        }
+        
+        .category-btn {
+            padding: 8px 16px;
+            font-size: 0.85rem;
         }
     }
 
-    /* 进度条 */
-    .reading-progress {
-        width: 100%;
-        height: 4px;
-        background: rgba(50, 205, 50, 0.2);
-        border-radius: 2px;
-        margin: 30px 0;
-        position: relative;
-        overflow: hidden;
+    /* 高亮匹配 */
+    .highlight {
+        background: linear-gradient(120deg, rgba(144, 238, 144, 0.3), rgba(50, 205, 50, 0.3));
+        padding: 0 4px;
+        border-radius: 4px;
+        color: #90EE90;
+        font-weight: bold;
     }
 
-    .progress-bar {
-        height: 100%;
-        background: var(--reading-gradient);
-        border-radius: 2px;
-        width: 0%;
-        animation: progress 2s ease-in-out infinite;
+    /* 页面加载动画 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes progress {
-        0% { width: 0%; }
-        50% { width: 70%; }
-        100% { width: 100%; }
-    }
-
-    /* 书页翻转动画 */
-    @keyframes pageFlip {
-        0% { transform: rotateY(0deg); }
-        50% { transform: rotateY(-10deg); }
-        100% { transform: rotateY(0deg); }
-    }
-
-    .book-cover {
-        animation: pageFlip 3s ease-in-out infinite;
+    .page-container {
+        animation: fadeIn 0.8s ease-out;
     }
     </style>
 </head>
@@ -337,213 +636,478 @@
     <div class="page-container">
         <header class="page-header">
             <h1>
-                <span>📚</span>
+                <span>📖</span>
                 阅读系
                 <span>✨</span>
             </h1>
             <p>书籍是屹立在时间的汪洋大海中的灯塔。在这里寻找属于你的那束光。</p>
         </header>
 
-        <div class="reading-progress">
-            <div class="progress-bar"></div>
+        <!-- 搜索区域 -->
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" class="search-input" placeholder="搜索书籍、平台或作者..." id="readingSearchInput">
+                <button class="search-button" id="searchButton">🔍</button>
+                <div class="keyboard-shortcut">
+                    <span class="kbd-key">Ctrl</span> + <span class="kbd-key">K</span> 快速搜索
+                </div>
+            </div>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+            <div class="result-count" id="resultCount"></div>
+            <div class="no-results" id="noResults">没有找到相关的阅读资源</div>
+        </div>
+
+        <!-- 分类筛选 -->
+        <div class="category-filter">
+            <button class="category-btn active" data-category="all">全部</button>
+            <button class="category-btn" data-category="ebook">电子书平台</button>
+            <button class="category-btn" data-category="community">阅读社区</button>
+            <button class="category-btn" data-category="classic">经典文学</button>
+            <button class="category-btn" data-category="magazine">杂志期刊</button>
+            <button class="category-btn" data-category="audio">有声书</button>
         </div>
 
         <div class="content-grid">
-            <div class="resource-card">
-                <h2>📚 电子书平台</h2>
+            <!-- 电子书平台 -->
+            <div class="resource-card" data-category="ebook">
+                <h2><span class="icon">📱</span> 电子书平台</h2>
                 <ul class="resource-list">
-                    <li><a href="https://www.amazon.com/Kindle-eBooks" target="_blank">Kindle Store - 亚马逊电子书</a></li>
-                    <li><a href="https://www.gutenberg.org" target="_blank">Project Gutenberg - 免费公版书</a></li>
-                    <li><a href="https://openlibrary.org" target="_blank">Open Library - 开放图书馆</a></li>
-                    <li><a href="https://www.bookrix.com" target="_blank">BookRix - 独立作者平台</a></li>
-                    <li><a href="https://manybooks.net" target="_blank">ManyBooks - 免费电子书库</a></li>
-                    <li><a href="https://www.smashwords.com" target="_blank">Smashwords - 多格式电子书</a></li>
+                    <li style="--index: 0">
+                        <a href="https://www.amazon.com/Kindle-eBooks" target="_blank">Kindle Store</a>
+                        <span class="description">- 亚马逊电子书，海量正版资源</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://www.gutenberg.org" target="_blank">Project Gutenberg</a>
+                        <span class="description">- 免费公版书，超过60,000本免费电子书</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://openlibrary.org" target="_blank">Open Library</a>
+                        <span class="description">- 开放图书馆，免费借阅电子书</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.bookrix.com" target="_blank">BookRix</a>
+                        <span class="description">- 独立作者平台，发现新作品</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://manybooks.net" target="_blank">ManyBooks</a>
+                        <span class="description">- 免费电子书店，分类齐全</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://www.smashwords.com" target="_blank">Smashwords</a>
+                        <span class="description">- 多格式电子书，支持多种设备</span>
+                    </li>
                 </ul>
             </div>
 
-            <div class="resource-card">
-                <h2>🎯 阅读社区与书评</h2>
+            <!-- 阅读社区与书评 -->
+            <div class="resource-card" data-category="community">
+                <h2><span class="icon">💬</span> 阅读社区与书评</h2>
                 <ul class="resource-list">
-                    <li><a href="https://www.goodreads.com" target="_blank">Goodreads - 全球书评社区</a></li>
-                    <li><a href="https://www.douban.com" target="_blank">豆瓣读书 - 中文读书社区</a></li>
-                    <li><a href="https://www.librarything.com" target="_blank">LibraryThing - 个人图书馆</a></li>
-                    <li><a href="https://www.litsy.com" target="_blank">Litsy - 图片书评社区</a></li>
-                    <li><a href="https://www.bookclubz.com" target="_blank">BookClubz - 线上读书会</a></li>
-                    <li><a href="https://www.thestorygraph.com" target="_blank">StoryGraph - 数据化阅读</a></li>
+                    <li style="--index: 0">
+                        <a href="https://www.goodreads.com" target="_blank">Goodreads</a>
+                        <span class="description">- 全球书评社区，读书笔记分享</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://book.douban.com" target="_blank">豆瓣读书</a>
+                        <span class="description">- 中文读书社区，书评与推荐</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://7-y87w.ipfs.deverland.app" target="_blank">书语者社区</a>
+                        <span class="description">- 小众阅读分享平台，深度交流</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.librarything.com" target="_blank">LibraryThing</a>
+                        <span class="description">- 个人图书馆管理，书目整理</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.anobii.com" target="_blank">Anobii</a>
+                        <span class="description">- 书籍社交网络，阅读进度追踪</span>
+                    </li>
+                    <li style="--index: 5">
+                        <a href="https://www.readgeek.com" target="_blank">Readgeek</a>
+                        <span class="description">- 个性化书籍推荐引擎</span>
+                    </li>
                 </ul>
             </div>
 
-            <div class="resource-card">
-                <h2>🔍 学术与研究资源</h2>
+            <!-- 经典文学资源 -->
+            <div class="resource-card" data-category="classic">
+                <h2><span class="icon">🏛️</span> 经典文学资源</h2>
                 <ul class="resource-list">
-                    <li><a href="https://scholar.google.com" target="_blank">Google Scholar - 学术搜索引擎</a></li>
-                    <li><a href="https://www.jstor.org" target="_blank">JSTOR - 学术期刊库</a></li>
-                    <li><a href="https://www.sciencedirect.com" target="_blank">ScienceDirect - 科技文献</a></li>
-                    <li><a href="https://www.researchgate.net" target="_blank">ResearchGate - 科研社区</a></li>
-                    <li><a href="https://www.academia.edu" target="_blank">Academia.edu - 学者网络</a></li>
-                    <li><a href="https://www.arXiv.org" target="_blank">arXiv - 预印本论文库</a></li>
-                </ul>
-            </div>
-
-            <div class="resource-card">
-                <h2>📰 杂志与期刊</h2>
-                <ul class="resource-list">
-                    <li><a href="https://www.issuu.com" target="_blank">Issuu - 数字杂志平台</a></li>
-                    <li><a href="https://www.magzter.com" target="_blank">Magzter - 全球杂志订阅</a></li>
-                    <li><a href="https://www.pressreader.com" target="_blank">PressReader - 报纸杂志库</a></li>
-                    <li><a href="https://www.newyorker.com" target="_blank">The New Yorker - 纽约客杂志</a></li>
-                    <li><a href="https://www.nationalgeographic.com" target="_blank">国家地理杂志</a></li>
-                    <li><a href="https://www.wired.com" target="_blank">WIRED - 科技文化杂志</a></li>
+                    <li style="--index: 0">
+                        <a href="https://www.poetryfoundation.org" target="_blank">Poetry Foundation</a>
+                        <span class="description">- 诗歌基金会，海量诗歌资源</span>
+                    </li>
+                    <li style="--index: 1">
+                        <a href="https://www.bartleby.com" target="_blank">Bartleby.com</a>
+                        <span class="description">- 经典参考文献，文学全集</span>
+                    </li>
+                    <li style="--index: 2">
+                        <a href="https://www.classicreader.com" target="_blank">Classic Reader</a>
+                        <span class="description">- 经典文学作品在线阅读</span>
+                    </li>
+                    <li style="--index: 3">
+                        <a href="https://www.literature.org" target="_blank">Literature.org</a>
+                        <span class="description">- 在线文学图书馆，免费阅读</span>
+                    </li>
+                    <li style="--index: 4">
+                        <a href="https://www.shakespeareswords.com" target="_blank">Shakespeare's Words</a>
+                        <span class="description">- 莎士比亚作品与词汇研究</span>
+                    </li>
                 </ul>
             </div>
         </div>
 
-        <div class="category-tags">
-            <a href="#" class="category-tag">文学经典</a>
-            <a href="#" class="category-tag">科幻奇幻</a>
-            <a href="#" class="category-tag">历史传记</a>
-            <a href="#" class="category-tag">科学技术</a>
-            <a href="#" class="category-tag">哲学思想</a>
-            <a href="#" class="category-tag">艺术设计</a>
-            <a href="#" class="category-tag">心理学</a>
-            <a href="#" class="category-tag">商业经济</a>
-        </div>
-
-        <section class="featured-books">
-            <h2 style="text-align: center; margin-bottom: 30px; color: #228B22;">✨ 本月推荐书籍</h2>
+        <section class="featured-section">
+            <h2 class="section-title">🌟 精选推荐阅读</h2>
             <div class="book-grid">
-                <div class="book-card">
-                    <div class="book-cover">🌌</div>
+                <div class="book-card" style="--book-index: 0" data-category="classic">
+                    <div class="book-icon">📘</div>
                     <div class="book-info">
-                        <h4>《星尘回音》</h4>
-                        <p class="book-author">作者：星河漫游者</p>
-                        <p>一部关于时间与记忆的科幻小说，探索宇宙深处的秘密...</p>
-                        <div class="book-rating">★★★★☆ 4.2/5</div>
+                        <h4>百年孤独</h4>
+                        <p>加西亚·马尔克斯代表作，魔幻现实主义文学巅峰，布恩迪亚家族七代人的传奇故事。</p>
+                        <div class="book-tags">
+                            <span class="book-tag">文学经典</span>
+                            <span class="book-tag">魔幻现实主义</span>
+                            <span class="book-tag">拉美文学</span>
+                        </div>
                     </div>
                 </div>
-                <div class="book-card">
-                    <div class="book-cover">🏰</div>
+                <div class="book-card" style="--book-index: 1" data-category="classic">
+                    <div class="book-icon">📗</div>
                     <div class="book-info">
-                        <h4>《遗失的王国》</h4>
-                        <p class="book-author">作者：历史探索者</p>
-                        <p>揭开古代文明的神秘面纱，一段被遗忘的历史...</p>
-                        <div class="book-rating">★★★★★ 4.8/5</div>
+                        <h4>小王子</h4>
+                        <p>圣埃克苏佩里经典之作，写给大人的童话，关于爱、责任与成长的永恒寓言。</p>
+                        <div class="book-tags">
+                            <span class="book-tag">童话寓言</span>
+                            <span class="book-tag">哲理文学</span>
+                            <span class="book-tag">经典畅销</span>
+                        </div>
                     </div>
                 </div>
-                <div class="book-card">
-                    <div class="book-cover">🧠</div>
+                <div class="book-card" style="--book-index: 2" data-category="ebook">
+                    <div class="book-icon">📱</div>
                     <div class="book-info">
-                        <h4>《思维的艺术》</h4>
-                        <p class="book-author">作者：认知科学家</p>
-                        <p>深入探讨人类思维的奥秘，提升认知能力...</p>
-                        <div class="book-rating">★★★★☆ 4.5/5</div>
+                        <h4>数字阅读指南</h4>
+                        <p>全面介绍电子书阅读技巧、平台选择与设备优化，数字时代阅读者的必备手册。</p>
+                        <div class="book-tags">
+                            <span class="book-tag">数字阅读</span>
+                            <span class="book-tag">效率工具</span>
+                            <span class="book-tag">实用指南</span>
+                        </div>
                     </div>
                 </div>
-                <div class="book-card">
-                    <div class="book-cover">🎨</div>
+                <div class="book-card" style="--book-index: 3" data-category="community">
+                    <div class="book-icon">💭</div>
                     <div class="book-info">
-                        <h4>《色彩的诗意》</h4>
-                        <p class="book-author">作者：艺术评论家</p>
-                        <p>探索色彩在艺术中的表现力与情感传递...</p>
-                        <div class="book-rating">★★★★☆ 4.3/5</div>
+                        <h4>如何阅读一本书</h4>
+                        <p>莫提默·J·艾德勒经典阅读指南，教授深度阅读方法，提升阅读效率与理解力。</p>
+                        <div class="book-tags">
+                            <span class="book-tag">阅读方法</span>
+                            <span class="book-tag">学习指南</span>
+                            <span class="book-tag">教育经典</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <div class="resource-card" style="margin-top: 50px;">
-            <h2>📖 阅读工具推荐</h2>
-            <ul class="resource-list">
-                <li><a href="https://calibre-ebook.com" target="_blank">Calibre - 电子书管理神器</a></li>
-                <li><a href="https://readwise.io" target="_blank">Readwise - 阅读笔记管理</a></li>
-                <li><a href="https://www.highlights.com" target="_blank">Highlights - 电子书高亮导出</a></li>
-                <li><a href="https://www.liquidtext.net" target="_blank">LiquidText - 交互式阅读</a></li>
-                <li><a href="https://www.zotero.org" target="_blank">Zotero - 学术文献管理</a></li>
-                <li><a href="https://www.mendeley.com" target="_blank">Mendeley - 科研阅读工具</a></li>
+        <!-- 杂志期刊 -->
+        <div class="resource-card" style="margin-top: 50px; grid-column: 1 / -1;" data-category="magazine">
+            <h2><span class="icon">📰</span> 杂志与期刊</h2>
+            <ul class="resource-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <li style="--index: 0">
+                    <a href="https://www.nytimes.com" target="_blank">The New York Times</a>
+                    <span class="description">- 纽约时报，全球知名新闻报道</span>
+                </li>
+                <li style="--index: 1">
+                    <a href="https://www.newyorker.com" target="_blank">The New Yorker</a>
+                    <span class="description">- 纽约客，文学与评论杂志</span>
+                </li>
+                <li style="--index: 2">
+                    <a href="https://www.economist.com" target="_blank">The Economist</a>
+                    <span class="description">- 经济学人，国际时事与经济分析</span>
+                </li>
+                <li style="--index: 3">
+                    <a href="https://www.nationalgeographic.com" target="_blank">National Geographic</a>
+                    <span class="description">- 国家地理，科学与探索杂志</span>
+                </li>
+                <li style="--index: 4">
+                    <a href="https://www.scientificamerican.com" target="_blank">Scientific American</a>
+                    <span class="description">- 科学美国人，科普杂志</span>
+                </li>
+                <li style="--index: 5">
+                    <a href="https://www.wired.com" target="_blank">WIRED</a>
+                    <span class="description">- 科技与文化趋势杂志</span>
+                </li>
             </ul>
         </div>
 
-        <footer style="text-align: center; margin-top: 60px; padding: 20px; opacity: 0.7;">
-            <p>📚 阅读是一座随身携带的避难所 | DESIGNED WITH 📖</p>
-            <p style="font-size: 0.8rem; margin-top: 10px;">探索 · 思考 · 成长</p>
+        <footer style="text-align: center; margin-top: 80px; padding: 30px; opacity: 0.8;">
+            <p style="font-size: 1.1rem; margin-bottom: 10px;">📖 阅读是随身携带的避难所 | DESIGNED WITH ❤️</p>
+            <p style="font-size: 0.9rem;">发现 · 阅读 · 思考 · 分享</p>
+            <div style="margin-top: 20px; font-size: 0.8rem; color: rgba(144, 238, 144, 0.7);">
+                共收录 35 个阅读资源 | 最后更新: 2024年1月
+            </div>
         </footer>
     </div>
 
     <script>
-    // 页面滚动效果
-    const resourceCards = document.querySelectorAll('.resource-card');
-    const bookCards = document.querySelectorAll('.book-card');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+    // 搜索功能实现
+    class ReadingSearch {
+        constructor() {
+            this.searchInput = document.getElementById('readingSearchInput');
+            this.searchButton = document.getElementById('searchButton');
+            this.searchSuggestions = document.getElementById('searchSuggestions');
+            this.resultCount = document.getElementById('resultCount');
+            this.noResults = document.getElementById('noResults');
+            this.categoryButtons = document.querySelectorAll('.category-btn');
+            
+            this.allCards = document.querySelectorAll('.resource-card, .book-card');
+            this.allLinks = document.querySelectorAll('.resource-list a');
+            
+            this.init();
+        }
+
+        init() {
+            this.bindEvents();
+            this.setupCategoryFilter();
+            
+            document.querySelectorAll('.resource-list li').forEach((li, index) => {
+                li.style.setProperty('--index', index);
+            });
+            
+            document.querySelectorAll('.book-card').forEach((card, index) => {
+                card.style.setProperty('--book-index', index);
+            });
+        }
+
+        bindEvents() {
+            this.searchInput.addEventListener('input', (e) => {
+                this.handleSearch(e.target.value);
+                this.showSuggestions(e.target.value);
+            });
+            
+            this.searchButton.addEventListener('click', () => {
+                this.handleSearch(this.searchInput.value);
+            });
+            
+            this.searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    this.handleSearch(this.searchInput.value);
+                    this.hideSuggestions();
+                } else if (e.key === 'Escape') {
+                    this.hideSuggestions();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    this.searchInput.focus();
+                }
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    this.hideSuggestions();
+                }
+            });
+        }
+
+        setupCategoryFilter() {
+            this.categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.categoryButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const category = btn.dataset.category;
+                    this.filterByCategory(category);
+                });
+            });
+        }
+
+        filterByCategory(category) {
+            let visibleCount = 0;
+            
+            this.allCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            if (category !== 'all') {
+                const categoryNames = {
+                    'ebook': '电子书平台',
+                    'community': '阅读社区',
+                    'classic': '经典文学',
+                    'magazine': '杂志期刊',
+                    'audio': '有声书'
+                };
+                
+                this.resultCount.style.display = 'block';
+                this.resultCount.innerHTML = `找到 <span class="highlight">${visibleCount}</span> 个${categoryNames[category]}资源`;
+            } else {
+                this.resultCount.style.display = 'none';
             }
-        });
-    }, { threshold: 0.1 });
+        }
 
-    resourceCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.6s ease';
-        observer.observe(card);
-    });
-
-    bookCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.6s ease';
-        observer.observe(card);
-    });
-
-    // 分类标签点击效果
-    const categoryTags = document.querySelectorAll('.category-tag');
-    categoryTags.forEach(tag => {
-        tag.addEventListener('click', function(e) {
-            e.preventDefault();
+        handleSearch(query) {
+            const searchTerm = query.toLowerCase().trim();
             
-            // 移除其他标签的激活状态
-            categoryTags.forEach(t => t.classList.remove('active'));
+            if (!searchTerm) {
+                this.resetSearch();
+                return;
+            }
             
-            // 添加当前标签的激活状态
-            this.classList.add('active');
+            let matchCount = 0;
             
-            // 添加点击效果
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1) translateY(-3px)';
-            }, 150);
-        });
-    });
+            this.allCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const matches = text.includes(searchTerm);
+                
+                if (matches) {
+                    card.classList.remove('hidden');
+                    matchCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            this.highlightMatches(searchTerm);
+            this.showResults(matchCount, searchTerm);
+        }
 
-    // 书籍卡片悬停效果
-    bookCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            const cover = card.querySelector('.book-cover');
-            cover.style.animation = 'pageFlip 0.5s ease-in-out';
-            setTimeout(() => {
-                cover.style.animation = 'pageFlip 3s ease-in-out infinite';
-            }, 500);
-        });
-    });
+        highlightMatches(searchTerm) {
+            this.allLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    link.innerHTML = link.textContent.replace(regex, '<span class="highlight">$1</span>');
+                }
+            });
+        }
 
-    // 模拟阅读进度
-    let progress = 0;
-    const progressBar = document.querySelector('.progress-bar');
-    
-    function simulateReading() {
-        if (progress < 100) {
-            progress += 0.5;
-            progressBar.style.width = progress + '%';
-        } else {
-            progress = 0;
-            progressBar.style.width = '0%';
+        showResults(count, searchTerm) {
+            if (count === 0) {
+                this.resultCount.style.display = 'none';
+                this.noResults.style.display = 'block';
+                this.noResults.innerHTML = `没有找到包含 "<span class="highlight">${searchTerm}</span>" 的阅读资源`;
+            } else {
+                this.resultCount.style.display = 'block';
+                this.resultCount.innerHTML = `找到 <span class="highlight">${count}</span> 个包含 "<span class="highlight">${searchTerm}</span>" 的资源`;
+                this.noResults.style.display = 'none';
+            }
+        }
+
+        resetSearch() {
+            this.allCards.forEach(card => {
+                card.classList.remove('hidden');
+            });
+            
+            this.allLinks.forEach(link => {
+                link.innerHTML = link.textContent;
+            });
+            
+            this.resultCount.style.display = 'none';
+            this.noResults.style.display = 'none';
+        }
+
+        showSuggestions(query) {
+            if (!query) {
+                this.hideSuggestions();
+                return;
+            }
+            
+            const suggestions = this.getSuggestions(query);
+            if (suggestions.length === 0) {
+                this.hideSuggestions();
+                return;
+            }
+            
+            this.searchSuggestions.innerHTML = suggestions.map(suggestion => 
+                `<div class="suggestion-item">${this.highlightText(suggestion, query)}</div>`
+            ).join('');
+            
+            this.searchSuggestions.classList.add('show');
+            
+            this.searchSuggestions.querySelectorAll('.suggestion-item').forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    this.searchInput.value = suggestions[index].replace(/<[^>]*>/g, '');
+                    this.handleSearch(this.searchInput.value);
+                    this.hideSuggestions();
+                });
+            });
+        }
+
+        getSuggestions(query) {
+            const suggestions = new Set();
+            const searchTerm = query.toLowerCase();
+            
+            this.allLinks.forEach(link => {
+                const text = link.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            document.querySelectorAll('.resource-card h2').forEach(title => {
+                const text = title.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            document.querySelectorAll('.book-info h4').forEach(title => {
+                const text = title.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    suggestions.add(text);
+                }
+            });
+            
+            return Array.from(suggestions).slice(0, 8);
+        }
+
+        highlightText(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        hideSuggestions() {
+            this.searchSuggestions.classList.remove('show');
         }
     }
-    
-    // 每3秒更新一次进度
-    setInterval(simulateReading, 3000);
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        const readingSearch = new ReadingSearch();
+        
+        document.querySelectorAll('.book-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const icon = this.querySelector('.book-icon');
+                icon.style.transform = 'scale(1.2)';
+                icon.style.transition = 'transform 0.3s ease';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('.book-icon');
+                icon.style.transform = 'scale(1)';
+            });
+        });
+        
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    });
     </script>
 </body>
 </html>
