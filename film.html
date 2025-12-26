@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>系守分院 · 影视资源</title>
+
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --glass: rgba(255,255,255,0.12);
+    --border: rgba(255,255,255,0.25);
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+    background: #0d1117;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* 背景 */
+.master-bg {
+    position: fixed;
+    inset: 0;
+    background: url('jm.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: -10;
+    transform: scale(1.02);
+}
+
+.film-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.4));
+    backdrop-filter: saturate(1.2) contrast(1.1);
+    -webkit-backdrop-filter: saturate(1.2) contrast(1.1);
+    z-index: -5;
+}
+
+/* 主体 */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: calc(24px + env(safe-area-inset-top)) 20px 20px;
+}
+
+/* 顶部 */
+.top-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.15);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-right: 12px;
+}
+
+.title-area h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #fff;
+    letter-spacing: 2px;
+}
+
+.title-area p {
+    margin: 4px 0 0;
+    font-size: .7rem;
+    color: rgba(255,255,255,.7);
+}
+
+/* 列表 */
+.list-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.site-card {
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    transition: .25s;
+}
+
+.site-card:active {
+    transform: scale(.97);
+    background: rgba(255,255,255,.22);
+}
+
+.site-card h3 {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    color: #fff;
+}
+
+.site-card p {
+    margin: 0;
+    font-size: .7rem;
+    color: rgba(255,255,255,.75);
+}
+
+/* 页脚 */
+footer {
+    text-align: center;
+    font-size: .6rem;
+    color: rgba(255,255,255,.45);
+    padding: 20px 0 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="master-bg"></div>
+<div class="film-overlay"></div>
+
+<div class="app-container">
+
+<div class="top-bar">
+    <div class="back-btn" onclick="location.href='index.html'">⬅️</div>
+    <div class="title-area">
+        <h1>系守分院</h1>
+        <p>影视资源 · 持续整理中</p>
+    </div>
+</div>
+
+<div class="list-area">
+
+    <!-- 示例资源 1 -->
+    <div class="site-card" onclick="window.open('https://www.netflix.com', '_blank')">
+        <h3>Netflix</h3>
+        <p>正版流媒体 · 海外剧集 / 电影</p>
+    </div>
+
+    <!-- 示例资源 2 -->
+    <div class="site-card" onclick="window.open('https://www.bilibili.com', '_blank')">
+        <h3>Bilibili</h3>
+        <p>动画 / 国创 / 纪录片</p>
+    </div>
+
+    <!-- 示例资源 3 -->
+    <div class="site-card" onclick="window.open('https://movie.douban.com', '_blank')">
+        <h3>豆瓣电影</h3>
+        <p>评分 / 片单 / 查资料</p>
+    </div>
+
+</div>
+
+<footer>ITOMORI · FILM DIVISION</footer>
+
+</div>
+
+</body>
+</html>
