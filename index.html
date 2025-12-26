@@ -3,23 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>资源魔法学院 - 你的名字</title>
+<title>资源风の魔法学院 - 你的名字</title>
 
 <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
 
 <style>
 :root {
-    --glass: rgba(255, 255, 255, 0.1);
-    --border: rgba(255, 255, 255, 0.25);
+    --glass: rgba(255,255,255,0.12);
+    --border: rgba(255,255,255,0.25);
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100vh;
-    font-family: 'ZCOOL KuaiLe', cursive;
-    background-color: #0d1117;
+    min-height: 100vh;
+    font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+    background: #0d1117;
 }
 
 body {
@@ -31,13 +36,11 @@ body {
 .master-bg {
     position: fixed;
     inset: 0;
-    background:
-        url('jm.jpg') no-repeat center center,
-        url('https://api.paugram.com/wallpaper/?category=landscape');
+    background: url('jm.jpg') no-repeat center center;
     background-size: cover;
     z-index: -10;
-    transform: scale(1.05);
-    animation: breathe 20s ease-in-out infinite;
+    transform: scale(1.02);
+    animation: slowBreathe 22s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,10 +52,24 @@ body {
 .film-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.25);
-    backdrop-filter: brightness(0.9) contrast(1.1);
-    -webkit-backdrop-filter: brightness(0.9) contrast(1.1);
+    background: linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.35));
+    backdrop-filter: saturate(1.2) contrast(1.1);
+    -webkit-backdrop-filter: saturate(1.2) contrast(1.1);
     z-index: -5;
+}
+
+/* 流星 */
+.star {
+    position: fixed;
+    top: -5%;
+    left: 80%;
+    width: 2px;
+    height: 160px;
+    background: linear-gradient(to bottom, rgba(255,255,255,.8), transparent);
+    transform: rotate(45deg);
+    opacity: 0;
+    z-index: -2;
+    animation: shoot 9s ease-in-out infinite;
 }
 
 /* 主体 */
@@ -60,32 +77,31 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: calc(20px + env(safe-area-inset-top)) 20px 20px;
-    box-sizing: border-box;
+    padding: calc(24px + env(safe-area-inset-top)) 20px 20px;
 }
 
 /* 顶部 */
-.header {
+.header-card {
     background: var(--glass);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
     border: 1px solid var(--border);
     border-radius: 24px;
-    padding: 15px;
+    padding: 18px;
     display: flex;
     align-items: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    margin-bottom: 24px;
     transition: transform .2s;
 }
 
-.header:active {
-    transform: scale(0.98);
+.header-card:active {
+    transform: scale(.98);
 }
 
-.header img {
-    width: 55px;
-    height: 55px;
+.avatar {
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
     border: 2px solid #fff;
     object-fit: cover;
@@ -98,96 +114,85 @@ body {
 
 .header-info h1 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: #fff;
     letter-spacing: 2px;
 }
 
 .header-info p {
     margin: 4px 0 0;
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.7);
+    font-size: .75rem;
+    color: rgba(255,255,255,.8);
 }
 
-.player-disk {
-    width: 40px;
-    height: 40px;
+.music-btn {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid #fff;
+    background: rgba(255,255,255,.15);
+    border: 1.5px solid #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 }
 
 .is-playing {
-    animation: disk-rotate 6s linear infinite;
+    animation: diskRotate 5s linear infinite;
     box-shadow: 0 0 15px #fff;
 }
 
-/* 列表 */
-.list {
+/* 卡片 */
+.list-area {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
 }
 
-.card {
+.magic-card {
     background: var(--glass);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 20px;
+    padding: 22px;
     display: flex;
     align-items: center;
-    transition: .25s;
+    transition: .3s;
 }
 
-.card:active {
-    transform: scale(0.96);
-    background: rgba(255,255,255,0.2);
+.magic-card:active {
+    transform: scale(.96);
+    background: rgba(255,255,255,.25);
 }
 
 .card-icon {
-    font-size: 1.5rem;
-    margin-right: 15px;
+    font-size: 1.6rem;
+    margin-right: 18px;
 }
 
-.card b {
-    font-size: 1rem;
+.card-text {
+    font-size: 1.05rem;
     color: #fff;
-}
-
-/* 流星 */
-.shooting-star {
-    position: fixed;
-    top: -10px;
-    left: 80%;
-    width: 2px;
-    height: 120px;
-    background: linear-gradient(to bottom, rgba(255,255,255,.8), transparent);
-    transform: rotate(45deg);
-    opacity: 0;
-    z-index: -2;
-    animation: shoot 8s ease-in-out infinite;
+    font-weight: bold;
 }
 
 footer {
     text-align: center;
-    font-size: .6rem;
+    font-size: .65rem;
     color: rgba(255,255,255,.5);
-    padding: 10px;
+    padding: 16px;
+    letter-spacing: 1.5px;
 }
 
-@keyframes breathe {
-    0%,100% { transform: scale(1.05); }
-    50% { transform: scale(1.1); }
+/* 动画 */
+@keyframes slowBreathe {
+    0%,100% { transform: scale(1.02); }
+    50% { transform: scale(1.08); }
 }
 
-@keyframes disk-rotate {
+@keyframes diskRotate {
     from { transform: rotate(0); }
     to { transform: rotate(360deg); }
 }
@@ -195,7 +200,7 @@ footer {
 @keyframes shoot {
     0% { opacity: 0; }
     10% { opacity: 1; }
-    20% { transform: translate(-100vw,100vh) rotate(45deg); opacity: 0; }
+    25% { transform: translate(-100vw,100vh) rotate(45deg); opacity: 0; }
     100% { opacity: 0; }
 }
 </style>
@@ -205,42 +210,45 @@ footer {
 
 <div class="master-bg"></div>
 <div class="film-overlay"></div>
-<div class="shooting-star" style="animation-delay:1s"></div>
-<div class="shooting-star" style="animation-delay:5s;left:60%;height:160px"></div>
+<div class="star" style="animation-delay:2s"></div>
+<div class="star" style="animation-delay:6s; left:60%; height:200px"></div>
 
 <div class="app-container">
 
-<header class="header" onclick="toggleMusic()">
-    <img src="ndmz.jpg" alt="头像">
+<header class="header-card" onclick="toggleMusic()">
+    <img src="ndmz.jpg" class="avatar" alt="头像">
     <div class="header-info">
-        <h1>资源魔法学院</h1>
-        <p>系守町 · 重要的事，不想忘记的事</p>
+        <h1>资源风の魔法学院</h1>
+        <p>系守町 · 重要的事，不能忘记的事</p>
     </div>
-    <div id="disk" class="player-disk">🎵</div>
+    <div id="disk" class="music-btn">🎵</div>
 </header>
 
-<div class="list">
-    <div class="card" onclick="alert('即将开启系守分院…')">
+<div class="list-area">
+    <div class="magic-card" onclick="location.href='film.html'">
         <div class="card-icon">☄️</div>
-        <b>系守分院（影视资源）</b>
+        <div class="card-text">系守分院（影视资源）</div>
     </div>
-    <div class="card" onclick="alert('进入星轨实验室…')">
+
+    <div class="magic-card" onclick="location.href='tools.html'">
         <div class="card-icon">🌠</div>
-        <b>星轨实验室（实用工具）</b>
+        <div class="card-text">星轨实验室（实用工具）</div>
     </div>
 </div>
 
 <footer>DESIGNED FOR FENG-180 · ITOMORI</footer>
+
 </div>
 
-<audio id="audio" loop preload="auto">
+<audio id="bgm" loop preload="auto">
     <source src="ndmz.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const audio = document.getElementById('audio');
+const audio = document.getElementById('bgm');
 const disk = document.getElementById('disk');
 
+/* 记忆用户选择 */
 if (localStorage.getItem('mute') === '1') {
     audio.muted = true;
 }
@@ -248,7 +256,7 @@ if (localStorage.getItem('mute') === '1') {
 function toggleMusic() {
     if (audio.paused) {
         audio.muted = false;
-        audio.play().then(()=>{
+        audio.play().then(() => {
             disk.textContent = '💿';
             disk.classList.add('is-playing');
             localStorage.removeItem('mute');
@@ -261,9 +269,9 @@ function toggleMusic() {
     }
 }
 
-/* iOS 音频解锁 */
+/* iOS 音频权限解锁 */
 document.addEventListener('touchstart', function unlock() {
-    audio.play().then(()=>audio.pause());
+    audio.play().then(() => audio.pause());
     document.removeEventListener('touchstart', unlock);
 });
 </script>
