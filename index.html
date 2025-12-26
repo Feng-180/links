@@ -1,173 +1,272 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>资源魔法学院 - 你的名字</title>
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --glass: rgba(255, 255, 255, 0.1);
-            --border: rgba(255, 255, 255, 0.25);
-            --text-glow: 0 0 10px rgba(161, 196, 253, 0.8);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>资源魔法学院 - 你的名字</title>
 
-        /* 核心修复：确保背景百分之百显示 */
-        html, body { 
-            margin: 0; padding: 0; width: 100%; height: 100vh; 
-            font-family: 'ZCOOL KuaiLe', cursive;
-            background-color: #0d1117; /* 深蓝色底色保底 */
-            overflow: hidden;
-        }
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
 
-        .master-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            /* 引用你上传的文件，并加上一个备选背景 */
-            background: url('jm.jpg') no-repeat center center, url('https://api.paugram.com/wallpaper/?category=landscape');
-            background-size: cover;
-            z-index: -10;
-            transform: scale(1.05); /* 稍微放大防止边缘白边 */
-            animation: breathe 20s ease-in-out infinite;
-        }
+<style>
+:root {
+    --glass: rgba(255, 255, 255, 0.1);
+    --border: rgba(255, 255, 255, 0.25);
+}
 
-        /* 电影滤镜：让背景更有质感，文字更清晰 */
-        .film-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: brightness(0.9) contrast(1.1);
-            -webkit-backdrop-filter: brightness(0.9) contrast(1.1);
-            z-index: -5;
-        }
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    font-family: 'ZCOOL KuaiLe', cursive;
+    background-color: #0d1117;
+}
 
-        .app-container {
-            position: relative; z-index: 10; height: 100vh;
-            display: flex; flex-direction: column;
-            padding: calc(20px + env(safe-area-inset-top)) 20px 20px;
-            box-sizing: border-box;
-        }
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 
-        /* 重新设计的顶部标题栏：融合头像 */
-        .header {
-            background: var(--glass);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
-            border-radius: 24px; padding: 15px;
-            display: flex; align-items: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
-        }
-        .header img {
-            width: 55px; height: 55px; border-radius: 50%;
-            border: 2px solid #fff; object-fit: cover;
-            box-shadow: 0 0 15px rgba(255,255,255,0.3);
-        }
-        .header-info { margin-left: 15px; flex: 1; }
-        .header-info h1 { margin: 0; font-size: 1.2rem; color: #fff; letter-spacing: 2px; }
-        .header-info p { margin: 4px 0 0; font-size: 0.7rem; color: rgba(255,255,255,0.7); }
+/* 背景 */
+.master-bg {
+    position: fixed;
+    inset: 0;
+    background:
+        url('jm.jpg') no-repeat center center,
+        url('https://api.paugram.com/wallpaper/?category=landscape');
+    background-size: cover;
+    z-index: -10;
+    transform: scale(1.05);
+    animation: breathe 20s ease-in-out infinite;
+}
 
-        /* 旋转唱片播放器 */
-        .player-disk {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: rgba(255,255,255,0.15); border: 1px solid #fff;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; transition: 0.5s;
-        }
-        .is-playing { animation: disk-rotate 6s linear infinite; box-shadow: 0 0 15px #fff; }
+@media (prefers-reduced-motion: reduce) {
+    .master-bg {
+        animation: none;
+    }
+}
 
-        /* 资源列表 */
-        .list { flex: 1; display: flex; flex-direction: column; gap: 15px; justify-content: flex-start; }
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            border-radius: 20px; padding: 20px;
-            display: flex; align-items: center;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .card:active { transform: scale(0.96); background: rgba(255,255,255,0.2); }
-        .card-icon { font-size: 1.5rem; margin-right: 15px; filter: drop-shadow(0 0 5px #fff); }
-        .card b { font-size: 1rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.film-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: brightness(0.9) contrast(1.1);
+    -webkit-backdrop-filter: brightness(0.9) contrast(1.1);
+    z-index: -5;
+}
 
-        /* 流星：改用更轻量、不卡顿的CSS方案 */
-        .shooting-star {
-            position: fixed; top: -10px; left: 80%; width: 2px; height: 100px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
-            transform: rotate(45deg); opacity: 0; z-index: -2;
-            animation: shoot 8s ease-in-out infinite;
-        }
-        @keyframes shoot {
-            0% { transform: translate(0,0) rotate(45deg); opacity: 0; }
-            10% { opacity: 1; }
-            20% { transform: translate(-100vw, 100vh) rotate(45deg); opacity: 0; }
-            100% { opacity: 0; }
-        }
+/* 主体 */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: calc(20px + env(safe-area-inset-top)) 20px 20px;
+    box-sizing: border-box;
+}
 
-        @keyframes breathe { 0%, 100% { transform: scale(1.05); } 50% { transform: scale(1.1); } }
-        @keyframes disk-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+/* 顶部 */
+.header {
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    transition: transform .2s;
+}
 
-        footer { text-align: center; font-size: 0.6rem; color: rgba(255,255,255,0.5); padding: 10px; letter-spacing: 1px; }
-    </style>
+.header:active {
+    transform: scale(0.98);
+}
+
+.header img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+}
+
+.header-info {
+    margin-left: 15px;
+    flex: 1;
+}
+
+.header-info h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #fff;
+    letter-spacing: 2px;
+}
+
+.header-info p {
+    margin: 4px 0 0;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.player-disk {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.is-playing {
+    animation: disk-rotate 6s linear infinite;
+    box-shadow: 0 0 15px #fff;
+}
+
+/* 列表 */
+.list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    transition: .25s;
+}
+
+.card:active {
+    transform: scale(0.96);
+    background: rgba(255,255,255,0.2);
+}
+
+.card-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
+
+.card b {
+    font-size: 1rem;
+    color: #fff;
+}
+
+/* 流星 */
+.shooting-star {
+    position: fixed;
+    top: -10px;
+    left: 80%;
+    width: 2px;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(255,255,255,.8), transparent);
+    transform: rotate(45deg);
+    opacity: 0;
+    z-index: -2;
+    animation: shoot 8s ease-in-out infinite;
+}
+
+footer {
+    text-align: center;
+    font-size: .6rem;
+    color: rgba(255,255,255,.5);
+    padding: 10px;
+}
+
+@keyframes breathe {
+    0%,100% { transform: scale(1.05); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes disk-rotate {
+    from { transform: rotate(0); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes shoot {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    20% { transform: translate(-100vw,100vh) rotate(45deg); opacity: 0; }
+    100% { opacity: 0; }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="master-bg"></div>
-    <div class="film-overlay"></div>
-    <div class="shooting-star" style="animation-delay: 1s;"></div>
-    <div class="shooting-star" style="animation-delay: 5s; left: 60%; height: 150px;"></div>
+<div class="master-bg"></div>
+<div class="film-overlay"></div>
+<div class="shooting-star" style="animation-delay:1s"></div>
+<div class="shooting-star" style="animation-delay:5s;left:60%;height:160px"></div>
 
-    <div class="app-container">
-        <header class="header" onclick="toggleMusic()">
-            <img src="ndmz.jpg" alt="头像">
-            <div class="header-info">
-                <h1>资源魔法学院</h1>
-                <p>系守町 · 重要的事，不想忘记的事</p>
-            </div>
-            <div id="disk-ui" class="player-disk">🎵</div>
-        </header>
+<div class="app-container">
 
-        <div class="list">
-            <div class="card" onclick="alert('即将开启系守分院...')">
-                <div class="card-icon">☄️</div>
-                <b>系守分院 (影视资源)</b>
-            </div>
-            <div class="card" onclick="alert('进入星轨实验室...')">
-                <div class="card-icon">🌠</div>
-                <b>星轨实验室 (实用工具)</b>
-            </div>
-        </div>
-
-        <footer>DESIGNED FOR FENG-180 · ITOMORI</footer>
+<header class="header" onclick="toggleMusic()">
+    <img src="ndmz.jpg" alt="头像">
+    <div class="header-info">
+        <h1>资源魔法学院</h1>
+        <p>系守町 · 重要的事，不想忘记的事</p>
     </div>
+    <div id="disk" class="player-disk">🎵</div>
+</header>
 
-    <audio id="bg-audio" loop preload="auto">
-        <source src="ndmz.mp3" type="audio/mpeg">
-    </audio>
+<div class="list">
+    <div class="card" onclick="alert('即将开启系守分院…')">
+        <div class="card-icon">☄️</div>
+        <b>系守分院（影视资源）</b>
+    </div>
+    <div class="card" onclick="alert('进入星轨实验室…')">
+        <div class="card-icon">🌠</div>
+        <b>星轨实验室（实用工具）</b>
+    </div>
+</div>
+
+<footer>DESIGNED FOR FENG-180 · ITOMORI</footer>
+</div>
+
+<audio id="audio" loop preload="auto">
+    <source src="ndmz.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-    const audio = document.getElementById('bg-audio');
-    const disk = document.getElementById('disk-ui');
+const audio = document.getElementById('audio');
+const disk = document.getElementById('disk');
 
-    function toggleMusic() {
-        if (audio.paused) {
-            audio.play().then(() => {
-                disk.innerText = '💿';
-                disk.classList.add('is-playing');
-            }).catch(err => {
-                console.log("需要用户手动触发一次");
-                alert("点击屏幕，开启音乐魔法~");
-            });
-        } else {
-            audio.pause();
-            disk.innerText = '🎵';
-            disk.classList.remove('is-playing');
-        }
+if (localStorage.getItem('mute') === '1') {
+    audio.muted = true;
+}
+
+function toggleMusic() {
+    if (audio.paused) {
+        audio.muted = false;
+        audio.play().then(()=>{
+            disk.textContent = '💿';
+            disk.classList.add('is-playing');
+            localStorage.removeItem('mute');
+        });
+    } else {
+        audio.pause();
+        disk.textContent = '🎵';
+        disk.classList.remove('is-playing');
+        localStorage.setItem('mute','1');
     }
+}
 
-    // 解决手机端音乐加载中断：确保完整播放
-    audio.addEventListener('error', function() {
-        console.log("音频加载出错，正在尝试重连...");
-        audio.load();
-    });
+/* iOS 音频解锁 */
+document.addEventListener('touchstart', function unlock() {
+    audio.play().then(()=>audio.pause());
+    document.removeEventListener('touchstart', unlock);
+});
 </script>
+
 </body>
 </html>
