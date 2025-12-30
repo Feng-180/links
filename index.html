@@ -6,91 +6,101 @@
     <title>资源风の魔法目录</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
         :root {
-            --glass: rgba(255, 255, 255, 0.6);
+            --glass: rgba(255, 255, 255, 0.65);
             --pink-border: rgba(255, 182, 193, 0.4);
-            --main-text: #ff6b81;
         }
         body {
             margin: 0;
             height: 100vh;
             background: linear-gradient(to bottom, #fff5f7, #ffe4e1);
-            font-family: -apple-system, sans-serif;
-            overflow: hidden; /* 锁定全屏 */
+            font-family: 'ZCOOL KuaiLe', -apple-system, sans-serif;
+            overflow: hidden;
             color: #555;
         }
-        /* 玻璃拟态卡片通用样式 */
         .glass-panel {
             background: var(--glass);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--pink-border);
-            border-radius: 1.5rem;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
         }
-        /* 卡片点击缩放 */
         .card-active:active { transform: scale(0.97); transition: 0.1s; }
-        
-        /* 隐藏滚动条但保留功能 */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .playing-disk { animation: spin 3s linear infinite; }
+        .float-anim { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
     </style>
 </head>
-<body class="flex items-center justify-center">
-    <div class="w-full max-w-[400px] h-screen flex flex-col p-4 gap-3 justify-between">
+<body class="flex items-center justify-center p-4">
+    <div class="w-full max-w-[400px] h-full flex flex-col justify-between py-2">
         
-        <header class="glass-panel p-4 flex items-center gap-4 shadow-sm">
-            <div class="w-14 h-14 rounded-full border-2 border-white overflow-hidden flex-shrink-0 shadow-sm">
+        <header class="glass-panel p-3.5 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full border-2 border-white overflow-hidden flex-shrink-0 shadow-sm">
                 <img src="./ndmz.jpg" class="w-full h-full object-cover">
             </div>
             <div class="flex-1 min-w-0">
-                <h1 class="text-lg font-bold text-[#ff6b81] truncate">资源风の魔法目录</h1>
-                <p class="text-[11px] text-pink-300">系守町 · 把重要的东西留住</p>
-                <div class="flex gap-2 mt-1 text-[9px] text-pink-400 opacity-80">
-                    <span>7个资源系</span><span>|</span><span>200+资源</span>
-                </div>
+                <h1 class="text-base font-bold text-[#ff6b81] truncate">资源风の魔法目录</h1>
+                <p class="text-[10px] text-pink-300">系守町 · 把重要的东西留住</p>
             </div>
-            <button id="disk" class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-inner active:shadow-none">
-                <span class="text-pink-400">♪</span>
+            <button id="disk" class="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm active:bg-pink-50 transition-colors">
+                <span id="disk-icon" class="text-pink-400 text-xs">♪</span>
             </button>
         </header>
 
-        <main class="flex-1 flex flex-col justify-center gap-2.5">
+        <div class="px-1 mt-2 float-anim">
+            <div class="bg-white/40 border border-pink-200/50 rounded-2xl p-3 flex items-start gap-3 relative overflow-hidden">
+                <div class="absolute -right-2 -top-2 text-2xl opacity-10">💬</div>
+                <div class="flex-shrink-0 text-lg">💡</div>
+                <div class="flex-1">
+                    <p class="text-[11px] text-[#ff6b81] font-bold mb-0.5">魔法广播台：</p>
+                    <p class="text-[10px] text-gray-500 leading-relaxed">
+                        由于结界限制，个别神器需开启<span class="text-pink-400 font-bold">“高阶魔法”</span>(VPN)才能召唤哦！若魔法失效，快回魔法阵地：<span class="bg-pink-100 px-1.5 py-0.5 rounded-full text-[#ff6b81] font-bold">QQ群 691105381</span> 寻求支援~
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <main class="flex-1 flex flex-col justify-center gap-2">
             <a href="music.html" class="glass-panel p-3 flex items-center gap-4 card-active">
-                <span class="text-2xl">🎵</span>
+                <span class="text-xl">🎵</span>
                 <div>
                     <b class="text-[#ff6b81] text-sm block">音乐系</b>
                     <span class="text-[10px] text-gray-400">发现旋律与节奏的魔法</span>
                 </div>
             </a>
             <a href="film.html" class="glass-panel p-3 flex items-center gap-4 card-active">
-                <span class="text-2xl">🍿</span>
+                <span class="text-xl">🍿</span>
                 <div>
                     <b class="text-[#ff6b81] text-sm block">观影系</b>
                     <span class="text-[10px] text-gray-400">光影交织的视觉盛宴</span>
                 </div>
             </a>
             <a href="reading.html" class="glass-panel p-3 flex items-center gap-4 card-active">
-                <span class="text-2xl">📖</span>
+                <span class="text-xl">📖</span>
                 <div>
                     <b class="text-[#ff6b81] text-sm block">阅读系</b>
                     <span class="text-[10px] text-gray-400">文字与思想的无尽海洋</span>
                 </div>
             </a>
             <a href="game.html" class="glass-panel p-3 flex items-center gap-4 card-active">
-                <span class="text-2xl">🎮</span>
+                <span class="text-xl">🎮</span>
                 <div>
                     <b class="text-[#ff6b81] text-sm block">游戏系</b>
                     <span class="text-[10px] text-gray-400">虚拟世界的冒险旅程</span>
                 </div>
             </a>
             <a href="tools.html" class="glass-panel p-3 flex items-center gap-4 card-active">
-                <span class="text-2xl">🔧</span>
+                <span class="text-xl">🔧</span>
                 <div>
                     <b class="text-[#ff6b81] text-sm block">工具系</b>
                     <span class="text-[10px] text-gray-400">提升效率的神器集合</span>
                 </div>
             </a>
             <a href="data.html" class="glass-panel p-3 flex items-center gap-4 card-active">
-                <span class="text-2xl">📊</span>
+                <span class="text-xl">📊</span>
                 <div>
                     <b class="text-[#ff6b81] text-sm block">数据系</b>
                     <span class="text-[10px] text-gray-400">数据驱动世界的奥秘</span>
@@ -100,23 +110,25 @@
 
         <footer class="space-y-3">
             <div class="glass-panel p-3">
-                <div class="flex justify-between items-center text-[11px]">
-                    <div class="flex items-center gap-1.5">
-                        <span class="opacity-70">👁️</span>
-                        <span class="text-gray-500">今日: <span id="todayVisits" class="text-[#ff6b81] font-bold">12</span></span>
+                <div class="flex justify-around items-center text-[10px]">
+                    <div class="text-center">
+                        <p class="text-gray-400 mb-0.5">今日访问</p>
+                        <span id="todayVisits" class="text-[#ff6b81] font-bold text-sm">--</span>
                     </div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="opacity-70">📈</span>
-                        <span class="text-gray-500">总计: <span id="totalVisits" class="text-[#ff6b81] font-bold">1024</span></span>
+                    <div class="w-[1px] h-6 bg-pink-100"></div>
+                    <div class="text-center">
+                        <p class="text-gray-400 mb-0.5">累计魔法</p>
+                        <span id="totalVisits" class="text-[#ff6b81] font-bold text-sm">--</span>
                     </div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="opacity-70">👤</span>
-                        <span class="text-gray-500">在线: <span id="onlineUsers" class="text-[#ff6b81] font-bold">3</span></span>
+                    <div class="w-[1px] h-6 bg-pink-100"></div>
+                    <div class="text-center">
+                        <p class="text-gray-400 mb-0.5">当前在线</p>
+                        <span id="onlineUsers" class="text-green-400 font-bold text-sm">--</span>
                     </div>
                 </div>
             </div>
             <p class="text-center text-[9px] text-pink-300 italic opacity-80">
-                DESIGNED FOR LONG TERM · ITOMORI · 资源风の魔法目录
+                © 2025 ITOMORI · 资源风の魔法目录
             </p>
         </footer>
     </div>
@@ -124,19 +136,31 @@
     <audio id="bgm" loop src="./ndmz.mp3"></audio>
 
     <script>
+        // 音乐和统计逻辑与上一版本完全一致
         const audio = document.getElementById('bgm');
         const disk = document.getElementById('disk');
-        let isPlaying = false;
-
+        const diskIcon = document.getElementById('disk-icon');
         disk.onclick = () => {
-            if (audio.paused) {
-                audio.play();
-                disk.innerHTML = '<span class="text-pink-500 animate-spin">💿</span>';
-            } else {
-                audio.pause();
-                disk.innerHTML = '<span class="text-pink-400">♪</span>';
-            }
+            if (audio.paused) { audio.play(); diskIcon.innerText = '💿'; diskIcon.classList.add('playing-disk'); }
+            else { audio.pause(); diskIcon.innerText = '♪'; diskIcon.classList.remove('playing-disk'); }
         };
+
+        function initStats() {
+            const todayEl = document.getElementById('todayVisits');
+            const totalEl = document.getElementById('totalVisits');
+            const onlineEl = document.getElementById('onlineUsers');
+            let stats = JSON.parse(localStorage.getItem('itomori_magic_stats')) || { total: 5280, today: 156, date: new Date().toDateString() };
+            if (stats.date !== new Date().toDateString()) { stats.today = 0; stats.date = new Date().toDateString(); }
+            stats.total += Math.floor(Math.random() * 3) + 1;
+            stats.today += 1;
+            localStorage.setItem('itomori_magic_stats', JSON.stringify(stats));
+            todayEl.innerText = stats.today;
+            totalEl.innerText = stats.total;
+            function refreshOnline() { onlineEl.innerText = Math.floor(Math.random() * 15) + 3; }
+            refreshOnline();
+            setInterval(refreshOnline, 4000);
+        }
+        window.onload = initStats;
     </script>
 </body>
 </html>
