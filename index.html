@@ -1,245 +1,142 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>资源风の魔法目录</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-:root {
-  --glass: rgba(255, 240, 245, 0.4);
-  --border: rgba(255, 105, 180, 0.3);
-  --main-gradient: linear-gradient(135deg, #ffb6c1, #ff69b4);
-  --bg-gradient: linear-gradient(to bottom, #fff0f5, #ffe4e1);
-}
-
-body {
-  margin: 0;
-  width: 100%;
-  height: 100vh; /* 锁定视口高度 */
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg-gradient);
-  overflow: hidden; /* 禁止全身滚动 */
-  color: #ff1493;
-}
-
-.master-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -10;
-  pointer-events: none;
-}
-
-/* 全屏容器：使用 Flex 布局垂直分布 */
-.app {
-  height: 100vh;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-/* 头部大幅度缩小 */
-.header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 10px 15px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.1);
-}
-
-.avatar-wrapper {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid white;
-  flex-shrink: 0;
-}
-
-.header h1 {
-  font-size: 1.1rem;
-  font-weight: bold;
-  background: var(--main-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.header p { font-size: 0.75rem; opacity: 0.8; }
-
-/* 资源列表：取消内滚动，通过缩小卡片实现一屏显示 */
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-  justify-content: center; /* 卡片在中间均匀分布 */
-}
-
-.card {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 8px 15px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.2s;
-}
-
-.card:active { transform: scale(0.98); }
-
-.icon {
-  font-size: 1.5rem;
-  min-width: 35px;
-  text-align: center;
-}
-
-.card b {
-  font-size: 0.95rem;
-  background: var(--main-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.card-description { font-size: 0.7rem; color: rgba(255, 20, 147, 0.6); }
-
-/* 统计卡片：改为单行紧凑模式 */
-.statistics-card {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 8px;
-  backdrop-filter: blur(10px);
-}
-
-.stats-display {
-  display: flex;
-  justify-content: space-around;
-  font-size: 0.7rem;
-}
-
-.stat-item { display: flex; align-items: center; gap: 4px; }
-
-.stat-counter { font-weight: bold; color: #ff1493; }
-
-/* 底部 */
-footer {
-  text-align: center;
-  font-size: 9px;
-  color: rgba(255,105,180,0.6);
-  padding: 4px 0;
-}
-
-/* 简单的音乐盘片 */
-.music {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  box-shadow: 0 0 10px rgba(255,105,180,0.3);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>资源风の魔法目录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.6);
+            --pink-border: rgba(255, 182, 193, 0.4);
+            --main-text: #ff6b81;
+        }
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(to bottom, #fff5f7, #ffe4e1);
+            font-family: -apple-system, sans-serif;
+            overflow: hidden; /* 锁定全屏 */
+            color: #555;
+        }
+        /* 玻璃拟态卡片通用样式 */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--pink-border);
+            border-radius: 1.5rem;
+        }
+        /* 卡片点击缩放 */
+        .card-active:active { transform: scale(0.97); transition: 0.1s; }
+        
+        /* 隐藏滚动条但保留功能 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
 </head>
+<body class="flex items-center justify-center">
+    <div class="w-full max-w-[400px] h-screen flex flex-col p-4 gap-3 justify-between">
+        
+        <header class="glass-panel p-4 flex items-center gap-4 shadow-sm">
+            <div class="w-14 h-14 rounded-full border-2 border-white overflow-hidden flex-shrink-0 shadow-sm">
+                <img src="./ndmz.jpg" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-lg font-bold text-[#ff6b81] truncate">资源风の魔法目录</h1>
+                <p class="text-[11px] text-pink-300">系守町 · 把重要的东西留住</p>
+                <div class="flex gap-2 mt-1 text-[9px] text-pink-400 opacity-80">
+                    <span>7个资源系</span><span>|</span><span>200+资源</span>
+                </div>
+            </div>
+            <button id="disk" class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-inner active:shadow-none">
+                <span class="text-pink-400">♪</span>
+            </button>
+        </header>
 
-<body>
-<div class="master-bg"></div>
+        <main class="flex-1 flex flex-col justify-center gap-2.5">
+            <a href="music.html" class="glass-panel p-3 flex items-center gap-4 card-active">
+                <span class="text-2xl">🎵</span>
+                <div>
+                    <b class="text-[#ff6b81] text-sm block">音乐系</b>
+                    <span class="text-[10px] text-gray-400">发现旋律与节奏的魔法</span>
+                </div>
+            </a>
+            <a href="film.html" class="glass-panel p-3 flex items-center gap-4 card-active">
+                <span class="text-2xl">🍿</span>
+                <div>
+                    <b class="text-[#ff6b81] text-sm block">观影系</b>
+                    <span class="text-[10px] text-gray-400">光影交织的视觉盛宴</span>
+                </div>
+            </a>
+            <a href="reading.html" class="glass-panel p-3 flex items-center gap-4 card-active">
+                <span class="text-2xl">📖</span>
+                <div>
+                    <b class="text-[#ff6b81] text-sm block">阅读系</b>
+                    <span class="text-[10px] text-gray-400">文字与思想的无尽海洋</span>
+                </div>
+            </a>
+            <a href="game.html" class="glass-panel p-3 flex items-center gap-4 card-active">
+                <span class="text-2xl">🎮</span>
+                <div>
+                    <b class="text-[#ff6b81] text-sm block">游戏系</b>
+                    <span class="text-[10px] text-gray-400">虚拟世界的冒险旅程</span>
+                </div>
+            </a>
+            <a href="tools.html" class="glass-panel p-3 flex items-center gap-4 card-active">
+                <span class="text-2xl">🔧</span>
+                <div>
+                    <b class="text-[#ff6b81] text-sm block">工具系</b>
+                    <span class="text-[10px] text-gray-400">提升效率的神器集合</span>
+                </div>
+            </a>
+            <a href="data.html" class="glass-panel p-3 flex items-center gap-4 card-active">
+                <span class="text-2xl">📊</span>
+                <div>
+                    <b class="text-[#ff6b81] text-sm block">数据系</b>
+                    <span class="text-[10px] text-gray-400">数据驱动世界的奥秘</span>
+                </div>
+            </a>
+        </main>
 
-<div class="app">
-  <header class="header">
-    <div class="avatar-wrapper">
-      <img src="./ndmz.jpg" class="w-full h-full object-cover">
+        <footer class="space-y-3">
+            <div class="glass-panel p-3">
+                <div class="flex justify-between items-center text-[11px]">
+                    <div class="flex items-center gap-1.5">
+                        <span class="opacity-70">👁️</span>
+                        <span class="text-gray-500">今日: <span id="todayVisits" class="text-[#ff6b81] font-bold">12</span></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="opacity-70">📈</span>
+                        <span class="text-gray-500">总计: <span id="totalVisits" class="text-[#ff6b81] font-bold">1024</span></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="opacity-70">👤</span>
+                        <span class="text-gray-500">在线: <span id="onlineUsers" class="text-[#ff6b81] font-bold">3</span></span>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-[9px] text-pink-300 italic opacity-80">
+                DESIGNED FOR LONG TERM · ITOMORI · 资源风の魔法目录
+            </p>
+        </footer>
     </div>
-    <div class="flex-1">
-      <h1>资源风の魔法目录</h1>
-      <p>系守町 · 把重要的东西留住</p>
-    </div>
-    <button id="disk" class="music">♪</button>
-  </header>
 
-  <section class="list">
-    <a href="music.html" class="card">
-      <div class="icon">🎵</div>
-      <div>
-        <b>音乐系</b>
-        <span class="card-description ml-2">发现旋律与节奏</span>
-      </div>
-    </a>
+    <audio id="bgm" loop src="./ndmz.mp3"></audio>
 
-    <a href="film.html" class="card">
-      <div class="icon">🍿</div>
-      <div>
-        <b>观影系</b>
-        <span class="card-description ml-2">光影视觉盛宴</span>
-      </div>
-    </a>
+    <script>
+        const audio = document.getElementById('bgm');
+        const disk = document.getElementById('disk');
+        let isPlaying = false;
 
-    <a href="reading.html" class="card">
-      <div class="icon">📖</div>
-      <div>
-        <b>阅读系</b>
-        <span class="card-description ml-2">思想的无尽海洋</span>
-      </div>
-    </a>
-
-    <a href="game.html" class="card">
-      <div class="icon">🎮</div>
-      <div>
-        <b>游戏系</b>
-        <span class="card-description ml-2">虚拟世界冒险</span>
-      </div>
-    </a>
-
-    <a href="tools.html" class="card">
-      <div class="icon">🔧</div>
-      <div>
-        <b>工具系</b>
-        <span class="card-description ml-2">效率神器集合</span>
-      </div>
-    </a>
-
-    <a href="data.html" class="card">
-      <div class="icon">📊</div>
-      <div>
-        <b>数据系</b>
-        <span class="card-description ml-2">数据驱动世界</span>
-      </div>
-    </a>
-  </section>
-
-  <div class="statistics-card">
-    <div class="stats-display">
-      <div class="stat-item"><span>👁️</span> 今日: <span id="todayVisits" class="stat-counter">12</span></div>
-      <div class="stat-item"><span>📈</span> 总计: <span id="totalVisits" class="stat-counter">1024</span></div>
-      <div class="stat-item"><span>👤</span> 在线: <span id="onlineUsers" class="stat-counter">3</span></div>
-    </div>
-  </div>
-
-  <footer>ITOMORI · 资源风の魔法目录</footer>
-</div>
-
-<audio id="bgm" loop src="./ndmz.mp3"></audio>
-
-<script>
-// 极简音乐控制
-const audio = document.getElementById('bgm');
-const disk = document.getElementById('disk');
-disk.onclick = () => {
-  if (audio.paused) { audio.play(); disk.innerText = '💿'; }
-  else { audio.pause(); disk.innerText = '♪'; }
-};
-</script>
+        disk.onclick = () => {
+            if (audio.paused) {
+                audio.play();
+                disk.innerHTML = '<span class="text-pink-500 animate-spin">💿</span>';
+            } else {
+                audio.pause();
+                disk.innerHTML = '<span class="text-pink-400">♪</span>';
+            }
+        };
+    </script>
 </body>
 </html>
