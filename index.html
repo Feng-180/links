@@ -1,200 +1,364 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>资源风の魔法目录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>资源风 | 信息矩阵终端</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans SC"', 'sans-serif'],
+                        mono: ['"Share Tech Mono"', 'monospace'],
+                        cyber: ['"Orbitron"', 'sans-serif'],
+                    },
+                    colors: {
+                        cyber: {
+                            bg: '#050508', // 更深邃的宇宙黑
+                            dark: '#0a0a12',
+                            light: '#151525',
+                            cyan: '#00f3ff', // 核心霓虹青
+                            pink: '#d600ff', // 核心霓虹紫
+                            blue: '#0066ff'
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 20s linear infinite',
+                        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+                        'scan-line': 'scanLine 4s linear infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.6, filter: 'brightness(1)' },
+                            '50%': { opacity: 1, filter: 'brightness(1.3)' },
+                        },
+                        scanLine: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(500%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
-        :root {
-            --glass: rgba(255, 255, 255, 0.75);
-            --pink-border: rgba(255, 182, 193, 0.4);
-        }
-        /* 核心修复：允许滚动并适配安卓 */
-        html, body {
-            min-height: 100%;
-            height: auto;
-            -webkit-overflow-scrolling: touch;
-        }
+        /* --- 全局科幻背景 --- */
         body {
-            margin: 0;
-            background: linear-gradient(to bottom, #fff5f7, #ffe4e1);
-            font-family: 'ZCOOL KuaiLe', -apple-system, sans-serif;
+            background-color: #050508;
+            /* 复合背景：星云 + 电路网格 */
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(214, 0, 255, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(0, 243, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+            background-attachment: fixed;
             overflow-x: hidden;
-            overflow-y: auto; /* 允许垂直滚动 */
-            color: #555;
         }
-        .glass-panel {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--pink-border);
-            border-radius: 1.25rem;
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
+
+        /* 屏幕扫描线滤镜 */
+        .crt-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 99;
+            opacity: 0.3;
         }
-        .card-active:active { transform: scale(0.97); transition: 0.1s; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .playing-disk { animation: spin 3s linear infinite; }
-        .float-anim { animation: floating 3s ease-in-out infinite; }
-        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+        /* 霓虹滚动条 */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #050508; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #00f3ff, #d600ff); border-radius: 5px; }
+
+        /* --- 核心：全息数据模块卡片 --- */
+        .cyber-module {
+            background: rgba(10, 10, 18, 0.6); /* 半透明基底 */
+            backdrop-filter: blur(12px); /* 毛玻璃 */
+            border: 1px solid rgba(0, 243, 255, 0.1); /* 基础边框 */
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弹性过渡 */
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* 装饰性边角连接点 */
+        .cyber-module::after {
+            content: ''; position: absolute; inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, var(--cyber-cyan) 0%, transparent 20%, transparent 80%, var(--cyber-pink) 100%) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0.3; transition: opacity 0.4s;
+        }
+
+        /* 悬停状态：激活光效 */
+        .cyber-module:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(0, 243, 255, 0.5);
+            box-shadow: 
+                0 0 30px -10px rgba(0, 243, 255, 0.4), /* 青色外发光 */
+                inset 0 0 20px -10px rgba(214, 0, 255, 0.3); /* 紫色内发光 */
+            background: rgba(15, 15, 30, 0.8);
+        }
         
-        /* 针对移动端隐藏横向滚动条 */
-        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        .cyber-module:hover::after { opacity: 1; }
+        .cyber-module:hover .module-icon { transform: scale(1.1) rotate(10deg); color: #00f3ff; filter: drop-shadow(0 0 8px #00f3ff); }
+        .cyber-module:hover .module-title { text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
+
+        /* 扫描光波效果 */
+        .scan-beam {
+            position: absolute; top: -50%; left: -50%; width: 200%; height: 50%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            animation: scanLine 3s linear infinite;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .cyber-module:hover .scan-beam { opacity: 1; }
+
+        /* 霓虹文字渐变 */
+        .text-gradient-cyber {
+            background: linear-gradient(to right, #00f3ff, #d600ff);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
     </style>
 </head>
-<body class="flex flex-col items-center p-4">
-    <div class="w-full max-w-[400px] min-h-[92vh] flex flex-col gap-4 py-2">
-        
-        <header class="glass-panel p-3.5 flex items-center gap-4 flex-shrink-0">
-            <div class="w-12 h-12 rounded-full border-2 border-white overflow-hidden flex-shrink-0 shadow-sm">
-                <img src="./ndmz.jpg" class="w-full h-full object-cover" alt="头像">
-            </div>
-            <div class="flex-1 min-w-0">
-                <h1 class="text-base font-bold text-[#ff6b81] truncate">资源风の魔法目录</h1>
-                <p class="text-[10px] text-pink-300">系守町 · 把重要的东西留住</p>
-            </div>
-            <button id="disk" class="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm active:bg-pink-50 transition-colors">
-                <span id="disk-icon" class="text-pink-400 text-xs">♪</span>
-            </button>
-        </header>
+<body class="min-h-screen flex flex-col font-sans relative">
+    
+    <div class="crt-overlay"></div>
 
-        <div class="px-1 float-anim flex-shrink-0">
-            <div class="bg-white/40 border border-pink-200/50 rounded-2xl p-3 flex items-start gap-3 relative overflow-hidden">
-                <div class="absolute -right-2 -top-2 text-2xl opacity-10">💬</div>
-                <div class="flex-shrink-0 text-lg">💡</div>
-                <div class="flex-1">
-                    <p class="text-[11px] text-[#ff6b81] font-bold mb-0.5">魔法广播台：</p>
-                    <p class="text-[10px] text-gray-500 leading-relaxed">
-                        由于结界限制，个别神器需开启<span class="text-pink-400 font-bold">“高阶魔法”</span>(VPN)才能召唤哦！若魔法失效，快回魔法阵地：<span class="bg-pink-100 px-1.5 py-0.5 rounded-full text-[#ff6b81] font-bold">QQ群 691105381</span> 寻求支援~
+    <div class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyber-cyan/50 to-transparent z-50"></div>
+    <div class="fixed top-2 left-4 text-[10px] font-mono text-cyber-cyan/60 z-50 tracking-widest">SYS.STATUS: ONLINE // MATRIX.ID: RESOURCE_WIND</div>
+    <div class="fixed top-2 right-4 text-[10px] font-mono text-cyber-pink/60 z-50 tracking-widest">SECURE.LINK // ENCRYPTED</div>
+
+    <nav class="border-b border-cyber-cyan/10 bg-cyber-bg/80 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative overflow-hidden">
+            <div class="flex items-center gap-4 z-10">
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                    <div class="absolute inset-0 border-2 border-cyber-cyan/30 rounded animate-spin-slow"></div>
+                    <div class="absolute inset-0 border border-cyber-pink/30 rounded rotate-45 animate-pulse-glow"></div>
+                    <i class="ri-windy-line text-cyber-cyan text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-cyber font-bold tracking-wider text-white text-lg">资源风</span>
+                    <span class="text-[10px] text-cyber-cyan/70 border-l border-cyber-cyan/30 pl-3 ml-2 font-mono hidden sm:inline-block tracking-widest">INFO_MATRIX_NAVIGATOR</span>
+                </div>
+            </div>
+            <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-cyber-cyan/5 to-transparent pointer-events-none"></div>
+        </div>
+    </nav>
+
+    <header class="relative z-10 max-w-5xl mx-auto px-6 pt-24 pb-20 text-center">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[50%] bg-cyber-cyan/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 border border-cyber-cyan/30 rounded-full bg-cyber-dark/50 backdrop-blur animate-pulse-glow">
+            <span class="w-2 h-2 bg-cyber-cyan rounded-full animate-ping"></span>
+            <span class="text-xs uppercase tracking-[0.2em] text-cyber-cyan font-mono">System Manifesto Decoded</span>
+        </div>
+        
+        <h1 class="text-4xl md:text-6xl font-cyber font-bold leading-tight mb-8 text-white tracking-tight">
+            你找不到的资源，<br>往往才是 <span class="text-gradient-cyber relative">关键的<span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan to-cyber-pink opacity-70"></span></span>。
+        </h1>
+        
+        <div class="h-16 md:h-12 mb-12">
+            <p id="typingText" class="text-cyber-cyan/80 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-mono border-r-2 border-cyber-pink pr-1 inline-block">
+                // Initializing...
+            </p>
+        </div>
+
+        <div class="flex justify-center gap-6">
+            <button onclick="scrollToGrid()" class="group relative overflow-hidden bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/50 px-8 py-3 text-sm font-bold font-cyber rounded transition-all hover:bg-cyber-cyan hover:text-black hover:shadow-[0_0_20px_rgba(0,243,255,0.5)]">
+                <span class="relative z-10 flex items-center gap-2">进入矩阵 <i class="ri-arrow-down-s-line group-hover:translate-y-1 transition-transform"></i></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="relative z-10 border-y border-cyber-cyan/10 bg-cyber-light/30 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-8 relative">
+            <div class="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyber-cyan/20 to-transparent hidden md:block"></div>
+            
+            <div class="cyber-module p-6 rounded-xl flex items-start gap-4 group">
+                <div class="w-12 h-12 rounded-lg bg-cyber-cyan/10 flex items-center justify-center border border-cyber-cyan/30 group-hover:border-cyber-cyan transition-colors">
+                    <i class="ri-filter-3-line text-2xl text-cyber-cyan"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-cyber font-bold text-white mb-2">过滤无效信息</h3>
+                    <p class="text-xs text-gray-400 font-mono leading-relaxed">
+                        验证独立价值。剔除冗余数据噪音。
+                    </p>
+                </div>
+            </div>
+            <div class="cyber-module p-6 rounded-xl flex items-start gap-4 group">
+                <div class="w-12 h-12 rounded-lg bg-cyber-pink/10 flex items-center justify-center border border-cyber-pink/30 group-hover:border-cyber-pink transition-colors">
+                    <i class="ri-map-pin-time-line text-2xl text-cyber-pink"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-cyber font-bold text-white mb-2">标注使用场景</h3>
+                    <p class="text-xs text-gray-400 font-mono leading-relaxed">
+                        明确工具边界。定位最佳应用时机。
+                    </p>
+                </div>
+            </div>
+            <div class="cyber-module p-6 rounded-xl flex items-start gap-4 group">
+                 <div class="w-12 h-12 rounded-lg bg-cyber-blue/10 flex items-center justify-center border border-cyber-blue/30 group-hover:border-cyber-blue transition-colors">
+                    <i class="ri-shield-keyhole-line text-2xl text-cyber-blue"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-cyber font-bold text-white mb-2">信任与边界</h3>
+                    <p class="text-xs text-gray-400 font-mono leading-relaxed">
+                        拒绝灰产接口。优先收录权威源头。
                     </p>
                 </div>
             </div>
         </div>
+    </section>
 
-        <main class="flex flex-col gap-2.5 my-2">
-            <a href="music.html" class="glass-panel p-3.5 flex items-center gap-4 card-active">
-                <span class="text-xl">🎵</span>
-                <div>
-                    <b class="text-[#ff6b81] text-sm block">音乐系</b>
-                    <span class="text-[10px] text-gray-400">发现旋律与节奏的魔法</span>
-                </div>
-            </a>
-            <a href="film.html" class="glass-panel p-3.5 flex items-center gap-4 card-active">
-                <span class="text-xl">🍿</span>
-                <div>
-                    <b class="text-[#ff6b81] text-sm block">观影系</b>
-                    <span class="text-[10px] text-gray-400">光影交织的视觉盛宴</span>
-                </div>
-            </a>
-            <a href="reading.html" class="glass-panel p-3.5 flex items-center gap-4 card-active">
-                <span class="text-xl">📖</span>
-                <div>
-                    <b class="text-[#ff6b81] text-sm block">阅读系</b>
-                    <span class="text-[10px] text-gray-400">文字与思想的无尽海洋</span>
-                </div>
-            </a>
-            <a href="game.html" class="glass-panel p-3.5 flex items-center gap-4 card-active">
-                <span class="text-xl">🎮</span>
-                <div>
-                    <b class="text-[#ff6b81] text-sm block">游戏系</b>
-                    <span class="text-[10px] text-gray-400">虚拟世界的冒险旅程</span>
-                </div>
-            </a>
-            <a href="tools.html" class="glass-panel p-3.5 flex items-center gap-4 card-active">
-                <span class="text-xl">🔧</span>
-                <div>
-                    <b class="text-[#ff6b81] text-sm block">工具系</b>
-                    <span class="text-[10px] text-gray-400">提升效率的神器集合</span>
-                </div>
-            </a>
-            <a href="data.html" class="glass-panel p-3.5 flex items-center gap-4 card-active">
-                <span class="text-xl">📊</span>
-                <div>
-                    <b class="text-[#ff6b81] text-sm block">数据系</b>
-                    <span class="text-[10px] text-gray-400">数据驱动世界的奥秘</span>
-                </div>
-            </a>
-        </main>
-
-        <footer class="mt-auto pt-4 space-y-4">
-            <div class="glass-panel p-3.5">
-                <div class="flex justify-around items-center text-[10px]">
-                    <div class="text-center">
-                        <p class="text-gray-400 mb-0.5">今日访问</p>
-                        <span id="todayVisits" class="text-[#ff6b81] font-bold text-sm">--</span>
-                    </div>
-                    <div class="w-[1px] h-6 bg-pink-100"></div>
-                    <div class="text-center">
-                        <p class="text-gray-400 mb-0.5">累计魔法</p>
-                        <span id="totalVisits" class="text-[#ff6b81] font-bold text-sm">--</span>
-                    </div>
-                    <div class="w-[1px] h-6 bg-pink-100"></div>
-                    <div class="text-center">
-                        <p class="text-gray-400 mb-0.5">当前在线</p>
-                        <span id="onlineUsers" class="text-green-400 font-bold text-sm">--</span>
-                    </div>
-                </div>
+    <main id="mainGrid" class="relative z-10 max-w-7xl mx-auto px-6 py-20">
+        <div class="flex items-end justify-between mb-12">
+            <div>
+                <h2 class="text-3xl font-cyber font-bold text-white relative inline-block">
+                    完整神经索列 <span class="text-cyber-cyan">///</span>
+                    <span class="absolute -bottom-2 left-0 w-1/2 h-1 bg-cyber-cyan"></span>
+                </h2>
             </div>
-            <p class="text-center text-[10px] text-pink-300 italic opacity-80 pb-6">
-                © 2025 ITOMORI · 资源风の魔法目录
-            </p>
-        </footer>
-    </div>
+            <span class="text-xs font-mono text-cyber-cyan/60 tracking-widest">MATRIX_INDEX_V2.45.1</span>
+        </div>
 
-    <audio id="bgm" loop src="./ndmz.mp3"></audio>
+        <div id="categoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            </div>
+    </main>
+
+    <footer class="mt-auto border-t border-cyber-cyan/10 bg-cyber-dark py-16 relative z-10 overflow-hidden">
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-1 bg-gradient-to-r from-transparent via-cyber-pink/50 to-transparent blur-md"></div>
+        
+        <div class="max-w-3xl mx-auto px-6 text-center relative">
+            <i class="ri-double-quotes-l text-4xl text-cyber-cyan/20 block mb-6 mx-auto"></i>
+            <h2 class="text-xl md:text-3xl font-medium text-gray-200 mb-8 font-cyber tracking-wide leading-relaxed">
+                当所有人都在追热点时，<br>资源风，只整理 <span class="text-cyber-cyan">长期有用</span> 的东西。
+            </h2>
+            
+            <div class="flex justify-center items-center gap-4 text-xs font-mono text-gray-500 mt-12 uppercase tracking-widest">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-cyber-cyan rounded-full animate-pulse"></span> SYS.OK</span>
+                <span>|</span>
+                <span>© 2025 Resource Wind</span>
+                <span>|</span>
+                <span>Info Advantage</span>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        const audio = document.getElementById('bgm');
-        const disk = document.getElementById('disk');
-        const diskIcon = document.getElementById('disk-icon');
+        // 1. 打字机效果 (Manifesto)
+        const manifestoText = "资源风｜收录那些不在首页、不被推荐、却一直存在的工具与入口。";
+        const typingEl = document.getElementById('typingText');
+        let charIndex = 0;
+        let isDeleting = false;
 
-        disk.onclick = () => {
-            if (audio.paused) { 
-                audio.play().catch(() => {
-                    console.log("需要用户交互才能播放");
-                }); 
-                diskIcon.innerText = '💿'; 
-                diskIcon.classList.add('playing-disk'); 
-            }
-            else { 
-                audio.pause(); 
-                diskIcon.innerText = '♪'; 
-                diskIcon.classList.remove('playing-disk'); 
-            }
-        };
+        function typeWriter() {
+            const currentText = manifestoText.substring(0, charIndex);
+            typingEl.textContent = currentText;
+            // 添加随机闪烁的光标效果
+            typingEl.style.borderRightColor = Math.random() > 0.1 ? 'rgba(0, 243, 255, 0.8)' : 'transparent';
 
-        function initStats() {
-            const todayEl = document.getElementById('todayVisits');
-            const totalEl = document.getElementById('totalVisits');
-            const onlineEl = document.getElementById('onlineUsers');
-            
-            let stats = JSON.parse(localStorage.getItem('itomori_magic_stats')) || { 
-                total: 5280, 
-                today: 156, 
-                date: new Date().toDateString() 
-            };
-            
-            if (stats.date !== new Date().toDateString()) { 
-                stats.today = 0; 
-                stats.date = new Date().toDateString(); 
+            if (!isDeleting && charIndex < manifestoText.length) {
+                charIndex++;
+                setTimeout(typeWriter, Math.random() * 50 + 50); // 随机打字速度
+            } else if (isDeleting && charIndex > 0) {
+                charIndex--;
+                setTimeout(typeWriter, 30);
+            } else {
+                // 打字完成，暂停一会再删除，循环播放
+                isDeleting = !isDeleting;
+                setTimeout(typeWriter, isDeleting ? 1000 : 3000); 
             }
-            
-            stats.total += Math.floor(Math.random() * 3) + 1;
-            stats.today += 1;
-            localStorage.setItem('itomori_magic_stats', JSON.stringify(stats));
-            
-            todayEl.innerText = stats.today;
-            totalEl.innerText = stats.total;
-            
-            function refreshOnline() { 
-                onlineEl.innerText = Math.floor(Math.random() * 15) + 3; 
-            }
-            refreshOnline();
-            setInterval(refreshOnline, 5000);
         }
-        
-        window.onload = initStats;
+        // 延迟启动打字机
+        setTimeout(typeWriter, 1500);
+
+
+        // 2. 构建栏目数据 (保持内容不变)
+        const categories = [
+            { id: "01", icon: "ri-eye-line", title: "信息透视", subtitle: "找到本来就存在但你看不到的", keywords: ["隐藏入口", "非首页", "深层搜索"], items: ["官方隐藏入口", "政府/公共数据库", "国际组织接口", "深度搜索工具", "舆情趋势信号"] },
+            { id: "02", icon: "ri-rocket-line", title: "效率跃迁", subtitle: "把 30 分钟变成 3 分钟", keywords: ["自动化", "降维", "去重复"], items: ["自动化工具", "数据批量处理", "无代码/低代码", "抓取处理导出", "网页重构插件"] },
+            { id: "03", icon: "ri-openai-fill", title: "AI 黑用法", subtitle: "不聊天，只干活", keywords: ["非主流", "落地", "工作流"], items: ["AI 文档结构化", "音视频拆解", "数据清洗辅助", "日志分析", "非对话式AI"] },
+            { id: "04", icon: "ri-code-s-slash-line", title: "数据解码", subtitle: "把“看不懂”变成“看得懂”", keywords: ["解析", "逆向", "透视"], items: ["文件元数据分析", "推荐机制侧视", "地理时间叠加", "平台数据观察", "格式逆向"] },
+            { id: "05", icon: "ri-treasure-map-line", title: "冷门资源", subtitle: "合法，但没人告诉你", keywords: ["信息差", "权威", "小众"], items: ["免费商用素材", "开源商业级工具", "冷门权威数据库", "学术开放资源", "预印本通道"] },
+            { id: "06", icon: "ri-brain-line", title: "认知工具", subtitle: "思维也是一种生产力", keywords: ["模型", "判断", "反常识"], items: ["决策辅助工具", "风险概率模型", "反向指标", "另类信号监测"] },
+            { id: "07", icon: "ri-shield-cross-line", title: "极客基础", subtitle: "不灰，但很硬", keywords: ["安全", "隐私", "基石"], items: ["隐私与匿名", "信息安全基础", "合法测试资源", "网络环境配置"] },
+            { id: "08", icon: "ri-user-star-line", title: "独立价值源", subtitle: "人比平台重要", keywords: ["长期价值", "非算法", "去中心"], items: ["独立研究者", "高质量个人站", "数据记者博客", "技术文档源"] },
+            { id: "09", icon: "ri-tools-line", title: "工具备忘", subtitle: "用不到，但不能没有", keywords: ["低频", "刚需", "应急"], items: ["冷门格式转换", "校验检测工具", "应急查询服务", "旧版兼容工具"] }
+        ];
+
+        const gridContainer = document.getElementById('categoryGrid');
+
+        categories.forEach(cat => {
+            // 构建关键词标签
+            const tagsHtml = cat.keywords.map(k => 
+                `<span class="text-[10px] px-2 py-0.5 border border-cyber-cyan/20 rounded-full text-cyber-cyan/70 bg-cyber-cyan/5 font-mono uppercase">${k}</span>`
+            ).join('');
+
+            // 构建列表项
+            const listHtml = cat.items.slice(0, 4).map(i =>  // 展示前4个
+                `<li class="flex items-center gap-2 text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
+                    <i class="ri-arrow-right-s-fill text-cyber-cyan/50 text-[8px]"></i> ${i}
+                </li>`
+            ).join('');
+
+            const card = document.createElement('div');
+            // 应用核心科幻卡片样式
+            card.className = 'cyber-module p-6 rounded-xl flex flex-col h-full cursor-pointer group relative';
+            
+            card.innerHTML = `
+                <div class="scan-beam"></div>
+
+                <div class="flex items-start justify-between mb-4 relative z-10">
+                    <div class="flex items-center gap-4">
+                        <div class="module-icon w-12 h-12 rounded-lg bg-cyber-cyan/5 flex items-center justify-center border border-cyber-cyan/20 text-cyber-cyan text-2xl transition-all duration-300">
+                            <i class="${cat.icon}"></i>
+                        </div>
+                        <div>
+                            <h3 class="module-title text-xl font-cyber font-bold text-white group-hover:text-cyber-cyan transition-colors">${cat.title}</h3>
+                            <span class="text-xs font-mono text-cyber-pink/80 tracking-wider">SECTOR // ${cat.id}</span>
+                        </div>
+                    </div>
+                    <i class="ri-corner-right-up-line text-cyber-cyan/30 opacity-0 group-hover:opacity-100 transition-all text-xl group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                </div>
+
+                <p class="text-sm text-gray-400 font-mono mb-6 relative z-10 border-l-2 border-cyber-cyan/30 pl-3 leading-relaxed group-hover:border-cyber-cyan transition-colors">
+                    ${cat.subtitle}
+                </p>
+
+                <div class="flex flex-wrap gap-2 mb-6 relative z-10">
+                    ${tagsHtml}
+                </div>
+
+                <ul class="space-y-2.5 mt-auto border-t border-cyber-cyan/10 pt-6 relative z-10">
+                    ${listHtml}
+                </ul>
+
+                <div class="absolute bottom-2 right-3 text-[8px] font-mono text-cyber-cyan/20 opacity-50">DATA.BLOCK.${cat.id}</div>
+            `;
+            
+            // 点击事件 placeholder
+            card.onclick = () => { console.log(`Accessing Sector: ${cat.title}`); };
+
+            gridContainer.appendChild(card);
+        });
+
+        function scrollToGrid() {
+            document.getElementById('mainGrid').scrollIntoView({ behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
