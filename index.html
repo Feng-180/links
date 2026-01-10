@@ -21,7 +21,7 @@
                     },
                     colors: {
                         cyber: {
-                            bg: '#050508', // 更深邃的宇宙黑
+                            bg: '#050508', // 宇宙深黑
                             dark: '#0a0a12',
                             light: '#151525',
                             cyan: '#00f3ff', // 核心霓虹青
@@ -145,10 +145,10 @@
     <nav class="border-b border-cyber-cyan/10 bg-cyber-bg/80 backdrop-blur-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative overflow-hidden">
             <div class="flex items-center gap-4 z-10">
-                <div class="relative w-10 h-10 flex items-center justify-center">
+                <div class="relative w-10 h-10 flex items-center justify-center cursor-pointer group">
                     <div class="absolute inset-0 border-2 border-cyber-cyan/30 rounded animate-spin-slow"></div>
                     <div class="absolute inset-0 border border-cyber-pink/30 rounded rotate-45 animate-pulse-glow"></div>
-                    <i class="ri-windy-line text-cyber-cyan text-xl"></i>
+                    <img src="./ndmz.jpg" class="w-full h-full object-cover rounded p-1" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=RW&background=00f3ff&color=000'">
                 </div>
                 <div>
                     <span class="font-cyber font-bold tracking-wider text-white text-lg">资源风</span>
@@ -260,7 +260,7 @@
 
     <script>
         // 1. 打字机效果 (Manifesto)
-        const manifestoText = "资源风｜收录那些不在首页、不被推荐、却一直存在的工具与入口。";
+        const manifestoText = "资源风 // 正在建立加密连接... 正在读取信息矩阵...Access Granted.";
         const typingEl = document.getElementById('typingText');
         let charIndex = 0;
         let isDeleting = false;
@@ -268,36 +268,138 @@
         function typeWriter() {
             const currentText = manifestoText.substring(0, charIndex);
             typingEl.textContent = currentText;
-            // 添加随机闪烁的光标效果
-            typingEl.style.borderRightColor = Math.random() > 0.1 ? 'rgba(0, 243, 255, 0.8)' : 'transparent';
+            typingEl.style.borderRightColor = Math.random() > 0.1 ? '#00f3ff' : 'transparent';
 
             if (!isDeleting && charIndex < manifestoText.length) {
                 charIndex++;
-                setTimeout(typeWriter, Math.random() * 50 + 50); // 随机打字速度
+                setTimeout(typeWriter, Math.random() * 30 + 30);
             } else if (isDeleting && charIndex > 0) {
                 charIndex--;
-                setTimeout(typeWriter, 30);
+                setTimeout(typeWriter, 20);
             } else {
-                // 打字完成，暂停一会再删除，循环播放
                 isDeleting = !isDeleting;
-                setTimeout(typeWriter, isDeleting ? 1000 : 3000); 
+                setTimeout(typeWriter, isDeleting ? 2000 : 5000); 
             }
         }
-        // 延迟启动打字机
-        setTimeout(typeWriter, 1500);
+        setTimeout(typeWriter, 1000);
 
 
-        // 2. 构建栏目数据 (保持内容不变)
+        // 2. 核心数据源：已注入真实黑科技链接
+        // 这里的 url 就是点击后跳转的地址
         const categories = [
-            { id: "01", icon: "ri-eye-line", title: "信息透视", subtitle: "找到本来就存在但你看不到的", keywords: ["隐藏入口", "非首页", "深层搜索"], items: ["官方隐藏入口", "政府/公共数据库", "国际组织接口", "深度搜索工具", "舆情趋势信号"] },
-            { id: "02", icon: "ri-rocket-line", title: "效率跃迁", subtitle: "把 30 分钟变成 3 分钟", keywords: ["自动化", "降维", "去重复"], items: ["自动化工具", "数据批量处理", "无代码/低代码", "抓取处理导出", "网页重构插件"] },
-            { id: "03", icon: "ri-openai-fill", title: "AI 黑用法", subtitle: "不聊天，只干活", keywords: ["非主流", "落地", "工作流"], items: ["AI 文档结构化", "音视频拆解", "数据清洗辅助", "日志分析", "非对话式AI"] },
-            { id: "04", icon: "ri-code-s-slash-line", title: "数据解码", subtitle: "把“看不懂”变成“看得懂”", keywords: ["解析", "逆向", "透视"], items: ["文件元数据分析", "推荐机制侧视", "地理时间叠加", "平台数据观察", "格式逆向"] },
-            { id: "05", icon: "ri-treasure-map-line", title: "冷门资源", subtitle: "合法，但没人告诉你", keywords: ["信息差", "权威", "小众"], items: ["免费商用素材", "开源商业级工具", "冷门权威数据库", "学术开放资源", "预印本通道"] },
-            { id: "06", icon: "ri-brain-line", title: "认知工具", subtitle: "思维也是一种生产力", keywords: ["模型", "判断", "反常识"], items: ["决策辅助工具", "风险概率模型", "反向指标", "另类信号监测"] },
-            { id: "07", icon: "ri-shield-cross-line", title: "极客基础", subtitle: "不灰，但很硬", keywords: ["安全", "隐私", "基石"], items: ["隐私与匿名", "信息安全基础", "合法测试资源", "网络环境配置"] },
-            { id: "08", icon: "ri-user-star-line", title: "独立价值源", subtitle: "人比平台重要", keywords: ["长期价值", "非算法", "去中心"], items: ["独立研究者", "高质量个人站", "数据记者博客", "技术文档源"] },
-            { id: "09", icon: "ri-tools-line", title: "工具备忘", subtitle: "用不到，但不能没有", keywords: ["低频", "刚需", "应急"], items: ["冷门格式转换", "校验检测工具", "应急查询服务", "旧版兼容工具"] }
+            { 
+                id: "01", 
+                icon: "ri-eye-2-line", 
+                title: "信息透视", 
+                subtitle: "看见过去与未来的入口", 
+                keywords: ["时光机", "万能搜", "趋势"], 
+                items: [
+                    { name: "Wayback Machine", desc: "互联网时光机，查看网站的历史快照", url: "https://web.archive.org/" },
+                    { name: "WolframAlpha", desc: "计算知识引擎，不是搜索是计算", url: "https://www.wolframalpha.com/" },
+                    { name: "SimilarWeb", desc: "透视任何网站的流量来源与排名", url: "https://www.similarweb.com/" },
+                    { name: "Magi", desc: "AI驱动的结构化知识搜索引擎", url: "https://magi.com/" }
+                ] 
+            },
+            { 
+                id: "02", 
+                icon: "ri-flashlight-fill", 
+                title: "效率跃迁", 
+                subtitle: "自动化与降维打击", 
+                keywords: ["自动化", "去重", "格式"], 
+                items: [
+                    { name: "TinyWow", desc: "永久免费的PDF/视频/图片全能工具站", url: "https://tinywow.com/" },
+                    { name: "IFTTT", desc: "互联网自动化，如果这样，就那样", url: "https://ifttt.com/" },
+                    { name: "Temp Mail", desc: "一次性临时邮箱，不仅防骚扰还保隐私", url: "https://temp-mail.org/" },
+                    { name: "uTools", desc: "新一代效率工具平台(需下载)", url: "https://u.tools/" }
+                ] 
+            },
+            { 
+                id: "03", 
+                icon: "ri-openai-fill", 
+                title: "AI 实验室", 
+                subtitle: "硅基生物的生产力", 
+                keywords: ["GPT", "绘图", "处理"], 
+                items: [
+                    { name: "ChatGPT", desc: "OpenAI 官方对话接口", url: "https://chat.openai.com/" },
+                    { name: "Midjourney", desc: "目前最强的AI艺术生成工具", url: "https://www.midjourney.com/" },
+                    { name: "Remove.bg", desc: "AI 5秒自动扣除背景，发丝级精度", url: "https://www.remove.bg/" },
+                    { name: "Hugging Face", desc: "AI 界的 GitHub，模型托管中心", url: "https://huggingface.co/" }
+                ] 
+            },
+            { 
+                id: "04", 
+                icon: "ri-code-box-line", 
+                title: "数据解码", 
+                subtitle: "还原数据的原始面貌", 
+                keywords: ["元数据", "查毒", "Exif"], 
+                items: [
+                    { name: "VirusTotal", desc: "谷歌旗下在线病毒/恶意网址多引擎检测", url: "https://www.virustotal.com/" },
+                    { name: "Exif.tools", desc: "查看照片背后的元数据(地点/设备)", url: "https://exif.tools/" },
+                    { name: "Whois", desc: "查询域名的幕后持有者信息", url: "https://who.is/" },
+                    { name: "IP138", desc: "老牌IP地址查询与定位", url: "https://www.ip138.com/" }
+                ] 
+            },
+            { 
+                id: "05", 
+                icon: "ri-safe-2-line", 
+                title: "冷门资源", 
+                subtitle: "合法且高质量的宝库", 
+                keywords: ["无版权", "开源", "学术"], 
+                items: [
+                    { name: "Pexels", desc: "顶级免费可商用图库", url: "https://www.pexels.com/" },
+                    { name: "Standard Ebooks", desc: "排版精美的公版电子书库", url: "https://standardebooks.org/" },
+                    { name: "NASA Image", desc: "NASA 官方全高清宇宙图像库", url: "https://images.nasa.gov/" },
+                    { name: "GitHub Trending", desc: "全球开发者今天都在关注什么代码", url: "https://github.com/trending" }
+                ] 
+            },
+            { 
+                id: "06", 
+                icon: "ri-mind-map", 
+                title: "认知升级", 
+                subtitle: "思维模型与数据真相", 
+                keywords: ["数据", "图表", "宏观"], 
+                items: [
+                    { name: "Our World in Data", desc: "用数据看清世界变迁的本质", url: "https://ourworldindata.org/" },
+                    { name: "Visual Capitalist", desc: "高质量数据可视化图表", url: "https://www.visualcapitalist.com/" },
+                    { name: "NASA Eyes", desc: "上帝视角看太阳系实时运行", url: "https://eyes.nasa.gov/" }
+                ] 
+            },
+            { 
+                id: "07", 
+                icon: "ri-shield-keyhole-line", 
+                title: "极客基石", 
+                subtitle: "数字时代的防身术", 
+                keywords: ["隐私", "检测", "安全"], 
+                items: [
+                    { name: "Have I Been Pwned", desc: "查查你的账号密码是否泄露过", url: "https://haveibeenpwned.com/" },
+                    { name: "BrowserLeaks", desc: "你的浏览器正在泄露哪些隐私？", url: "https://browserleaks.com/" },
+                    { name: "Proton", desc: "来自瑞士的加密隐私生态", url: "https://proton.me/" }
+                ] 
+            },
+            { 
+                id: "08", 
+                icon: "ri-global-line", 
+                title: "独立价值", 
+                subtitle: "脱离算法的优质源", 
+                keywords: ["独立", "博客", "发现"], 
+                items: [
+                    { name: "Product Hunt", desc: "全球最新酷产品的首发地", url: "https://www.producthunt.com/" },
+                    { name: "Hacker News", desc: "极客视角的全球科技新闻", url: "https://news.ycombinator.com/" },
+                    { name: "少数派", desc: "高效工作，品质生活", url: "https://sspai.com/" }
+                ] 
+            },
+            { 
+                id: "09", 
+                icon: "ri-tools-fill", 
+                title: "应急工具", 
+                subtitle: "低频但关键时刻救命", 
+                keywords: ["转换", "正则", "生成"], 
+                items: [
+                    { name: "Convertio", desc: "文件格式转换瑞士军刀", url: "https://convertio.co/zh/" },
+                    { name: "Regex101", desc: "正则表达式在线调试神器", url: "https://regex101.com/" },
+                    { name: "Carbon", desc: "生成漂亮的代码分享图片", url: "https://carbon.now.sh/" }
+                ] 
+            }
         ];
 
         const gridContainer = document.getElementById('categoryGrid');
@@ -305,18 +407,18 @@
         categories.forEach(cat => {
             // 构建关键词标签
             const tagsHtml = cat.keywords.map(k => 
-                `<span class="text-[10px] px-2 py-0.5 border border-cyber-cyan/20 rounded-full text-cyber-cyan/70 bg-cyber-cyan/5 font-mono uppercase">${k}</span>`
+                `<span class="text-[10px] px-2 py-0.5 border border-cyber-cyan/20 rounded-full text-cyber-cyan/70 bg-cyber-cyan/5 font-mono uppercase hover:bg-cyber-cyan hover:text-black transition-colors cursor-default">${k}</span>`
             ).join('');
 
-            // 构建列表项
-            const listHtml = cat.items.slice(0, 4).map(i =>  // 展示前4个
-                `<li class="flex items-center gap-2 text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
-                    <i class="ri-arrow-right-s-fill text-cyber-cyan/50 text-[8px]"></i> ${i}
-                </li>`
+            // 构建列表项 (现在是可点击的链接)
+            const listHtml = cat.items.map(i => 
+                `<a href="${i.url}" target="_blank" class="flex items-center gap-2 text-xs text-gray-400 hover:text-cyber-cyan transition-colors group/link py-1">
+                    <i class="ri-links-line text-cyber-cyan/30 text-[10px] group-hover/link:text-cyber-cyan"></i> 
+                    <span class="truncate">${i.name}</span>
+                </a>`
             ).join('');
 
             const card = document.createElement('div');
-            // 应用核心科幻卡片样式
             card.className = 'cyber-module p-6 rounded-xl flex flex-col h-full cursor-pointer group relative';
             
             card.innerHTML = `
@@ -329,13 +431,12 @@
                         </div>
                         <div>
                             <h3 class="module-title text-xl font-cyber font-bold text-white group-hover:text-cyber-cyan transition-colors">${cat.title}</h3>
-                            <span class="text-xs font-mono text-cyber-pink/80 tracking-wider">SECTOR // ${cat.id}</span>
+                            <span class="text-xs font-mono text-cyber-pink/80 tracking-wider">SEC.${cat.id}</span>
                         </div>
                     </div>
-                    <i class="ri-corner-right-up-line text-cyber-cyan/30 opacity-0 group-hover:opacity-100 transition-all text-xl group-hover:translate-x-1 group-hover:-translate-y-1"></i>
                 </div>
 
-                <p class="text-sm text-gray-400 font-mono mb-6 relative z-10 border-l-2 border-cyber-cyan/30 pl-3 leading-relaxed group-hover:border-cyber-cyan transition-colors">
+                <p class="text-sm text-gray-400 font-mono mb-4 relative z-10 border-l-2 border-cyber-cyan/30 pl-3 leading-relaxed group-hover:border-cyber-cyan transition-colors">
                     ${cat.subtitle}
                 </p>
 
@@ -343,16 +444,13 @@
                     ${tagsHtml}
                 </div>
 
-                <ul class="space-y-2.5 mt-auto border-t border-cyber-cyan/10 pt-6 relative z-10">
+                <div class="mt-auto border-t border-cyber-cyan/10 pt-4 relative z-10 grid grid-cols-1 gap-1">
                     ${listHtml}
-                </ul>
+                </div>
 
-                <div class="absolute bottom-2 right-3 text-[8px] font-mono text-cyber-cyan/20 opacity-50">DATA.BLOCK.${cat.id}</div>
+                <div class="absolute bottom-2 right-3 text-[8px] font-mono text-cyber-cyan/20 opacity-50 pointer-events-none">DATA.NODE.${cat.id}</div>
             `;
             
-            // 点击事件 placeholder
-            card.onclick = () => { console.log(`Accessing Sector: ${cat.title}`); };
-
             gridContainer.appendChild(card);
         });
 
