@@ -3,151 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextGen FMHY - 终极资源导航</title>
+    <meta name="description" content="资源风 - 收录全球优质、免费、无广告的极客资源。">
+    <title>资源风 | Resource Wind</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         dark: '#0f172a',
+                        darker: '#020617',
                         card: '#1e293b',
                         accent: '#38bdf8',
-                        text: '#e2e8f0'
+                        text: '#e2e8f0',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0f172a; color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; }
-        .glass-nav { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .resource-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); border-color: #38bdf8; }
-        .search-ring:focus-within { box-shadow: 0 0 0 2px #38bdf8; }
+        body { background-color: #0f172a; color: #e2e8f0; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .resource-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .resource-card:hover { transform: translateY(-4px); border-color: #38bdf8; box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.3); }
+        .sidebar-header { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; padding: 0 1rem; margin-bottom: 0.5rem; margin-top: 1.5rem; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .toast-enter { animation: slideIn 0.3s forwards; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="h-screen overflow-hidden flex text-sm md:text-base selection:bg-accent selection:text-dark">
 
-    <nav class="glass-nav fixed w-full z-50 top-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-bolt text-accent text-2xl"></i>
-                    <span class="font-bold text-xl tracking-wider text-white">FMHY<span class="text-accent">.PRO</span></span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#movies" class="hover:text-accent px-3 py-2 rounded-md font-medium transition">影视</a>
-                        <a href="#tools" class="hover:text-accent px-3 py-2 rounded-md font-medium transition">工具</a>
-                        <a href="#ai" class="hover:text-accent px-3 py-2 rounded-md font-medium transition">AI黑科技</a>
-                        <a href="https://github.com/your-repo" target="_blank" class="bg-accent text-dark px-4 py-1.5 rounded-full font-bold hover:bg-white transition"><i class="fa-brands fa-github"></i> 贡献</a>
-                    </div>
-                </div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden backdrop-blur-sm transition-opacity" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-darker border-r border-slate-800 z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col">
+        <div class="h-20 flex items-center px-6 border-b border-slate-800/50 shrink-0">
+            <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center text-white mr-3 shadow-lg shadow-blue-500/20">
+                <i class="fa-solid fa-wind text-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-xl tracking-wide text-white">资源风</h1>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest">Global Resources</p>
             </div>
         </div>
-    </nav>
 
-    <div class="pt-32 pb-10 px-4 text-center max-w-4xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">
-            发现 <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">互联网的背面</span>
-        </h1>
-        <p class="text-slate-400 mb-8 text-lg">收录全球优质、免费、无广告的极客资源。对标 FMHY，体验更佳。</p>
-        
-        <div class="search-ring relative max-w-xl mx-auto bg-card rounded-full overflow-hidden transition-all duration-300">
-            <div class="flex items-center px-6 py-3">
-                <i class="fa-solid fa-search text-slate-400"></i>
-                <input type="text" id="searchInput" placeholder="搜索资源... (例如: Netflix, 破解, 动漫)" 
-                       class="w-full bg-transparent border-none focus:ring-0 text-white ml-3 placeholder-slate-500 outline-none h-full">
+        <div class="flex-1 overflow-y-auto custom-scrollbar py-4 px-3 space-y-0.5">
+            
+            <div class="mb-4 px-1">
+                <div class="bg-gradient-to-r from-blue-900/40 to-slate-800/40 border border-blue-500/20 rounded-xl p-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-blue-300">加入官方社区</span>
+                        <i class="fa-brands fa-qq text-blue-400"></i>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <code class="bg-dark/50 px-2 py-1 rounded text-xs text-slate-300 select-all cursor-pointer hover:text-white" onclick="copyLink('691105381')" title="点击复制">691105381</code>
+                        <button onclick="window.open('https://qm.qq.com/cgi-bin/qm/qr?k=YOUR_KEY', '_blank')" class="text-[10px] bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 rounded transition">加群</button>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#" onclick="filterCategory('all')" class="nav-item active flex items-center px-3 py-2.5 rounded-lg bg-slate-800 text-white group cursor-pointer font-medium mb-2">
+                <i class="fa-solid fa-layer-group w-6 text-center text-accent"></i>
+                <span class="ml-3">全部探索</span>
+            </a>
+
+            <div class="sidebar-header">数字娱乐</div>
+            <a href="#" onclick="filterCategory('movies')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-film w-6 text-center group-hover:text-purple-400"></i>
+                <span class="ml-3">影视流媒体</span>
+                <span id="count-movies" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+            <a href="#" onclick="filterCategory('games')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-gamepad w-6 text-center group-hover:text-red-400"></i>
+                <span class="ml-3">游戏与模拟器</span>
+                <span id="count-games" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+            <a href="#" onclick="filterCategory('music')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-music w-6 text-center group-hover:text-pink-400"></i>
+                <span class="ml-3">无损音乐</span>
+                <span id="count-music" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+
+            <div class="sidebar-header">生产力</div>
+            <a href="#" onclick="filterCategory('tools')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-toolbox w-6 text-center group-hover:text-green-400"></i>
+                <span class="ml-3">实用工具</span>
+                <span id="count-tools" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+            <a href="#" onclick="filterCategory('ai')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-brain w-6 text-center group-hover:text-blue-400"></i>
+                <span class="ml-3">AI 黑科技</span>
+                <span id="count-ai" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+            <a href="#" onclick="filterCategory('design')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-pen-nib w-6 text-center group-hover:text-fuchsia-400"></i>
+                <span class="ml-3">设计与素材</span>
+                <span id="count-design" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+
+            <div class="sidebar-header">极客 & 开发</div>
+            <a href="#" onclick="filterCategory('dev')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-code w-6 text-center group-hover:text-cyan-400"></i>
+                <span class="ml-3">编程开发</span>
+                <span id="count-dev" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+            <a href="#" onclick="filterCategory('android')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-brands fa-android w-6 text-center group-hover:text-emerald-400"></i>
+                <span class="ml-3">安卓 / 移动端</span>
+                <span id="count-android" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+            <a href="#" onclick="filterCategory('privacy')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-shield-halved w-6 text-center group-hover:text-slate-200"></i>
+                <span class="ml-3">隐私安全</span>
+                <span id="count-privacy" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+
+            <div class="sidebar-header">知识库</div>
+            <a href="#" onclick="filterCategory('study')" class="nav-item flex items-center px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white group transition-colors">
+                <i class="fa-solid fa-graduation-cap w-6 text-center group-hover:text-yellow-400"></i>
+                <span class="ml-3">学术与学习</span>
+                <span id="count-study" class="ml-auto text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">0</span>
+            </a>
+
+            <div class="mt-8 px-3 pb-6">
+                <a href="mailto:2902939692@qq.com?subject=资源风-新资源投稿" class="flex items-center justify-center w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition text-xs font-bold border border-slate-700/50">
+                    <i class="fa-solid fa-envelope mr-2"></i> 投稿: 2902939692
+                </a>
+                <p class="text-[10px] text-slate-600 text-center mt-2">点击唤起邮件或复制QQ邮箱</p>
             </div>
         </div>
-    </div>
+    </aside>
 
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-
-        <section id="movies" class="mb-12 category-section">
-            <div class="flex items-center gap-3 mb-6 border-l-4 border-accent pl-4">
-                <h2 class="text-2xl font-bold text-white">🎬 影视与流媒体</h2>
-                <span class="bg-blue-900 text-blue-200 text-xs px-2 py-0.5 rounded-full">热门</span>
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative bg-dark">
+        <header class="h-16 bg-dark/80 backdrop-blur-md border-b border-slate-800/60 flex items-center justify-between px-6 z-20 shrink-0">
+            <button class="md:hidden text-slate-400 hover:text-white p-2 mr-4" onclick="toggleSidebar()"><i class="fa-solid fa-bars text-xl"></i></button>
+            <div class="flex-1 max-w-xl relative group">
+                <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-accent transition-colors"></i>
+                <input type="text" id="searchInput" placeholder="搜索全球资源... (Ctrl + K)" 
+                    class="w-full bg-slate-800/50 border border-slate-700 rounded-full py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/50 transition-all placeholder-slate-500 hover:bg-slate-800">
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="resource-grid">
-                
-                <a href="#" target="_blank" class="resource-card block bg-card rounded-xl p-6 border border-slate-700 transition duration-300 group">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="bg-red-500/20 text-red-400 p-3 rounded-lg"><i class="fa-brands fa-youtube text-xl"></i></div>
-                        <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded">无需翻墙</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-accent">MissAV (示例站)</h3>
-                    <p class="text-slate-400 text-sm line-clamp-2">全球最大的流媒体镜像站之一，支持 4K 播放，无水印。请配合广告拦截器使用。</p>
-                    <div class="mt-4 flex gap-2">
-                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#电影</span>
-                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#动漫</span>
-                    </div>
-                </a>
-
-                <a href="#" target="_blank" class="resource-card block bg-card rounded-xl p-6 border border-slate-700 transition duration-300 group">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="bg-purple-500/20 text-purple-400 p-3 rounded-lg"><i class="fa-solid fa-tv text-xl"></i></div>
-                        <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded">需魔法</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-accent">低端影视</h3>
-                    <p class="text-slate-400 text-sm line-clamp-2">极简风格的超清影视站，专注于美剧和高质量电影，压制质量极高。</p>
-                    <div class="mt-4 flex gap-2">
-                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#美剧</span>
-                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#1080P</span>
-                    </div>
-                </a>
-
+            <div class="hidden md:flex items-center gap-4 ml-6">
+                <div class="flex items-center gap-2 px-3 py-1 bg-slate-800/50 rounded-full border border-slate-700/50">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                    <span class="text-xs text-slate-400 font-mono">v6.0 Community</span>
+                </div>
             </div>
-        </section>
+        </header>
 
-        <section id="tools" class="mb-12 category-section">
-            <div class="flex items-center gap-3 mb-6 border-l-4 border-green-500 pl-4">
-                <h2 class="text-2xl font-bold text-white">🛠️ 实用工具 & 软件</h2>
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-5 md:p-8 scroll-smooth" id="main-scroll">
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <h2 id="section-title" class="text-2xl md:text-3xl font-bold text-white tracking-tight">全部资源</h2>
+                </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a href="#" target="_blank" class="resource-card block bg-card rounded-xl p-6 border border-slate-700 transition duration-300 group">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="bg-green-500/20 text-green-400 p-3 rounded-lg"><i class="fa-solid fa-download text-xl"></i></div>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-accent">IDM 激活脚本</h3>
-                    <p class="text-slate-400 text-sm line-clamp-2">GitHub 开源的 IDM 自动重置试用期脚本，安全无毒，永久白嫖。</p>
-                    <div class="mt-4 flex gap-2">
-                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#下载</span>
-                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#Windows</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-
+            <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 pb-20"></div>
+        </div>
     </main>
 
-    <footer class="border-t border-slate-800 mt-10 py-8 text-center text-slate-500 text-sm">
-        <p>Created by <span class="text-accent">YOU</span> | Inspired by FMHY</p>
-        <p class="mt-2">所有资源来自互联网，本站仅作索引。</p>
-    </footer>
+    <div id="toast-container" class="fixed top-20 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
-        const searchInput = document.getElementById('searchInput');
-        const cards = document.querySelectorAll('.resource-card');
-
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
+        // ================= 全球资源数据库 v6.0 =================
+        const resources = [
+            // --- 🎬 影视 ---
+            { category: "movies", title: "MissAV", desc: "全球顶流镜像，4K高清，无水印直连。", url: "https://missav.com", icon: "fa-film", color: "text-red-400", bg: "bg-red-500/10", tags: ["#无码", "#4K"], badge: "热门" },
+            { category: "movies", title: "低端影视", desc: "站长压制超清画质，专注美剧与高分电影。", url: "https://ddys.art", icon: "fa-tv", color: "text-purple-400", bg: "bg-purple-500/10", tags: ["#美剧", "#1080P"], badge: "需魔法" },
+            { category: "movies", title: "Braflix", desc: "海外大神开发的聚合站，资源库庞大，多语言。", url: "https://www.braflix.ru", icon: "fa-globe", color: "text-orange-400", bg: "bg-orange-500/10", tags: ["#海外", "#聚合"] },
+            { category: "movies", title: "Rutracker", desc: "俄罗斯传说级 PT 站，全球资源的总源头，万物皆有。", url: "https://rutracker.org", icon: "fa-magnet", color: "text-amber-600", bg: "bg-amber-600/10", tags: ["#BT", "#总源"], badge: "神站" },
+            { category: "movies", title: "1337x", desc: "全球最受欢迎的综合磁力站，电影游戏软件全都有。", url: "https://1337x.to", icon: "fa-download", color: "text-red-500", bg: "bg-red-500/10", tags: ["#磁力", "#综合"] },
+            { category: "movies", title: "AnimeTosho", desc: "动漫资源的自动化镜像站，生肉熟肉极速更新。", url: "https://animetosho.org", icon: "fa-cat", color: "text-blue-300", bg: "bg-blue-500/10", tags: ["#动漫", "#磁力"] },
             
-            cards.forEach(card => {
-                // 获取卡片内的所有文本
-                const content = card.innerText.toLowerCase();
+            // --- 🎮 游戏 ---
+            { category: "games", title: "FitGirl Repacks", desc: "全球最著名的高压重打包站，体积小下载快。", url: "https://fitgirl-repacks.site", icon: "fa-dumbbell", color: "text-pink-400", bg: "bg-pink-500/10", tags: ["#单机", "#高压"], badge: "必藏" },
+            { category: "games", title: "CS.RIN.RU", desc: "Steam 游戏的地下圣殿，所有破解补丁的源头。", url: "https://cs.rin.ru/forum", icon: "fa-steam", color: "text-slate-300", bg: "bg-slate-700", tags: ["#论坛", "#硬核"], badge: "源头" },
+            { category: "games", title: "Online-Fix", desc: "专门提供联机破解补丁，让盗版游戏也能联机。", url: "https://online-fix.me", icon: "fa-network-wired", color: "text-green-400", bg: "bg-green-500/10", tags: ["#联机", "#补丁"] },
+            { category: "games", title: "GOG-Games", desc: "DRM-Free 游戏下载，无防盗版机制，解压即玩。", url: "https://gog-games.to", icon: "fa-ghost", color: "text-purple-400", bg: "bg-purple-500/10", tags: ["#免安装", "#GOG"] },
+            { category: "games", title: "Vimm's Lair", desc: "最安全的复古游戏模拟器仓库(FC-PS3)。", url: "https://vimm.net", icon: "fa-floppy-disk", color: "text-red-400", bg: "bg-red-500/10", tags: ["#模拟器", "#怀旧"] },
+
+            // --- 🎵 音乐 ---
+            { category: "music", title: "MyFreeMP3", desc: "音乐界磁力站，海量无损 FLAC/MP3 免费下。", url: "https://tools.liumingye.cn/music", icon: "fa-music", color: "text-pink-400", bg: "bg-pink-500/10", tags: ["#下载", "#无损"] },
+            { category: "music", title: "SpotifyDown", desc: "Spotify 歌曲/歌单链接直接解析下载。", url: "https://spotifydown.com", icon: "fa-brands fa-spotify", color: "text-green-500", bg: "bg-green-500/10", tags: ["#解析", "#Spotify"] },
+            { category: "music", title: "Douban FM (Moe)", desc: "第三方魔改版豆瓣电台，挖掘冷门好歌。", url: "https://moe.fm", icon: "fa-headphones", color: "text-emerald-400", bg: "bg-emerald-500/10", tags: ["#电台", "#发现"] },
+
+            // --- 🛠️ 工具 ---
+            { category: "tools", title: "Massgrave (MAS)", desc: "Windows/Office 激活神器，一行命令永久激活。", url: "https://massgrave.dev", icon: "fa-key", color: "text-emerald-400", bg: "bg-emerald-500/10", tags: ["#激活", "#开源"], badge: "神器" },
+            { category: "tools", title: "52PoJie", desc: "吾爱破解，国内最大的软件安全与破解论坛。", url: "https://www.52pojie.cn", icon: "fa-user-ninja", color: "text-red-400", bg: "bg-red-500/10", tags: ["#论坛", "#国内"] },
+            { category: "tools", title: "Linux Do", desc: "国内新兴的高质量极客技术社区，氛围极佳。", url: "https://linux.do", icon: "fa-linux", color: "text-yellow-400", bg: "bg-yellow-500/10", tags: ["#社区", "#技术"], badge: "新锐" },
+            { category: "tools", title: "123Pan 破解", desc: "突破 123 网盘流量限制的油猴脚本。", url: "https://greasyfork.org/zh-CN/scripts/480074", icon: "fa-bolt", color: "text-yellow-400", bg: "bg-yellow-500/10", tags: ["#脚本", "#网盘"] },
+            { category: "tools", title: "KMS_VL_ALL", desc: "经典的本地激活脚本，无需联网即可激活系统。", url: "https://github.com/abbodi1406/KMS_VL_ALL_AIO", icon: "fa-shield", color: "text-slate-200", bg: "bg-slate-700", tags: ["#激活", "#离线"] },
+            
+            // --- 🎨 设计 ---
+            { category: "design", title: "Unsplash", desc: "全球最知名的免费无版权商用图库。", url: "https://unsplash.com", icon: "fa-camera", color: "text-stone-200", bg: "bg-stone-700", tags: ["#图片", "#商用"] },
+            { category: "design", title: "Phosphor Icons", desc: "极简风格的开源图标库，支持多种粗细。", url: "https://phosphoricons.com", icon: "fa-icons", color: "text-fuchsia-400", bg: "bg-fuchsia-500/10", tags: ["#图标", "#UI"] },
+            { category: "design", title: "Coolors", desc: "超好用的配色方案生成器，按空格键随机生成。", url: "https://coolors.co", icon: "fa-palette", color: "text-blue-400", bg: "bg-blue-500/10", tags: ["#配色", "#工具"] },
+
+            // --- 💻 开发 ---
+            { category: "dev", title: "DevDocs", desc: "聚合了所有编程语言和框架的离线文档库。", url: "https://devdocs.io", icon: "fa-book-bookmark", color: "text-cyan-400", bg: "bg-cyan-500/10", tags: ["#文档", "#速查"], badge: "必备" },
+            { category: "dev", title: "StackBlitz", desc: "浏览器里的 VS Code，秒开 Node.js 环境。", url: "https://stackblitz.com", icon: "fa-bolt", color: "text-blue-500", bg: "bg-blue-500/10", tags: ["#IDE", "#在线"] },
+            { category: "dev", title: "FreeCodeCamp", desc: "完全免费的编程学习社区，颁发认证证书。", url: "https://www.freecodecamp.org", icon: "fa-fire", color: "text-orange-500", bg: "bg-orange-500/10", tags: ["#学习", "#课程"] },
+
+            // --- 🤖 AI ---
+            { category: "ai", title: "Civitai", desc: "Stable Diffusion 模型库，AI 绘图玩家圣地。", url: "https://civitai.com", icon: "fa-palette", color: "text-blue-400", bg: "bg-blue-500/10", tags: ["#绘图", "#模型"] },
+            { category: "ai", title: "Hugging Face", desc: "AI 界的 GitHub，海量开源模型托管。", url: "https://huggingface.co", icon: "fa-face-smile", color: "text-yellow-400", bg: "bg-yellow-500/10", tags: ["#开源", "#代码"] },
+            { category: "ai", title: "Perplexity", desc: "结合 GPT 的智能搜索引擎，带引用来源。", url: "https://www.perplexity.ai", icon: "fa-magnifying-glass", color: "text-teal-400", bg: "bg-teal-500/10", tags: ["#搜索", "#学术"] },
+
+            // --- 📱 安卓 ---
+            { category: "android", title: "F-Droid", desc: "最大的 Android 开源免费软件应用商店。", url: "https://f-droid.org", icon: "fa-brands fa-android", color: "text-green-500", bg: "bg-green-500/10", tags: ["#商店", "#开源"], badge: "FOSS" },
+            { category: "android", title: "Mobilism", desc: "传奇的移动端资源论坛，找破解软件首选。", url: "https://forum.mobilism.org", icon: "fa-users", color: "text-indigo-400", bg: "bg-indigo-500/10", tags: ["#论坛", "#破解"] },
+            { category: "android", title: "Revanced", desc: "YouTube 破解版补丁管理器，去广告、后台播放。", url: "https://revanced.app", icon: "fa-play", color: "text-red-500", bg: "bg-red-500/10", tags: ["#去广告", "#神器"] },
+            { category: "android", title: "Seal", desc: "基于 yt-dlp 的安卓全能视频下载器，材质设计。", url: "https://github.com/JunkFood02/Seal", icon: "fa-download", color: "text-blue-400", bg: "bg-blue-500/10", tags: ["#下载", "#开源"] },
+            { category: "android", title: "Termux", desc: "安卓上的 Linux 终端模拟器，无需 Root 即可运行。", url: "https://termux.dev", icon: "fa-terminal", color: "text-slate-300", bg: "bg-slate-700", tags: ["#终端", "#极客"] },
+
+            // --- 🛡️ 隐私 ---
+            { category: "privacy", title: "Privacy Guides", desc: "隐私保护界的圣经，教你选择软件。", url: "https://www.privacyguides.org", icon: "fa-user-secret", color: "text-slate-200", bg: "bg-slate-700", tags: ["#教程", "#指南"], badge: "必读" },
+            { category: "privacy", title: "Proton Mail", desc: "瑞士加密邮箱，注册无需手机号。", url: "https://proton.me/mail", icon: "fa-envelope", color: "text-purple-400", bg: "bg-purple-500/10", tags: ["#邮箱", "#匿名"] },
+            { category: "privacy", title: "KeePassXC", desc: "本地离线密码管理器，数据库掌握在自己手里。", url: "https://keepassxc.org", icon: "fa-key", color: "text-green-500", bg: "bg-green-500/10", tags: ["#密码", "#安全"] },
+            { category: "privacy", title: "Bitwarden", desc: "开源的云端密码管理器，全平台同步，免费好用。", url: "https://bitwarden.com", icon: "fa-shield-halved", color: "text-blue-500", bg: "bg-blue-500/10", tags: ["#密码", "#云端"] },
+
+            // --- 🎓 学术 ---
+            { category: "study", title: "Anna's Archive", desc: "人类最大的影子图书馆，聚合 Z-Lib/Sci-Hub。", url: "https://annas-archive.org", icon: "fa-book-open", color: "text-amber-500", bg: "bg-amber-500/10", tags: ["#图书", "#论文"], badge: "必藏" },
+            { category: "study", title: "Sci-Hub", desc: "免费下载学术论文，打破学术高墙。", url: "https://sci-hub.se", icon: "fa-key", color: "text-blue-500", bg: "bg-blue-500/10", tags: ["#论文", "#科研"] },
+            { category: "study", title: "LibGen", desc: "老牌电子书和论文下载站。", url: "https://libgen.is", icon: "fa-book", color: "text-slate-400", bg: "bg-slate-700", tags: ["#电子书", "#老牌"] }
+        ];
+
+        let currentCategory = 'all';
+        let currentSearch = '';
+
+        function init() {
+            updateCounts();
+            render();
+        }
+
+        function updateCounts() {
+            const counts = {};
+            resources.forEach(r => { counts[r.category] = (counts[r.category] || 0) + 1; });
+            const categories = ['movies', 'games', 'music', 'tools', 'ai', 'design', 'dev', 'android', 'privacy', 'study'];
+            categories.forEach(cat => {
+                const el = document.getElementById(`count-${cat}`);
+                if(el) el.innerText = counts[cat] || 0;
+            });
+        }
+
+        function render() {
+            const grid = document.getElementById('resource-grid');
+            grid.innerHTML = '';
+
+            const filtered = resources.filter(item => {
+                const matchCat = currentCategory === 'all' || item.category === currentCategory;
+                const searchLower = currentSearch.toLowerCase();
+                const matchSearch = item.title.toLowerCase().includes(searchLower) || 
+                                    item.desc.toLowerCase().includes(searchLower) ||
+                                    item.tags.some(t => t.toLowerCase().includes(searchLower));
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-20 opacity-50"><div class="text-6xl mb-4">🦖</div><p>未找到相关资源</p></div>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const badgeHTML = item.badge ? `<span class="absolute top-3 right-3 text-[10px] font-bold uppercase ${getBadgeColor(item.badge)} border px-2 py-0.5 rounded-full z-10">${item.badge}</span>` : '';
+                const tagsHTML = item.tags.map(tag => `<span class="text-[11px] bg-slate-800/50 text-slate-400 border border-slate-700/50 px-2 py-1 rounded hover:bg-slate-700 hover:text-white transition cursor-pointer" onclick="setSearch('${tag}'); event.stopPropagation();">${tag}</span>`).join('');
                 
-                if (content.includes(term)) {
-                    card.parentElement.style.display = 'block'; // 保持 Grid 布局
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
+                grid.innerHTML += `
+                    <div class="resource-card relative bg-card rounded-2xl p-5 border border-slate-800 flex flex-col h-full group">
+                        ${badgeHTML}
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="${item.bg} ${item.color} w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-lg">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <button onclick="copyLink('${item.url}')" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-accent hover:text-white transition"><i class="fa-regular fa-copy text-xs"></i></button>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2 group-hover:text-accent transition-colors truncate">${item.title}</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-2 flex-grow">${item.desc}</p>
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-slate-800/50">
+                            <div class="flex gap-2 flex-wrap">${tagsHTML}</div>
+                            <a href="${item.url}" target="_blank" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function getBadgeColor(text) {
+            if(['热门', '神器', '神站', '必藏'].includes(text)) return 'bg-red-500/20 text-red-400 border-red-500/30';
+            if(['新锐', 'FOSS', '源头'].includes(text)) return 'bg-green-500/20 text-green-400 border-green-500/30';
+            return 'bg-accent/10 text-accent border-accent/20';
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active', 'bg-slate-800', 'text-white');
+                el.classList.add('text-slate-400');
+                if(el.getAttribute('onclick').includes(`'${cat}'`)) {
+                    el.classList.remove('text-slate-400');
+                    el.classList.add('active', 'bg-slate-800', 'text-white');
                 }
             });
-        });
+            const titles = { all: '全部资源', movies: '🎬 影视流媒体', games: '🎮 游戏与模拟器', music: '🎵 无损音乐', tools: '🛠️ 实用工具', ai: '🤖 AI 黑科技', design: '🎨 设计与素材', dev: '💻 编程开发', android: '📱 安卓/移动端', privacy: '🛡️ 隐私安全', study: '🎓 学术与学习' };
+            document.getElementById('section-title').innerText = titles[cat] || '搜索结果';
+            if(window.innerWidth < 768) toggleSidebar();
+            render();
+            document.getElementById('main-scroll').scrollTop = 0;
+        }
+
+        function setSearch(term) {
+            document.getElementById('searchInput').value = term;
+            currentSearch = term;
+            render();
+        }
+
+        function copyLink(text) {
+            navigator.clipboard.writeText(text).then(() => showToast(`已复制：${text}`)).catch(() => showToast('复制失败', 'error'));
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar-overlay').classList.toggle('hidden');
+        }
+
+        function showToast(msg, type='success') {
+            const toast = document.createElement('div');
+            toast.className = `toast-enter flex items-center gap-3 px-4 py-3 rounded-xl border backdrop-blur-md shadow-2xl ${type==='success'?'border-emerald-500/50 text-emerald-400 bg-emerald-950/90':'border-red-500/50 text-red-400 bg-red-950/90'} min-w-[200px] text-sm`;
+            toast.innerHTML = `<i class="fa-solid ${type==='success'?'fa-check':'fa-circle-exclamation'}"></i><span>${msg}</span>`;
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => { currentSearch = e.target.value.trim(); render(); });
+        document.addEventListener('keydown', (e) => { if(e.ctrlKey && e.key === 'k') { e.preventDefault(); document.getElementById('searchInput').focus(); }});
+        
+        init();
     </script>
 </body>
 </html>
