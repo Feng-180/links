@@ -1,462 +1,153 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="dark">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>资源风 | 信息矩阵终端</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextGen FMHY - 终极资源导航</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['"Noto Sans SC"', 'sans-serif'],
-                        mono: ['"Share Tech Mono"', 'monospace'],
-                        cyber: ['"Orbitron"', 'sans-serif'],
-                    },
                     colors: {
-                        cyber: {
-                            bg: '#050508', // 宇宙深黑
-                            dark: '#0a0a12',
-                            light: '#151525',
-                            cyan: '#00f3ff', // 核心霓虹青
-                            pink: '#d600ff', // 核心霓虹紫
-                            blue: '#0066ff'
-                        }
-                    },
-                    animation: {
-                        'spin-slow': 'spin 20s linear infinite',
-                        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
-                        'scan-line': 'scanLine 4s linear infinite',
-                    },
-                    keyframes: {
-                        pulseGlow: {
-                            '0%, 100%': { opacity: 0.6, filter: 'brightness(1)' },
-                            '50%': { opacity: 1, filter: 'brightness(1.3)' },
-                        },
-                        scanLine: {
-                            '0%': { transform: 'translateY(-100%)' },
-                            '100%': { transform: 'translateY(500%)' },
-                        }
+                        dark: '#0f172a',
+                        card: '#1e293b',
+                        accent: '#38bdf8',
+                        text: '#e2e8f0'
                     }
                 }
             }
         }
     </script>
-
     <style>
-        /* --- 全局科幻背景 --- */
-        body {
-            background-color: #050508;
-            /* 复合背景：星云 + 电路网格 */
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(214, 0, 255, 0.05) 0%, transparent 50%),
-                linear-gradient(rgba(0, 243, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
-            background-attachment: fixed;
-            overflow-x: hidden;
-        }
-
-        /* 屏幕扫描线滤镜 */
-        .crt-overlay {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-            z-index: 99;
-            opacity: 0.3;
-        }
-
-        /* 霓虹滚动条 */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #050508; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #00f3ff, #d600ff); border-radius: 5px; }
-
-        /* --- 核心：全息数据模块卡片 --- */
-        .cyber-module {
-            background: rgba(10, 10, 18, 0.6); /* 半透明基底 */
-            backdrop-filter: blur(12px); /* 毛玻璃 */
-            border: 1px solid rgba(0, 243, 255, 0.1); /* 基础边框 */
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弹性过渡 */
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-
-        /* 装饰性边角连接点 */
-        .cyber-module::after {
-            content: ''; position: absolute; inset: 0;
-            border: 1px solid transparent;
-            background: linear-gradient(135deg, var(--cyber-cyan) 0%, transparent 20%, transparent 80%, var(--cyber-pink) 100%) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            opacity: 0.3; transition: opacity 0.4s;
-        }
-
-        /* 悬停状态：激活光效 */
-        .cyber-module:hover {
-            transform: translateY(-5px) scale(1.02);
-            border-color: rgba(0, 243, 255, 0.5);
-            box-shadow: 
-                0 0 30px -10px rgba(0, 243, 255, 0.4), /* 青色外发光 */
-                inset 0 0 20px -10px rgba(214, 0, 255, 0.3); /* 紫色内发光 */
-            background: rgba(15, 15, 30, 0.8);
-        }
-        
-        .cyber-module:hover::after { opacity: 1; }
-        .cyber-module:hover .module-icon { transform: scale(1.1) rotate(10deg); color: #00f3ff; filter: drop-shadow(0 0 8px #00f3ff); }
-        .cyber-module:hover .module-title { text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
-
-        /* 扫描光波效果 */
-        .scan-beam {
-            position: absolute; top: -50%; left: -50%; width: 200%; height: 50%;
-            background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.2), transparent);
-            transform: rotate(45deg);
-            animation: scanLine 3s linear infinite;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        .cyber-module:hover .scan-beam { opacity: 1; }
-
-        /* 霓虹文字渐变 */
-        .text-gradient-cyber {
-            background: linear-gradient(to right, #00f3ff, #d600ff);
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+        body { background-color: #0f172a; color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; }
+        .glass-nav { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .resource-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); border-color: #38bdf8; }
+        .search-ring:focus-within { box-shadow: 0 0 0 2px #38bdf8; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans relative">
-    
-    <div class="crt-overlay"></div>
+<body class="min-h-screen flex flex-col">
 
-    <div class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyber-cyan/50 to-transparent z-50"></div>
-    <div class="fixed top-2 left-4 text-[10px] font-mono text-cyber-cyan/60 z-50 tracking-widest">SYS.STATUS: ONLINE // MATRIX.ID: RESOURCE_WIND</div>
-    <div class="fixed top-2 right-4 text-[10px] font-mono text-cyber-pink/60 z-50 tracking-widest">SECURE.LINK // ENCRYPTED</div>
-
-    <nav class="border-b border-cyber-cyan/10 bg-cyber-bg/80 backdrop-blur-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative overflow-hidden">
-            <div class="flex items-center gap-4 z-10">
-                <div class="relative w-10 h-10 flex items-center justify-center cursor-pointer group">
-                    <div class="absolute inset-0 border-2 border-cyber-cyan/30 rounded animate-spin-slow"></div>
-                    <div class="absolute inset-0 border border-cyber-pink/30 rounded rotate-45 animate-pulse-glow"></div>
-                    <img src="./ndmz.jpg" class="w-full h-full object-cover rounded p-1" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=RW&background=00f3ff&color=000'">
+    <nav class="glass-nav fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-bolt text-accent text-2xl"></i>
+                    <span class="font-bold text-xl tracking-wider text-white">FMHY<span class="text-accent">.PRO</span></span>
                 </div>
-                <div>
-                    <span class="font-cyber font-bold tracking-wider text-white text-lg">资源风</span>
-                    <span class="text-[10px] text-cyber-cyan/70 border-l border-cyber-cyan/30 pl-3 ml-2 font-mono hidden sm:inline-block tracking-widest">INFO_MATRIX_NAVIGATOR</span>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#movies" class="hover:text-accent px-3 py-2 rounded-md font-medium transition">影视</a>
+                        <a href="#tools" class="hover:text-accent px-3 py-2 rounded-md font-medium transition">工具</a>
+                        <a href="#ai" class="hover:text-accent px-3 py-2 rounded-md font-medium transition">AI黑科技</a>
+                        <a href="https://github.com/your-repo" target="_blank" class="bg-accent text-dark px-4 py-1.5 rounded-full font-bold hover:bg-white transition"><i class="fa-brands fa-github"></i> 贡献</a>
+                    </div>
                 </div>
             </div>
-            <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-cyber-cyan/5 to-transparent pointer-events-none"></div>
         </div>
     </nav>
 
-    <header class="relative z-10 max-w-5xl mx-auto px-6 pt-24 pb-20 text-center">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[50%] bg-cyber-cyan/5 blur-[100px] rounded-full pointer-events-none"></div>
-
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 border border-cyber-cyan/30 rounded-full bg-cyber-dark/50 backdrop-blur animate-pulse-glow">
-            <span class="w-2 h-2 bg-cyber-cyan rounded-full animate-ping"></span>
-            <span class="text-xs uppercase tracking-[0.2em] text-cyber-cyan font-mono">System Manifesto Decoded</span>
-        </div>
-        
-        <h1 class="text-4xl md:text-6xl font-cyber font-bold leading-tight mb-8 text-white tracking-tight">
-            你找不到的资源，<br>往往才是 <span class="text-gradient-cyber relative">关键的<span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan to-cyber-pink opacity-70"></span></span>。
+    <div class="pt-32 pb-10 px-4 text-center max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">
+            发现 <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">互联网的背面</span>
         </h1>
+        <p class="text-slate-400 mb-8 text-lg">收录全球优质、免费、无广告的极客资源。对标 FMHY，体验更佳。</p>
         
-        <div class="h-16 md:h-12 mb-12">
-            <p id="typingText" class="text-cyber-cyan/80 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-mono border-r-2 border-cyber-pink pr-1 inline-block">
-                // Initializing...
-            </p>
+        <div class="search-ring relative max-w-xl mx-auto bg-card rounded-full overflow-hidden transition-all duration-300">
+            <div class="flex items-center px-6 py-3">
+                <i class="fa-solid fa-search text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="搜索资源... (例如: Netflix, 破解, 动漫)" 
+                       class="w-full bg-transparent border-none focus:ring-0 text-white ml-3 placeholder-slate-500 outline-none h-full">
+            </div>
         </div>
+    </div>
 
-        <div class="flex justify-center gap-6">
-            <button onclick="scrollToGrid()" class="group relative overflow-hidden bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/50 px-8 py-3 text-sm font-bold font-cyber rounded transition-all hover:bg-cyber-cyan hover:text-black hover:shadow-[0_0_20px_rgba(0,243,255,0.5)]">
-                <span class="relative z-10 flex items-center gap-2">进入矩阵 <i class="ri-arrow-down-s-line group-hover:translate-y-1 transition-transform"></i></span>
-            </button>
-        </div>
-    </header>
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
-    <section class="relative z-10 border-y border-cyber-cyan/10 bg-cyber-light/30 backdrop-blur-md">
-        <div class="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-8 relative">
-            <div class="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyber-cyan/20 to-transparent hidden md:block"></div>
+        <section id="movies" class="mb-12 category-section">
+            <div class="flex items-center gap-3 mb-6 border-l-4 border-accent pl-4">
+                <h2 class="text-2xl font-bold text-white">🎬 影视与流媒体</h2>
+                <span class="bg-blue-900 text-blue-200 text-xs px-2 py-0.5 rounded-full">热门</span>
+            </div>
             
-            <div class="cyber-module p-6 rounded-xl flex items-start gap-4 group">
-                <div class="w-12 h-12 rounded-lg bg-cyber-cyan/10 flex items-center justify-center border border-cyber-cyan/30 group-hover:border-cyber-cyan transition-colors">
-                    <i class="ri-filter-3-line text-2xl text-cyber-cyan"></i>
-                </div>
-                <div>
-                    <h3 class="text-base font-cyber font-bold text-white mb-2">过滤无效信息</h3>
-                    <p class="text-xs text-gray-400 font-mono leading-relaxed">
-                        验证独立价值。剔除冗余数据噪音。
-                    </p>
-                </div>
-            </div>
-            <div class="cyber-module p-6 rounded-xl flex items-start gap-4 group">
-                <div class="w-12 h-12 rounded-lg bg-cyber-pink/10 flex items-center justify-center border border-cyber-pink/30 group-hover:border-cyber-pink transition-colors">
-                    <i class="ri-map-pin-time-line text-2xl text-cyber-pink"></i>
-                </div>
-                <div>
-                    <h3 class="text-base font-cyber font-bold text-white mb-2">标注使用场景</h3>
-                    <p class="text-xs text-gray-400 font-mono leading-relaxed">
-                        明确工具边界。定位最佳应用时机。
-                    </p>
-                </div>
-            </div>
-            <div class="cyber-module p-6 rounded-xl flex items-start gap-4 group">
-                 <div class="w-12 h-12 rounded-lg bg-cyber-blue/10 flex items-center justify-center border border-cyber-blue/30 group-hover:border-cyber-blue transition-colors">
-                    <i class="ri-shield-keyhole-line text-2xl text-cyber-blue"></i>
-                </div>
-                <div>
-                    <h3 class="text-base font-cyber font-bold text-white mb-2">信任与边界</h3>
-                    <p class="text-xs text-gray-400 font-mono leading-relaxed">
-                        拒绝灰产接口。优先收录权威源头。
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="resource-grid">
+                
+                <a href="#" target="_blank" class="resource-card block bg-card rounded-xl p-6 border border-slate-700 transition duration-300 group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="bg-red-500/20 text-red-400 p-3 rounded-lg"><i class="fa-brands fa-youtube text-xl"></i></div>
+                        <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded">无需翻墙</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-accent">MissAV (示例站)</h3>
+                    <p class="text-slate-400 text-sm line-clamp-2">全球最大的流媒体镜像站之一，支持 4K 播放，无水印。请配合广告拦截器使用。</p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#电影</span>
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#动漫</span>
+                    </div>
+                </a>
 
-    <main id="mainGrid" class="relative z-10 max-w-7xl mx-auto px-6 py-20">
-        <div class="flex items-end justify-between mb-12">
-            <div>
-                <h2 class="text-3xl font-cyber font-bold text-white relative inline-block">
-                    完整神经索列 <span class="text-cyber-cyan">///</span>
-                    <span class="absolute -bottom-2 left-0 w-1/2 h-1 bg-cyber-cyan"></span>
-                </h2>
-            </div>
-            <span class="text-xs font-mono text-cyber-cyan/60 tracking-widest">MATRIX_INDEX_V2.45.1</span>
-        </div>
+                <a href="#" target="_blank" class="resource-card block bg-card rounded-xl p-6 border border-slate-700 transition duration-300 group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="bg-purple-500/20 text-purple-400 p-3 rounded-lg"><i class="fa-solid fa-tv text-xl"></i></div>
+                        <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded">需魔法</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-accent">低端影视</h3>
+                    <p class="text-slate-400 text-sm line-clamp-2">极简风格的超清影视站，专注于美剧和高质量电影，压制质量极高。</p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#美剧</span>
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#1080P</span>
+                    </div>
+                </a>
 
-        <div id="categoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             </div>
+        </section>
+
+        <section id="tools" class="mb-12 category-section">
+            <div class="flex items-center gap-3 mb-6 border-l-4 border-green-500 pl-4">
+                <h2 class="text-2xl font-bold text-white">🛠️ 实用工具 & 软件</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="#" target="_blank" class="resource-card block bg-card rounded-xl p-6 border border-slate-700 transition duration-300 group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="bg-green-500/20 text-green-400 p-3 rounded-lg"><i class="fa-solid fa-download text-xl"></i></div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-accent">IDM 激活脚本</h3>
+                    <p class="text-slate-400 text-sm line-clamp-2">GitHub 开源的 IDM 自动重置试用期脚本，安全无毒，永久白嫖。</p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#下载</span>
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">#Windows</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="mt-auto border-t border-cyber-cyan/10 bg-cyber-dark py-16 relative z-10 overflow-hidden">
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-1 bg-gradient-to-r from-transparent via-cyber-pink/50 to-transparent blur-md"></div>
-        
-        <div class="max-w-3xl mx-auto px-6 text-center relative">
-            <i class="ri-double-quotes-l text-4xl text-cyber-cyan/20 block mb-6 mx-auto"></i>
-            <h2 class="text-xl md:text-3xl font-medium text-gray-200 mb-8 font-cyber tracking-wide leading-relaxed">
-                当所有人都在追热点时，<br>资源风，只整理 <span class="text-cyber-cyan">长期有用</span> 的东西。
-            </h2>
-            
-            <div class="flex justify-center items-center gap-4 text-xs font-mono text-gray-500 mt-12 uppercase tracking-widest">
-                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-cyber-cyan rounded-full animate-pulse"></span> SYS.OK</span>
-                <span>|</span>
-                <span>© 2025 Resource Wind</span>
-                <span>|</span>
-                <span>Info Advantage</span>
-            </div>
-        </div>
+    <footer class="border-t border-slate-800 mt-10 py-8 text-center text-slate-500 text-sm">
+        <p>Created by <span class="text-accent">YOU</span> | Inspired by FMHY</p>
+        <p class="mt-2">所有资源来自互联网，本站仅作索引。</p>
     </footer>
 
     <script>
-        // 1. 打字机效果 (Manifesto)
-        const manifestoText = "资源风 // 正在建立加密连接... 正在读取信息矩阵...Access Granted.";
-        const typingEl = document.getElementById('typingText');
-        let charIndex = 0;
-        let isDeleting = false;
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.resource-card');
 
-        function typeWriter() {
-            const currentText = manifestoText.substring(0, charIndex);
-            typingEl.textContent = currentText;
-            typingEl.style.borderRightColor = Math.random() > 0.1 ? '#00f3ff' : 'transparent';
-
-            if (!isDeleting && charIndex < manifestoText.length) {
-                charIndex++;
-                setTimeout(typeWriter, Math.random() * 30 + 30);
-            } else if (isDeleting && charIndex > 0) {
-                charIndex--;
-                setTimeout(typeWriter, 20);
-            } else {
-                isDeleting = !isDeleting;
-                setTimeout(typeWriter, isDeleting ? 2000 : 5000); 
-            }
-        }
-        setTimeout(typeWriter, 1000);
-
-
-        // 2. 核心数据源：已注入真实黑科技链接
-        // 这里的 url 就是点击后跳转的地址
-        const categories = [
-            { 
-                id: "01", 
-                icon: "ri-eye-2-line", 
-                title: "信息透视", 
-                subtitle: "看见过去与未来的入口", 
-                keywords: ["时光机", "万能搜", "趋势"], 
-                items: [
-                    { name: "Wayback Machine", desc: "互联网时光机，查看网站的历史快照", url: "https://web.archive.org/" },
-                    { name: "WolframAlpha", desc: "计算知识引擎，不是搜索是计算", url: "https://www.wolframalpha.com/" },
-                    { name: "SimilarWeb", desc: "透视任何网站的流量来源与排名", url: "https://www.similarweb.com/" },
-                    { name: "Magi", desc: "AI驱动的结构化知识搜索引擎", url: "https://magi.com/" }
-                ] 
-            },
-            { 
-                id: "02", 
-                icon: "ri-flashlight-fill", 
-                title: "效率跃迁", 
-                subtitle: "自动化与降维打击", 
-                keywords: ["自动化", "去重", "格式"], 
-                items: [
-                    { name: "TinyWow", desc: "永久免费的PDF/视频/图片全能工具站", url: "https://tinywow.com/" },
-                    { name: "IFTTT", desc: "互联网自动化，如果这样，就那样", url: "https://ifttt.com/" },
-                    { name: "Temp Mail", desc: "一次性临时邮箱，不仅防骚扰还保隐私", url: "https://temp-mail.org/" },
-                    { name: "uTools", desc: "新一代效率工具平台(需下载)", url: "https://u.tools/" }
-                ] 
-            },
-            { 
-                id: "03", 
-                icon: "ri-openai-fill", 
-                title: "AI 实验室", 
-                subtitle: "硅基生物的生产力", 
-                keywords: ["GPT", "绘图", "处理"], 
-                items: [
-                    { name: "ChatGPT", desc: "OpenAI 官方对话接口", url: "https://chat.openai.com/" },
-                    { name: "Midjourney", desc: "目前最强的AI艺术生成工具", url: "https://www.midjourney.com/" },
-                    { name: "Remove.bg", desc: "AI 5秒自动扣除背景，发丝级精度", url: "https://www.remove.bg/" },
-                    { name: "Hugging Face", desc: "AI 界的 GitHub，模型托管中心", url: "https://huggingface.co/" }
-                ] 
-            },
-            { 
-                id: "04", 
-                icon: "ri-code-box-line", 
-                title: "数据解码", 
-                subtitle: "还原数据的原始面貌", 
-                keywords: ["元数据", "查毒", "Exif"], 
-                items: [
-                    { name: "VirusTotal", desc: "谷歌旗下在线病毒/恶意网址多引擎检测", url: "https://www.virustotal.com/" },
-                    { name: "Exif.tools", desc: "查看照片背后的元数据(地点/设备)", url: "https://exif.tools/" },
-                    { name: "Whois", desc: "查询域名的幕后持有者信息", url: "https://who.is/" },
-                    { name: "IP138", desc: "老牌IP地址查询与定位", url: "https://www.ip138.com/" }
-                ] 
-            },
-            { 
-                id: "05", 
-                icon: "ri-safe-2-line", 
-                title: "冷门资源", 
-                subtitle: "合法且高质量的宝库", 
-                keywords: ["无版权", "开源", "学术"], 
-                items: [
-                    { name: "Pexels", desc: "顶级免费可商用图库", url: "https://www.pexels.com/" },
-                    { name: "Standard Ebooks", desc: "排版精美的公版电子书库", url: "https://standardebooks.org/" },
-                    { name: "NASA Image", desc: "NASA 官方全高清宇宙图像库", url: "https://images.nasa.gov/" },
-                    { name: "GitHub Trending", desc: "全球开发者今天都在关注什么代码", url: "https://github.com/trending" }
-                ] 
-            },
-            { 
-                id: "06", 
-                icon: "ri-mind-map", 
-                title: "认知升级", 
-                subtitle: "思维模型与数据真相", 
-                keywords: ["数据", "图表", "宏观"], 
-                items: [
-                    { name: "Our World in Data", desc: "用数据看清世界变迁的本质", url: "https://ourworldindata.org/" },
-                    { name: "Visual Capitalist", desc: "高质量数据可视化图表", url: "https://www.visualcapitalist.com/" },
-                    { name: "NASA Eyes", desc: "上帝视角看太阳系实时运行", url: "https://eyes.nasa.gov/" }
-                ] 
-            },
-            { 
-                id: "07", 
-                icon: "ri-shield-keyhole-line", 
-                title: "极客基石", 
-                subtitle: "数字时代的防身术", 
-                keywords: ["隐私", "检测", "安全"], 
-                items: [
-                    { name: "Have I Been Pwned", desc: "查查你的账号密码是否泄露过", url: "https://haveibeenpwned.com/" },
-                    { name: "BrowserLeaks", desc: "你的浏览器正在泄露哪些隐私？", url: "https://browserleaks.com/" },
-                    { name: "Proton", desc: "来自瑞士的加密隐私生态", url: "https://proton.me/" }
-                ] 
-            },
-            { 
-                id: "08", 
-                icon: "ri-global-line", 
-                title: "独立价值", 
-                subtitle: "脱离算法的优质源", 
-                keywords: ["独立", "博客", "发现"], 
-                items: [
-                    { name: "Product Hunt", desc: "全球最新酷产品的首发地", url: "https://www.producthunt.com/" },
-                    { name: "Hacker News", desc: "极客视角的全球科技新闻", url: "https://news.ycombinator.com/" },
-                    { name: "少数派", desc: "高效工作，品质生活", url: "https://sspai.com/" }
-                ] 
-            },
-            { 
-                id: "09", 
-                icon: "ri-tools-fill", 
-                title: "应急工具", 
-                subtitle: "低频但关键时刻救命", 
-                keywords: ["转换", "正则", "生成"], 
-                items: [
-                    { name: "Convertio", desc: "文件格式转换瑞士军刀", url: "https://convertio.co/zh/" },
-                    { name: "Regex101", desc: "正则表达式在线调试神器", url: "https://regex101.com/" },
-                    { name: "Carbon", desc: "生成漂亮的代码分享图片", url: "https://carbon.now.sh/" }
-                ] 
-            }
-        ];
-
-        const gridContainer = document.getElementById('categoryGrid');
-
-        categories.forEach(cat => {
-            // 构建关键词标签
-            const tagsHtml = cat.keywords.map(k => 
-                `<span class="text-[10px] px-2 py-0.5 border border-cyber-cyan/20 rounded-full text-cyber-cyan/70 bg-cyber-cyan/5 font-mono uppercase hover:bg-cyber-cyan hover:text-black transition-colors cursor-default">${k}</span>`
-            ).join('');
-
-            // 构建列表项 (现在是可点击的链接)
-            const listHtml = cat.items.map(i => 
-                `<a href="${i.url}" target="_blank" class="flex items-center gap-2 text-xs text-gray-400 hover:text-cyber-cyan transition-colors group/link py-1">
-                    <i class="ri-links-line text-cyber-cyan/30 text-[10px] group-hover/link:text-cyber-cyan"></i> 
-                    <span class="truncate">${i.name}</span>
-                </a>`
-            ).join('');
-
-            const card = document.createElement('div');
-            card.className = 'cyber-module p-6 rounded-xl flex flex-col h-full cursor-pointer group relative';
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
             
-            card.innerHTML = `
-                <div class="scan-beam"></div>
-
-                <div class="flex items-start justify-between mb-4 relative z-10">
-                    <div class="flex items-center gap-4">
-                        <div class="module-icon w-12 h-12 rounded-lg bg-cyber-cyan/5 flex items-center justify-center border border-cyber-cyan/20 text-cyber-cyan text-2xl transition-all duration-300">
-                            <i class="${cat.icon}"></i>
-                        </div>
-                        <div>
-                            <h3 class="module-title text-xl font-cyber font-bold text-white group-hover:text-cyber-cyan transition-colors">${cat.title}</h3>
-                            <span class="text-xs font-mono text-cyber-pink/80 tracking-wider">SEC.${cat.id}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <p class="text-sm text-gray-400 font-mono mb-4 relative z-10 border-l-2 border-cyber-cyan/30 pl-3 leading-relaxed group-hover:border-cyber-cyan transition-colors">
-                    ${cat.subtitle}
-                </p>
-
-                <div class="flex flex-wrap gap-2 mb-6 relative z-10">
-                    ${tagsHtml}
-                </div>
-
-                <div class="mt-auto border-t border-cyber-cyan/10 pt-4 relative z-10 grid grid-cols-1 gap-1">
-                    ${listHtml}
-                </div>
-
-                <div class="absolute bottom-2 right-3 text-[8px] font-mono text-cyber-cyan/20 opacity-50 pointer-events-none">DATA.NODE.${cat.id}</div>
-            `;
-            
-            gridContainer.appendChild(card);
+            cards.forEach(card => {
+                // 获取卡片内的所有文本
+                const content = card.innerText.toLowerCase();
+                
+                if (content.includes(term)) {
+                    card.parentElement.style.display = 'block'; // 保持 Grid 布局
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         });
-
-        function scrollToGrid() {
-            document.getElementById('mainGrid').scrollIntoView({ behavior: 'smooth' });
-        }
     </script>
 </body>
 </html>
