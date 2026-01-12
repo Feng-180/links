@@ -321,7 +321,10 @@
         // 🚀 逻辑处理
         // ==========================================
         function init() {
-            // 统计数量
+            // 修复1：更新 Header 上的总数据库数量
+            document.getElementById('total-db').innerText = db.length;
+
+            // 统计分类数量
             const counts = {};
             db.forEach(i => counts[i.c] = (counts[i.c] || 0) + 1);
             for(let k in counts) {
@@ -329,12 +332,20 @@
                 if(el) el.innerText = counts[k];
             }
             render(db);
+            
+            // 修复2：添加 Ctrl + K 键盘快捷键监听
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('search').focus();
+                }
+            });
         }
 
         function filter(cat) {
             const list = cat === 'all' ? db : db.filter(i => i.c === cat);
             
-            // 侧边栏高亮
+            // 侧边栏高亮逻辑
             document.querySelectorAll('.nav-btn').forEach(b => {
                 b.classList.remove('bg-accent', 'text-dark', 'font-bold');
                 b.classList.add('text-slate-400', 'bg-transparent');
@@ -344,7 +355,6 @@
                 }
             });
 
-            // 移动端点击自动收起侧边栏
             if(window.innerWidth < 768) {
                 document.getElementById('sidebar').classList.add('-translate-x-full');
             }
@@ -356,11 +366,10 @@
 
         function render(list) {
             const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            
-            list.forEach(item => {
+            // 优化：使用 map + join 提升渲染性能，避免循环操作 innerHTML
+            const htmlStr = list.map(item => {
                 const badge = item.badge ? `<span class="absolute top-2 right-2 text-[10px] font-bold px-1.5 py-0.5 rounded border ${getBadgeStyle(item.badge)}">${item.badge}</span>` : '';
-                grid.innerHTML += `
+                return `
                 <div class="resource-card bg-[#0b1121] rounded-xl p-4 relative group cursor-pointer flex flex-col h-full animate-fade-in" onclick="window.open('${item.u}', '_blank')">
                     ${badge}
                     <div class="flex items-center gap-3 mb-3">
@@ -376,7 +385,20 @@
                         </div>
                     </div>
                 </div>`;
-            });
+            }).join('');
+            
+            grid.innerHTML = htmlStr;
+        }
+
+        // 修复3：添加随机站点功能
+        function randomSite() {
+            if (db.length === 0) return;
+            const randomItem = db[Math.floor(Math.random() * db.length)];
+            showToast(`正在前往: ${randomItem.t}`, 'success');
+            // 延迟一点点跳转，让用户看清 Toast
+            setTimeout(() => {
+                window.open(randomItem.u, '_blank');
+            }, 500);
         }
 
         function getBadgeStyle(b) {
