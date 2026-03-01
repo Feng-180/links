@@ -173,6 +173,9 @@
                 // 添加 Ctrl + K 键盘快捷键监听
                 setupKeyboardShortcuts();
                 
+                // 设置搜索框监听器
+                setupSearchListener();
+                
                 // 隐藏加载动画
                 setTimeout(() => {
                     document.getElementById('loading-overlay').classList.add('hidden');
@@ -397,26 +400,28 @@
         // ==========================================
         // 🔍 搜索功能
         // ==========================================
-        document.getElementById('search').addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase().trim();
-            
-            if (!val) {
-                // 如果搜索框为空，显示当前分类
-                filter(currentCategory);
-                return;
-            }
+        function setupSearchListener() {
+            document.getElementById('search').addEventListener('input', (e) => {
+                const val = e.target.value.toLowerCase().trim();
+                
+                if (!val) {
+                    // 如果搜索框为空，显示当前分类
+                    filter(currentCategory);
+                    return;
+                }
 
-            // 搜索标题和描述
-            const filtered = db.filter(i => 
-                i.t.toLowerCase().includes(val) || 
-                i.d.toLowerCase().includes(val)
-            );
+                // 搜索标题和描述
+                const filtered = db.filter(i => 
+                    i.t.toLowerCase().includes(val) || 
+                    i.d.toLowerCase().includes(val)
+                );
 
-            document.getElementById('cat-title').innerHTML = 
-                `<i class="fa-solid fa-magnifying-glass text-accent"></i> 搜索结果 <span class="text-sm text-slate-500 ml-2">(${filtered.length})</span>`;
-            
-            render(filtered);
-        });
+                document.getElementById('cat-title').innerHTML = 
+                    `<i class="fa-solid fa-magnifying-glass text-accent"></i> 搜索结果 <span class="text-sm text-slate-500 ml-2">(${filtered.length})</span>`;
+                
+                render(filtered);
+            });
+        }
 
         // 启动应用
         init();
