@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="资源风 - 真正收录300+全球优质极客资源。对标FMHY的中文导航站。">
+    <meta name="keywords" content="资源导航,极客资源,影视,动漫,游戏,软件,AI,开发工具">
+    <meta name="author" content="Feng-180">
+    <meta property="og:title" content="资源风 | Resource Wind (300+版)">
+    <meta property="og:description" content="真正收录300+全球优质极客资源">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://feng.资源风.top">
+    <title>资源风 | Resource Wind (300+版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#020617',
+                        card: '#0f172a',
+                        accent: '#38bdf8',
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    animation: { 'fade-in': 'fadeIn 0.5s ease-out' },
+                    keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #020617; color: #cbd5e1; }
+        
+        /* Loading State */
+        #loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: #020617;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        #loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #1e293b;
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .resource-card { border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s; }
+        .resource-card:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.4); background: rgba(30, 41, 59, 0.5); box-shadow: 0 4px 20px -5px rgba(0,0,0,0.5); }
+        
+        /* Staggered card animation */
+        .resource-card { opacity: 0; animation: cardFadeIn 0.4s ease forwards; }
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .sidebar-header { font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.1em; padding: 1.5rem 1rem 0.5rem; }
+        #toast-container { z-index: 9999; }
+    </style>
+</head>
+<body class="h-screen overflow-hidden flex text-sm selection:bg-accent selection:text-dark">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-64 bg-[#0b1121] border-r border-slate-800/50 z-50 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-200">
+        <div class="h-16 flex items-center px-5 border-b border-slate-800/50 shrink-0 cursor-pointer" onclick="location.reload()">
+            <div class="w-8 h-8 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white mr-3 shadow-lg shadow-blue-500/20"><i class="fa-solid fa-wind"></i></div>
+            <div class="font-bold text-lg text-white tracking-wide">资源风 <span class="text-[10px] text-accent font-mono bg-accent/10 px-1 rounded ml-1">v11</span></div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-0.5">
+            <div onclick="joinQQ()" class="mb-4 p-3 rounded-xl bg-gradient-to-r from-blue-900/20 to-cyan-900/20 border border-blue-500/20 cursor-pointer group relative overflow-hidden">
+                <div class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition"></div>
+                <div class="flex justify-between items-center relative z-10"><span class="text-xs font-bold text-blue-300">加入官方社区</span><i class="fa-brands fa-qq"></i></div>
+                <div class="text-lg font-bold text-white mt-1 relative z-10 font-mono">691105381</div>
+            </div>
+
+            <button onclick="filter('all')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-white bg-slate-800 font-medium"><i class="fa-solid fa-layer-group w-6 text-center text-accent"></i> 全部资源 (300+)</button>
+
+            <div class="sidebar-header">数字娱乐</div>
+            <button onclick="filter('movies')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-film w-6 text-center"></i> 影视与聚合 <span id="c-movies" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('anime')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-cat w-6 text-center"></i> 动漫与漫画 <span id="c-anime" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('games')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-gamepad w-6 text-center"></i> 游戏与模拟 <span id="c-games" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('music')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-music w-6 text-center"></i> 音乐与有声 <span id="c-music" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('iptv')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-tv w-6 text-center"></i> 直播与IPTV <span id="c-iptv" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+
+            <div class="sidebar-header">极客生产力</div>
+            <button onclick="filter('tools')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-toolbox w-6 text-center"></i> 软件与工具 <span id="c-tools" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('ai')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-brain w-6 text-center"></i> 人工智能 <span id="c-ai" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('dev')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-code w-6 text-center"></i> 开发与编程 <span id="c-dev" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('design')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-pen-nib w-6 text-center"></i> 设计与素材 <span id="c-design" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+
+            <div class="sidebar-header">移动 & 安全</div>
+            <button onclick="filter('android')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-brands fa-android w-6 text-center"></i> 安卓发烧友 <span id="c-android" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('privacy')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-shield-halved w-6 text-center"></i> 隐私与安全 <span id="c-privacy" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <button onclick="filter('pan')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-cloud w-6 text-center"></i> 网盘与资源 <span id="c-pan" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+
+            <div class="mt-8 px-2 pb-6">
+                <a href="mailto:2902939692@qq.com" class="block text-center py-2 text-xs text-slate-500 hover:text-white border border-slate-700/50 rounded hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-envelope mr-1"></i> 投稿: 2902939692
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative bg-[#020617]">
+        <header class="h-16 border-b border-slate-800/50 flex items-center justify-between px-6 bg-[#020617]/90 backdrop-blur z-20">
+            <button class="md:hidden text-slate-400 mr-4" onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')"><i class="fa-solid fa-bars text-lg"></i></button>
+            <div class="flex-1 max-w-lg relative">
+                <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                <input type="text" id="search" placeholder="搜索 320+ 资源 (Ctrl+K)..." class="w-full bg-slate-900 border border-slate-800 rounded-full py-2 pl-10 pr-4 text-white focus:border-accent focus:outline-none placeholder-slate-600 text-sm">
+            </div>
+            <div class="ml-4 flex items-center gap-3">
+                <button onclick="randomSite()" class="text-slate-400 hover:text-accent" title="手气不错"><i class="fa-solid fa-dice text-lg"></i></button>
+                <div class="hidden md:flex text-xs text-slate-500 font-mono bg-slate-900 px-2 py-1 rounded border border-slate-800">DB: <span id="total-db" class="text-emerald-400">0</span></div>
+            </div>
+        </header>
+
+        <div id="content-area" class="flex-1 overflow-y-auto custom-scrollbar p-6">
+            <h2 id="cat-title" class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><i class="fa-solid fa-layer-group text-accent"></i> 全部资源</h2>
+            <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-20"></div>
+        </div>
+    </main>
+
+    <div id="toast" class="fixed top-20 right-5 pointer-events-none z-50"></div>
+
+    <script>
+        // ==========================================
+        // 📚 全局变量
+        // ==========================================
+        let db = [];
+        let currentCategory = 'all';
+
+        // ==========================================
+        // 🚀 初始化与数据加载
+        // ==========================================
+        async function init() {
+            try {
+                // 从 data.json 加载数据
+                const response = await fetch('data.json');
+                if (!response.ok) throw new Error('Failed to load data');
+                db = await response.json();
+                
+                // 更新 Header 上的总数据库数量
+                document.getElementById('total-db').innerText = db.length;
+
+                // 统计分类数量
+                updateCategoryCounts();
+                
+                // 初始渲染
+                render(db);
+                
+                // 添加 Ctrl + K 键盘快捷键监听
+                setupKeyboardShortcuts();
+                
+                // 隐藏加载动画
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                }, 500);
+            } catch (error) {
+                console.error('初始化失败:', error);
+                showToast('加载失败，请刷新页面', 'error');
+                document.getElementById('loading-overlay').classList.add('hidden');
+            }
+        }
+
+        /**
+         * 更新分类计数
+         */
+        function updateCategoryCounts() {
+            const counts = {};
+            db.forEach(item => {
+                counts[item.c] = (counts[item.c] || 0) + 1;
+            });
+            
+            for (let category in counts) {
+                const el = document.getElementById(`c-${category}`);
+                if (el) el.innerText = counts[category];
+            }
+        }
+
+        /**
+         * 设置键盘快捷键
+         */
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('search').focus();
+                }
+            });
+        }
+
+        // ==========================================
+        // 🎯 分类筛选
+        // ==========================================
+        function filter(category) {
+            currentCategory = category;
+            const list = category === 'all' ? db : db.filter(i => i.c === category);
+            
+            // 侧边栏高亮逻辑
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-accent', 'text-dark', 'font-bold');
+                btn.classList.add('text-slate-400', 'bg-transparent');
+                if (btn.getAttribute('onclick').includes(`'${category}'`)) {
+                    btn.classList.remove('text-slate-400', 'bg-transparent');
+                    btn.classList.add('bg-accent', 'text-dark', 'font-bold');
+                }
+            });
+
+            // 移动端自动关闭侧边栏
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            }
+
+            // 更新标题
+            const categoryNames = {
+                'all': '全部资源',
+                'movies': '影视与聚合',
+                'anime': '动漫与漫画',
+                'games': '游戏与模拟',
+                'music': '音乐与有声',
+                'iptv': '直播与IPTV',
+                'tools': '软件与工具',
+                'ai': '人工智能',
+                'dev': '开发与编程',
+                'design': '设计与素材',
+                'android': '安卓发烧友',
+                'privacy': '隐私与安全',
+                'pan': '网盘与资源'
+            };
+
+            document.getElementById('cat-title').innerHTML = 
+                `<i class="fa-solid fa-layer-group text-accent"></i> ${categoryNames[category] || '搜索结果'} <span class="text-sm text-slate-500 ml-2">(${list.length})</span>`;
+
+            render(list);
+        }
+
+        // ==========================================
+        // 🎨 渲染卡片
+        // ==========================================
+        function render(list) {
+            const grid = document.getElementById('grid');
+            
+            if (list.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center text-slate-500 py-12">未找到相关资源</div>';
+                return;
+            }
+
+            // 使用 map + join 提升渲染性能
+            const htmlStr = list.map(item => {
+                const badge = item.badge ? `<span class="absolute top-2 right-2 text-[10px] font-bold px-1.5 py-0.5 rounded border ${getBadgeStyle(item.badge)}">${item.badge}</span>` : '';
+                return `
+                <div class="resource-card bg-[#0b1121] rounded-xl p-4 relative group cursor-pointer flex flex-col h-full animate-fade-in" onclick="openLink('${item.u}')">
+                    ${badge}
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-slate-800 text-accent text-lg shadow-inner"><i class="fa-solid ${item.i}"></i></div>
+                        <div class="font-bold text-slate-200 truncate pr-6 group-hover:text-accent transition">${escapeHtml(item.t)}</div>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-3 flex-grow">${escapeHtml(item.d)}</p>
+                    <div class="pt-3 border-t border-slate-800/50 flex justify-between items-center text-[10px] text-slate-500">
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded">#${item.c.toUpperCase()}</span>
+                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                            <span onclick="copyLink('${item.u}', event)" class="hover:text-white cursor-pointer" title="复制链接"><i class="fa-regular fa-copy"></i></span>
+                            <span class="hover:text-white"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            
+            grid.innerHTML = htmlStr;
+        }
+
+        // ==========================================
+        // 🔧 工具函数
+        // ==========================================
+
+        /**
+         * 转义 HTML 特殊字符，防止 XSS
+         */
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        /**
+         * 打开链接
+         */
+        function openLink(url) {
+            try {
+                window.open(url, '_blank');
+            } catch (error) {
+                console.error('打开链接失败:', error);
+                showToast('无法打开链接', 'error');
+            }
+        }
+
+        /**
+         * 获取 Badge 样式
+         */
+        function getBadgeStyle(badge) {
+            if (['热门', '神器', '必藏', '神站'].includes(badge)) 
+                return 'bg-red-500/10 text-red-400 border-red-500/20';
+            if (['新锐', 'FOSS', '推荐', '源头', '必读'].includes(badge)) 
+                return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+            return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+        }
+
+        /**
+         * 加入 QQ 群
+         */
+        function joinQQ() {
+            try {
+                const isMobile = /Android|iPhone/i.test(navigator.userAgent);
+                const url = isMobile 
+                    ? "mqqapi://card/show_pslcard?src_type=internal&version=1&uin=691105381&card_type=group&source=qrcode"
+                    : "https://qm.qq.com/q/cY9CE78ZMs";
+                isMobile ? (window.location.href = url) : window.open(url, '_blank');
+                showToast('正在前往官方社区...', 'success');
+            } catch (error) {
+                console.error('加入 QQ 群失败:', error);
+                showToast('加入失败，请稍后重试', 'error');
+            }
+        }
+
+        /**
+         * 复制链接
+         */
+        function copyLink(url, e) {
+            e.stopPropagation();
+            navigator.clipboard.writeText(url)
+                .then(() => showToast('链接已复制', 'success'))
+                .catch(error => {
+                    console.error('复制失败:', error);
+                    showToast('复制失败', 'error');
+                });
+        }
+
+        /**
+         * 显示 Toast 提示
+         */
+        function showToast(msg, type = 'success') {
+            const t = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-accent';
+            t.className = `${bgColor} text-dark font-bold px-4 py-2 rounded-lg shadow-lg mb-2 animate-bounce`;
+            t.innerText = msg;
+            document.getElementById('toast').appendChild(t);
+            setTimeout(() => t.remove(), 2000);
+        }
+
+        /**
+         * 随机访问一个站点
+         */
+        function randomSite() {
+            if (db.length === 0) {
+                showToast('数据加载中...', 'error');
+                return;
+            }
+            try {
+                const randomItem = db[Math.floor(Math.random() * db.length)];
+                showToast(`正在前往: ${randomItem.t}`, 'success');
+                setTimeout(() => {
+                    window.open(randomItem.u, '_blank');
+                }, 500);
+            } catch (error) {
+                console.error('随机访问失败:', error);
+                showToast('访问失败，请稍后重试', 'error');
+            }
+        }
+
+        // ==========================================
+        // 🔍 搜索功能
+        // ==========================================
+        document.getElementById('search').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase().trim();
+            
+            if (!val) {
+                // 如果搜索框为空，显示当前分类
+                filter(currentCategory);
+                return;
+            }
+
+            // 搜索标题和描述
+            const filtered = db.filter(i => 
+                i.t.toLowerCase().includes(val) || 
+                i.d.toLowerCase().includes(val)
+            );
+
+            document.getElementById('cat-title').innerHTML = 
+                `<i class="fa-solid fa-magnifying-glass text-accent"></i> 搜索结果 <span class="text-sm text-slate-500 ml-2">(${filtered.length})</span>`;
+            
+            render(filtered);
+        });
+
+        // 启动应用
+        init();
+    </script>
+</body>
+</html>
