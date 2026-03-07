@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="资源风 - 真正收录300+全球优质极客资源。对标FMHY的中文导航站。樱花版。">
+    <meta name="description" content="资源风 - 真正收录300+全球优质极客资源。对标FMHY的中文导航站。">
     <meta name="keywords" content="资源导航,极客资源,影视,动漫,游戏,软件,AI,开发工具">
     <meta name="author" content="Feng-180">
-    <meta property="og:title" content="资源风 | Resource Wind (300+版)">
-    <meta property="og:description" content="真正收录300+全球优质极客资源，樱花主题">
+    <meta property="og:title" content="资源风 | Resource Wind">
+    <meta property="og:description" content="真正收录300+全球优质极客资源">
     <meta property="og:type" content="website">
     <title>资源风 | Resource Wind · 樱花版</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,38 +27,44 @@
         }
 
         :root {
-            --bg-deep: #0c0618;
-            --bg-sidebar: #100a20;
-            --bg-card: rgba(25, 15, 45, 0.65);
-            --bg-glass: rgba(255, 255, 255, 0.025);
-            --border-subtle: rgba(167, 139, 250, 0.08);
-            --border-glow: rgba(244, 114, 182, 0.3);
-            --text-primary: #f5f0ff;
-            --text-secondary: #b8a5d4;
-            --text-muted: #6d5a8a;
-            --sakura-pink: #f472b6;
-            --sakura-purple: #a78bfa;
-            --sakura-rose: #fb7185;
-            --sakura-lavender: #c4b5fd;
-            --sakura-fuchsia: #e879f9;
+            --bg: #fff5f7;
+            --bg-sidebar: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-glass: rgba(255, 255, 255, 0.6);
+            --border: rgba(236, 168, 185, 0.2);
+            --border-hover: rgba(236, 112, 140, 0.4);
+            --text-primary: #2d1f30;
+            --text-secondary: #6b5570;
+            --text-muted: #ae8fad;
+            --sakura: #ec708c;
+            --sakura-light: #f9b8c6;
+            --sakura-soft: #fce4ec;
+            --sakura-deep: #d4536a;
+            --shadow-card: 0 2px 16px rgba(236, 112, 140, 0.06);
+            --shadow-hover: 0 8px 32px rgba(236, 112, 140, 0.12);
             --font: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
             --radius: 14px;
             --radius-sm: 10px;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: var(--font);
-            background: var(--bg-deep);
+            background: var(--bg);
             color: var(--text-secondary);
             height: 100vh;
             overflow: hidden;
             display: flex;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== 背景极光 ===== */
-        .aurora {
+        /* ===== 樱花花瓣粒子 (CSS only) ===== */
+        .petals {
             position: fixed;
             inset: 0;
             pointer-events: none;
@@ -66,41 +72,97 @@
             overflow: hidden;
         }
 
-        .aurora::before {
-            content: '';
+        .petal {
             position: absolute;
-            width: 700px;
-            height: 700px;
-            top: -250px;
-            left: -150px;
-            background: radial-gradient(circle, rgba(167, 139, 250, 0.1), transparent 70%);
-            animation: auroraFloat 20s ease-in-out infinite;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, var(--sakura-light), rgba(252, 228, 236, 0));
+            border-radius: 50% 0 50% 50%;
+            opacity: 0;
+            animation: petalFall linear infinite;
         }
 
-        .aurora::after {
-            content: '';
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            bottom: -200px;
-            right: -100px;
-            background: radial-gradient(circle, rgba(244, 114, 182, 0.08), transparent 70%);
-            animation: auroraFloat 25s ease-in-out infinite reverse;
+        .petal:nth-child(1) {
+            left: 10%;
+            animation-duration: 12s;
+            animation-delay: 0s;
+            width: 8px;
+            height: 8px;
         }
 
-        @keyframes auroraFloat {
+        .petal:nth-child(2) {
+            left: 25%;
+            animation-duration: 15s;
+            animation-delay: 2s;
+            width: 12px;
+            height: 12px;
+        }
 
-            0%,
+        .petal:nth-child(3) {
+            left: 40%;
+            animation-duration: 11s;
+            animation-delay: 4s;
+        }
+
+        .petal:nth-child(4) {
+            left: 55%;
+            animation-duration: 14s;
+            animation-delay: 1s;
+            width: 7px;
+            height: 7px;
+        }
+
+        .petal:nth-child(5) {
+            left: 70%;
+            animation-duration: 13s;
+            animation-delay: 3s;
+            width: 11px;
+            height: 11px;
+        }
+
+        .petal:nth-child(6) {
+            left: 85%;
+            animation-duration: 16s;
+            animation-delay: 5s;
+            width: 9px;
+            height: 9px;
+        }
+
+        .petal:nth-child(7) {
+            left: 15%;
+            animation-duration: 10s;
+            animation-delay: 6s;
+            width: 6px;
+            height: 6px;
+        }
+
+        .petal:nth-child(8) {
+            left: 60%;
+            animation-duration: 17s;
+            animation-delay: 7s;
+            width: 13px;
+            height: 13px;
+        }
+
+        @keyframes petalFall {
+            0% {
+                top: -5%;
+                opacity: 0;
+                transform: rotate(0deg) translateX(0);
+            }
+
+            10% {
+                opacity: 0.7;
+            }
+
+            90% {
+                opacity: 0.4;
+            }
+
             100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            33% {
-                transform: translate(80px, 50px) scale(1.1);
-            }
-
-            66% {
-                transform: translate(-50px, 80px) scale(0.95);
+                top: 105%;
+                opacity: 0;
+                transform: rotate(720deg) translateX(80px);
             }
         }
 
@@ -108,7 +170,7 @@
         #loading-overlay {
             position: fixed;
             inset: 0;
-            background: var(--bg-deep);
+            background: var(--bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,13 +184,12 @@
         }
 
         .loader-ring {
-            width: 44px;
-            height: 44px;
-            border: 3px solid rgba(167, 139, 250, 0.15);
-            border-top-color: var(--sakura-pink);
-            border-right-color: var(--sakura-purple);
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--sakura-soft);
+            border-top-color: var(--sakura);
             border-radius: 50%;
-            animation: spin 0.9s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
@@ -147,66 +208,60 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(167, 139, 250, 0.2);
+            background: var(--sakura-light);
             border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(167, 139, 250, 0.35);
         }
 
         /* ===== 侧边栏 ===== */
         .sidebar {
-            width: 260px;
+            width: 256px;
             background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-subtle);
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             z-index: 50;
-            position: relative;
             flex-shrink: 0;
-            transition: transform 0.25s ease;
+            transition: transform 0.25s;
+            box-shadow: 1px 0 8px rgba(236, 112, 140, 0.03);
         }
 
-        .sidebar-header-area {
-            height: 60px;
+        .sidebar-head {
+            height: 58px;
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 18px;
+            border-bottom: 1px solid var(--border);
             cursor: pointer;
             flex-shrink: 0;
         }
 
-        .sidebar-logo {
-            width: 34px;
-            height: 34px;
-            background: linear-gradient(135deg, var(--sakura-pink), var(--sakura-purple));
-            border-radius: 10px;
+        .s-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--sakura), var(--sakura-deep));
+            border-radius: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 15px;
-            margin-right: 12px;
-            box-shadow: 0 4px 16px rgba(244, 114, 182, 0.25);
+            font-size: 14px;
+            margin-right: 10px;
+            box-shadow: 0 3px 12px rgba(236, 112, 140, 0.25);
         }
 
-        .sidebar-title {
-            font-size: 1.15em;
+        .s-title {
+            font-size: 1.1em;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--sakura-pink), var(--sakura-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--sakura-deep);
+            letter-spacing: -0.3px;
         }
 
-        .sidebar-ver {
+        .s-ver {
             font-size: 9px;
-            background: rgba(244, 114, 182, 0.1);
-            color: var(--sakura-pink);
+            background: var(--sakura-soft);
+            color: var(--sakura);
             padding: 2px 6px;
-            border-radius: 6px;
+            border-radius: 5px;
             margin-left: 8px;
             font-weight: 700;
             font-family: monospace;
@@ -215,29 +270,26 @@
         .sidebar-nav {
             flex: 1;
             overflow-y: auto;
-            padding: 12px;
+            padding: 10px;
         }
 
-        /* QQ Card */
         .qq-card {
-            margin-bottom: 14px;
-            padding: 12px 14px;
+            margin-bottom: 12px;
+            padding: 11px 13px;
             border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, rgba(244, 114, 182, 0.08), rgba(167, 139, 250, 0.08));
-            border: 1px solid rgba(244, 114, 182, 0.15);
+            background: var(--sakura-soft);
+            border: 1px solid rgba(236, 112, 140, 0.12);
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.25s;
+            transition: all 0.2s;
         }
 
         .qq-card:hover {
-            border-color: rgba(244, 114, 182, 0.35);
-            background: linear-gradient(135deg, rgba(244, 114, 182, 0.12), rgba(167, 139, 250, 0.12));
+            border-color: var(--border-hover);
             transform: translateY(-1px);
+            box-shadow: var(--shadow-card);
         }
 
-        .qq-card-top {
+        .qq-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -246,36 +298,35 @@
         .qq-label {
             font-size: 11px;
             font-weight: 700;
-            color: var(--sakura-pink);
+            color: var(--sakura);
         }
 
         .qq-icon {
-            color: var(--sakura-lavender);
+            color: var(--sakura-light);
         }
 
         .qq-num {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             color: var(--text-primary);
-            margin-top: 4px;
+            margin-top: 3px;
             font-family: 'Inter', monospace;
+            letter-spacing: 0.5px;
         }
 
-        /* Nav Group Label */
         .nav-group {
             font-size: 10px;
             font-weight: 800;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            padding: 18px 10px 6px;
+            padding: 16px 10px 5px;
         }
 
-        /* Nav Button */
         .nav-btn {
             width: 100%;
             text-align: left;
-            padding: 9px 12px;
+            padding: 8px 11px;
             border-radius: var(--radius-sm);
             border: none;
             background: transparent;
@@ -287,36 +338,33 @@
             align-items: center;
             justify-content: space-between;
             transition: all 0.2s;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         .nav-btn:hover {
-            background: rgba(167, 139, 250, 0.06);
+            background: var(--sakura-soft);
             color: var(--text-primary);
         }
 
         .nav-btn.active {
-            background: linear-gradient(135deg, var(--sakura-pink), var(--sakura-purple));
+            background: linear-gradient(135deg, var(--sakura), var(--sakura-deep));
             color: #fff;
             font-weight: 600;
-            box-shadow: 0 3px 12px rgba(244, 114, 182, 0.2);
+            box-shadow: 0 3px 12px rgba(236, 112, 140, 0.2);
         }
 
         .nav-btn i {
-            width: 22px;
+            width: 20px;
             text-align: center;
             margin-right: 8px;
-        }
-
-        .nav-btn .nav-label {
-            flex: 1;
+            font-size: 12px;
         }
 
         .nav-count {
             font-size: 10px;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(0, 0, 0, 0.03);
             padding: 2px 7px;
-            border-radius: 6px;
+            border-radius: 5px;
             color: var(--text-muted);
         }
 
@@ -325,30 +373,30 @@
             color: rgba(255, 255, 255, 0.85);
         }
 
-        .sidebar-footer {
-            padding: 12px 16px 16px;
+        .sidebar-foot {
+            padding: 10px 14px 14px;
             flex-shrink: 0;
         }
 
-        .sidebar-footer a {
+        .sidebar-foot a {
             display: block;
             text-align: center;
-            padding: 8px;
+            padding: 7px;
             font-size: 11px;
             color: var(--text-muted);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             text-decoration: none;
             transition: all 0.2s;
         }
 
-        .sidebar-footer a:hover {
-            color: var(--sakura-pink);
-            border-color: var(--border-glow);
-            background: rgba(244, 114, 182, 0.04);
+        .sidebar-foot a:hover {
+            color: var(--sakura);
+            border-color: var(--border-hover);
+            background: var(--sakura-soft);
         }
 
-        /* ===== 主内容 ===== */
+        /* ===== 主区域 ===== */
         .main-area {
             flex: 1;
             display: flex;
@@ -358,15 +406,14 @@
             z-index: 1;
         }
 
-        /* Header */
         .top-bar {
-            height: 60px;
-            border-bottom: 1px solid var(--border-subtle);
+            height: 58px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             padding: 0 24px;
             gap: 12px;
-            background: rgba(12, 6, 24, 0.85);
+            background: rgba(255, 245, 247, 0.85);
             backdrop-filter: blur(16px);
             z-index: 20;
             flex-shrink: 0;
@@ -377,14 +424,13 @@
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 18px;
+            font-size: 17px;
             cursor: pointer;
-            padding: 4px;
         }
 
         .search-wrap {
             flex: 1;
-            max-width: 480px;
+            max-width: 440px;
             position: relative;
         }
 
@@ -399,9 +445,9 @@
 
         .search-wrap input {
             width: 100%;
-            padding: 10px 16px 10px 40px;
+            padding: 9px 16px 9px 38px;
             border-radius: 24px;
-            border: 1px solid var(--border-subtle);
+            border: 1px solid var(--border);
             background: var(--bg-glass);
             color: var(--text-primary);
             font-size: 13px;
@@ -411,8 +457,8 @@
         }
 
         .search-wrap input:focus {
-            border-color: var(--border-glow);
-            box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.08);
+            border-color: var(--sakura);
+            box-shadow: 0 0 0 3px rgba(236, 112, 140, 0.08);
         }
 
         .search-wrap input::placeholder {
@@ -422,21 +468,20 @@
         .top-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .top-actions button {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             transition: color 0.2s;
-            padding: 4px;
         }
 
         .top-actions button:hover {
-            color: var(--sakura-pink);
+            color: var(--sakura);
         }
 
         .db-badge {
@@ -444,95 +489,81 @@
             font-family: monospace;
             color: var(--text-muted);
             background: var(--bg-glass);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid var(--border);
             padding: 4px 10px;
             border-radius: 8px;
         }
 
         .db-badge .num {
-            color: var(--sakura-lavender);
+            color: var(--sakura);
             font-weight: 700;
         }
 
-        /* Content Area */
+        /* Content */
         .content-scroll {
             flex: 1;
             overflow-y: auto;
-            padding: 28px;
+            padding: 28px 32px;
         }
 
         .cat-title {
-            font-size: 1.6em;
+            font-size: 1.5em;
             font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            letter-spacing: -0.3px;
         }
 
         .cat-title i {
-            color: var(--sakura-pink);
+            color: var(--sakura);
+            font-size: 0.85em;
         }
 
         .cat-title .cat-count {
-            font-size: 0.5em;
+            font-size: 0.45em;
             font-weight: 500;
             color: var(--text-muted);
         }
 
-        /* Card Grid */
+        /* Grid */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 14px;
             padding-bottom: 60px;
         }
 
-        /* Resource Card */
+        /* Card */
         .card {
             background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 18px 20px;
+            padding: 16px 18px;
             position: relative;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             height: 100%;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(8px);
             opacity: 0;
-            animation: cardIn 0.45s ease forwards;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--sakura-pink), var(--sakura-purple));
-            opacity: 0;
-            transition: opacity 0.3s;
-            border-radius: var(--radius) var(--radius) 0 0;
+            animation: cardIn 0.4s ease forwards;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--border-glow);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(244, 114, 182, 0.06);
-        }
-
-        .card:hover::before {
-            opacity: 1;
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-hover);
         }
 
         @keyframes cardIn {
             from {
                 opacity: 0;
-                transform: translateY(14px);
+                transform: translateY(12px);
             }
 
             to {
@@ -544,37 +575,38 @@
         .card-top {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 11px;
+            margin-bottom: 10px;
         }
 
         .card-icon {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(167, 139, 250, 0.1));
-            color: var(--sakura-pink);
-            font-size: 16px;
+            background: var(--sakura-soft);
+            color: var(--sakura);
+            font-size: 15px;
             flex-shrink: 0;
         }
 
         .card-name {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
             color: var(--text-primary);
             flex: 1;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            padding-right: 24px;
+            padding-right: 20px;
             transition: color 0.2s;
+            letter-spacing: -0.2px;
         }
 
         .card:hover .card-name {
-            color: var(--sakura-pink);
+            color: var(--sakura);
         }
 
         .card-desc {
@@ -582,12 +614,12 @@
             color: var(--text-secondary);
             line-height: 1.65;
             flex-grow: 1;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .card-bottom {
-            padding-top: 10px;
-            border-top: 1px solid var(--border-subtle);
+            padding-top: 9px;
+            border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -595,16 +627,16 @@
 
         .card-cat {
             font-size: 10px;
-            background: rgba(167, 139, 250, 0.08);
+            background: var(--sakura-soft);
             color: var(--text-muted);
-            padding: 3px 8px;
-            border-radius: 6px;
+            padding: 2px 7px;
+            border-radius: 5px;
             font-weight: 600;
         }
 
         .card-actions {
             display: flex;
-            gap: 8px;
+            gap: 7px;
             opacity: 0;
             transition: opacity 0.2s;
         }
@@ -621,40 +653,39 @@
         }
 
         .card-actions span:hover {
-            color: var(--sakura-pink);
+            color: var(--sakura);
         }
 
         /* Badge */
         .badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 9px;
+            right: 9px;
             font-size: 10px;
             font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 6px;
+            padding: 2px 7px;
+            border-radius: 5px;
             border: 1px solid;
         }
 
         .badge-hot {
-            background: rgba(251, 113, 133, 0.1);
-            color: var(--sakura-rose);
-            border-color: rgba(251, 113, 133, 0.2);
+            background: rgba(236, 112, 140, 0.08);
+            color: var(--sakura-deep);
+            border-color: rgba(236, 112, 140, 0.2);
         }
 
         .badge-good {
-            background: rgba(167, 139, 250, 0.1);
-            color: var(--sakura-lavender);
-            border-color: rgba(167, 139, 250, 0.2);
+            background: rgba(16, 185, 129, 0.06);
+            color: #059669;
+            border-color: rgba(16, 185, 129, 0.15);
         }
 
         .badge-other {
-            background: rgba(232, 121, 249, 0.1);
-            color: var(--sakura-fuchsia);
-            border-color: rgba(232, 121, 249, 0.2);
+            background: rgba(99, 102, 241, 0.06);
+            color: #6366f1;
+            border-color: rgba(99, 102, 241, 0.15);
         }
 
-        /* Empty */
         .empty {
             text-align: center;
             padding: 60px 20px;
@@ -664,39 +695,39 @@
 
         .empty .icon {
             font-size: 3em;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         /* Toast */
         #toast {
             position: fixed;
-            top: 80px;
+            top: 72px;
             right: 20px;
             z-index: 9999;
             pointer-events: none;
         }
 
         .toast-item {
-            background: linear-gradient(135deg, var(--sakura-pink), var(--sakura-purple));
+            background: var(--sakura);
             color: #fff;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 12px;
-            padding: 10px 18px;
+            padding: 9px 16px;
             border-radius: var(--radius-sm);
             margin-bottom: 8px;
-            box-shadow: 0 6px 20px rgba(244, 114, 182, 0.3);
+            box-shadow: 0 4px 16px rgba(236, 112, 140, 0.25);
             animation: toastIn 0.3s ease;
         }
 
         .toast-item.error {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+            background: #ef4444;
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);
         }
 
         @keyframes toastIn {
             from {
                 opacity: 0;
-                transform: translateX(30px);
+                transform: translateX(20px);
             }
 
             to {
@@ -735,112 +766,103 @@
                 display: none;
             }
 
-            .sidebar-overlay {
+            .overlay {
                 position: fixed;
                 inset: 0;
-                background: rgba(0, 0, 0, 0.5);
+                background: rgba(0, 0, 0, 0.2);
                 z-index: 49;
                 display: none;
             }
 
-            .sidebar-overlay.show {
+            .overlay.show {
                 display: block;
-            }
-        }
-
-        @media (min-width: 769px) and (max-width: 1200px) {
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- 极光背景 -->
-    <div class="aurora"></div>
+    <!-- 樱花花瓣 -->
+    <div class="petals">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+    </div>
 
-    <!-- 加载 -->
     <div id="loading-overlay">
         <div class="loader-ring"></div>
     </div>
-
-    <!-- 移动端遮罩 -->
-    <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
     <!-- 侧边栏 -->
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header-area" onclick="location.reload()">
-            <div class="sidebar-logo"><i class="fa-solid fa-wind"></i></div>
-            <span class="sidebar-title">资源风</span>
-            <span class="sidebar-ver">v12</span>
+        <div class="sidebar-head" onclick="location.reload()">
+            <div class="s-logo"><i class="fa-solid fa-wind"></i></div>
+            <span class="s-title">资源风</span>
+            <span class="s-ver">v12</span>
         </div>
-
         <div class="sidebar-nav">
             <div class="qq-card" onclick="joinQQ()">
-                <div class="qq-card-top">
-                    <span class="qq-label">🌸 加入官方社区</span>
-                    <i class="fa-brands fa-qq qq-icon"></i>
-                </div>
+                <div class="qq-top"><span class="qq-label">🌸 加入官方社区</span><i class="fa-brands fa-qq qq-icon"></i></div>
                 <div class="qq-num">691105381</div>
             </div>
-
-            <button class="nav-btn active" onclick="filter('all', this)">
-                <span><i class="fa-solid fa-layer-group"></i><span class="nav-label">全部资源</span></span>
-                <span class="nav-count" id="c-all"></span>
-            </button>
-
+            <button class="nav-btn active" onclick="filter('all',this)"><span><i
+                        class="fa-solid fa-layer-group"></i>全部资源</span><span class="nav-count"
+                    id="c-all"></span></button>
             <div class="nav-group">数字娱乐</div>
-            <button class="nav-btn" onclick="filter('movies', this)"><span><i class="fa-solid fa-film"></i><span
-                        class="nav-label">影视与聚合</span></span><span class="nav-count" id="c-movies"></span></button>
-            <button class="nav-btn" onclick="filter('anime', this)"><span><i class="fa-solid fa-cat"></i><span
-                        class="nav-label">动漫与漫画</span></span><span class="nav-count" id="c-anime"></span></button>
-            <button class="nav-btn" onclick="filter('games', this)"><span><i class="fa-solid fa-gamepad"></i><span
-                        class="nav-label">游戏与模拟</span></span><span class="nav-count" id="c-games"></span></button>
-            <button class="nav-btn" onclick="filter('music', this)"><span><i class="fa-solid fa-music"></i><span
-                        class="nav-label">音乐与有声</span></span><span class="nav-count" id="c-music"></span></button>
-            <button class="nav-btn" onclick="filter('iptv', this)"><span><i class="fa-solid fa-tv"></i><span
-                        class="nav-label">直播与IPTV</span></span><span class="nav-count" id="c-iptv"></span></button>
-
+            <button class="nav-btn" onclick="filter('movies',this)"><span><i
+                        class="fa-solid fa-film"></i>影视与聚合</span><span class="nav-count" id="c-movies"></span></button>
+            <button class="nav-btn" onclick="filter('anime',this)"><span><i
+                        class="fa-solid fa-cat"></i>动漫与漫画</span><span class="nav-count" id="c-anime"></span></button>
+            <button class="nav-btn" onclick="filter('games',this)"><span><i
+                        class="fa-solid fa-gamepad"></i>游戏与模拟</span><span class="nav-count"
+                    id="c-games"></span></button>
+            <button class="nav-btn" onclick="filter('music',this)"><span><i
+                        class="fa-solid fa-music"></i>音乐与有声</span><span class="nav-count" id="c-music"></span></button>
+            <button class="nav-btn" onclick="filter('iptv',this)"><span><i
+                        class="fa-solid fa-tv"></i>直播与IPTV</span><span class="nav-count" id="c-iptv"></span></button>
             <div class="nav-group">极客生产力</div>
-            <button class="nav-btn" onclick="filter('tools', this)"><span><i class="fa-solid fa-toolbox"></i><span
-                        class="nav-label">软件与工具</span></span><span class="nav-count" id="c-tools"></span></button>
-            <button class="nav-btn" onclick="filter('ai', this)"><span><i class="fa-solid fa-brain"></i><span
-                        class="nav-label">人工智能</span></span><span class="nav-count" id="c-ai"></span></button>
-            <button class="nav-btn" onclick="filter('dev', this)"><span><i class="fa-solid fa-code"></i><span
-                        class="nav-label">开发与编程</span></span><span class="nav-count" id="c-dev"></span></button>
-            <button class="nav-btn" onclick="filter('design', this)"><span><i class="fa-solid fa-pen-nib"></i><span
-                        class="nav-label">设计与素材</span></span><span class="nav-count" id="c-design"></span></button>
-
+            <button class="nav-btn" onclick="filter('tools',this)"><span><i
+                        class="fa-solid fa-toolbox"></i>软件与工具</span><span class="nav-count"
+                    id="c-tools"></span></button>
+            <button class="nav-btn" onclick="filter('ai',this)"><span><i class="fa-solid fa-brain"></i>人工智能</span><span
+                    class="nav-count" id="c-ai"></span></button>
+            <button class="nav-btn" onclick="filter('dev',this)"><span><i class="fa-solid fa-code"></i>开发与编程</span><span
+                    class="nav-count" id="c-dev"></span></button>
+            <button class="nav-btn" onclick="filter('design',this)"><span><i
+                        class="fa-solid fa-pen-nib"></i>设计与素材</span><span class="nav-count"
+                    id="c-design"></span></button>
             <div class="nav-group">移动 & 安全</div>
-            <button class="nav-btn" onclick="filter('android', this)"><span><i class="fa-brands fa-android"></i><span
-                        class="nav-label">安卓发烧友</span></span><span class="nav-count" id="c-android"></span></button>
-            <button class="nav-btn" onclick="filter('privacy', this)"><span><i
-                        class="fa-solid fa-shield-halved"></i><span class="nav-label">隐私与安全</span></span><span
-                    class="nav-count" id="c-privacy"></span></button>
-            <button class="nav-btn" onclick="filter('pan', this)"><span><i class="fa-solid fa-cloud"></i><span
-                        class="nav-label">网盘与资源</span></span><span class="nav-count" id="c-pan"></span></button>
+            <button class="nav-btn" onclick="filter('android',this)"><span><i
+                        class="fa-brands fa-android"></i>安卓发烧友</span><span class="nav-count"
+                    id="c-android"></span></button>
+            <button class="nav-btn" onclick="filter('privacy',this)"><span><i
+                        class="fa-solid fa-shield-halved"></i>隐私与安全</span><span class="nav-count"
+                    id="c-privacy"></span></button>
+            <button class="nav-btn" onclick="filter('pan',this)"><span><i
+                        class="fa-solid fa-cloud"></i>网盘与资源</span><span class="nav-count" id="c-pan"></span></button>
         </div>
-
-        <div class="sidebar-footer">
-            <a href="mailto:2902939692@qq.com"><i class="fa-solid fa-envelope"></i> 投稿: 2902939692</a>
-        </div>
+        <div class="sidebar-foot"><a href="mailto:2902939692@qq.com"><i class="fa-solid fa-envelope"></i> 投稿:
+                2902939692</a></div>
     </aside>
 
-    <!-- 主内容 -->
     <main class="main-area">
         <header class="top-bar">
             <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
             <div class="search-wrap">
                 <i class="fa-solid fa-search"></i>
-                <input type="text" id="search" placeholder="搜索 320+ 资源 (Ctrl+K)...">
+                <input type="text" id="search" placeholder="搜索资源 (Ctrl+K)...">
             </div>
             <div class="top-actions">
                 <button onclick="randomSite()" title="手气不错"><i class="fa-solid fa-dice"></i></button>
                 <span class="db-badge">DB: <span class="num" id="total-db">0</span></span>
             </div>
         </header>
-
         <div class="content-scroll" id="content-area">
             <h2 class="cat-title" id="cat-title"><i class="fa-solid fa-layer-group"></i> 全部资源</h2>
             <div class="grid" id="grid"></div>
@@ -850,157 +872,61 @@
     <div id="toast"></div>
 
     <script>
-        // ===== 全局 =====
-        let db = [];
-        let currentCategory = 'all';
+        let db = [], currentCategory = 'all';
+        const CN = { all: '全部资源', movies: '影视与聚合', anime: '动漫与漫画', games: '游戏与模拟', music: '音乐与有声', iptv: '直播与IPTV', tools: '软件与工具', ai: '人工智能', dev: '开发与编程', design: '设计与素材', android: '安卓发烧友', privacy: '隐私与安全', pan: '网盘与资源' };
 
-        const CAT_NAMES = {
-            all: '全部资源', movies: '影视与聚合', anime: '动漫与漫画',
-            games: '游戏与模拟', music: '音乐与有声', iptv: '直播与IPTV',
-            tools: '软件与工具', ai: '人工智能', dev: '开发与编程',
-            design: '设计与素材', android: '安卓发烧友', privacy: '隐私与安全', pan: '网盘与资源'
-        };
-
-        // ===== 初始化 =====
         async function init() {
             try {
-                const resp = await fetch('data.json');
-                if (!resp.ok) throw new Error('加载失败');
-                db = await resp.json();
+                const r = await fetch('data.json'); if (!r.ok) throw 0;
+                db = await r.json();
                 document.getElementById('total-db').innerText = db.length;
-                updateCounts();
-                render(db);
-                setupSearch();
-                document.addEventListener('keydown', e => {
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('search').focus(); }
-                });
-                setTimeout(() => document.getElementById('loading-overlay').classList.add('hidden'), 400);
-            } catch (err) {
-                console.error(err);
-                showToast('加载失败，请刷新页面', true);
-                document.getElementById('loading-overlay').classList.add('hidden');
-            }
+                updateCounts(); render(db); setupSearch();
+                document.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('search').focus(); } });
+                setTimeout(() => document.getElementById('loading-overlay').classList.add('hidden'), 350);
+            } catch (e) { showToast('加载失败，请刷新', true); document.getElementById('loading-overlay').classList.add('hidden'); }
         }
 
         function updateCounts() {
-            const counts = {};
-            db.forEach(it => counts[it.c] = (counts[it.c] || 0) + 1);
-            const allEl = document.getElementById('c-all');
-            if (allEl) allEl.innerText = db.length;
-            for (let c in counts) {
-                const el = document.getElementById('c-' + c);
-                if (el) el.innerText = counts[c];
-            }
+            const c = {}; db.forEach(i => c[i.c] = (c[i.c] || 0) + 1);
+            const a = document.getElementById('c-all'); if (a) a.innerText = db.length;
+            for (let k in c) { const e = document.getElementById('c-' + k); if (e) e.innerText = c[k]; }
         }
 
-        // ===== 分类 =====
         function filter(cat, btn) {
             currentCategory = cat;
             const list = cat === 'all' ? db : db.filter(i => i.c === cat);
-
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
-
             if (window.innerWidth < 768) closeSidebar();
-
-            document.getElementById('cat-title').innerHTML =
-                `<i class="fa-solid fa-layer-group"></i> ${CAT_NAMES[cat] || '搜索结果'} <span class="cat-count">(${list.length})</span>`;
+            document.getElementById('cat-title').innerHTML = `<i class="fa-solid fa-layer-group"></i> ${CN[cat] || '搜索结果'} <span class="cat-count">(${list.length})</span>`;
             render(list);
         }
 
-        // ===== 渲染 =====
         function render(list) {
-            const grid = document.getElementById('grid');
-            if (!list.length) {
-                grid.innerHTML = '<div class="empty"><div class="icon">🌸</div><p>未找到相关资源</p></div>';
-                return;
-            }
-            grid.innerHTML = list.map((it, i) => {
+            const g = document.getElementById('grid');
+            if (!list.length) { g.innerHTML = '<div class="empty"><div class="icon">🌸</div><p>未找到相关资源</p></div>'; return; }
+            g.innerHTML = list.map((it, i) => {
                 const badge = it.badge ? `<span class="badge ${getBadgeClass(it.badge)}">${esc(it.badge)}</span>` : '';
-                return `
-                <div class="card" style="animation-delay:${Math.min(i * 0.03, 0.6)}s" onclick="openLink('${esc(it.u)}')">
+                return `<div class="card" style="animation-delay:${Math.min(i * 0.025, 0.5)}s" onclick="openLink('${esc(it.u)}')">
                     ${badge}
-                    <div class="card-top">
-                        <div class="card-icon"><i class="fa-solid ${it.i}"></i></div>
-                        <div class="card-name">${esc(it.t)}</div>
-                    </div>
+                    <div class="card-top"><div class="card-icon"><i class="fa-solid ${it.i}"></i></div><div class="card-name">${esc(it.t)}</div></div>
                     <p class="card-desc">${esc(it.d)}</p>
-                    <div class="card-bottom">
-                        <span class="card-cat">#${it.c.toUpperCase()}</span>
-                        <div class="card-actions">
-                            <span onclick="copyLink('${esc(it.u)}', event)" title="复制链接"><i class="fa-regular fa-copy"></i></span>
-                            <span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                        </div>
-                    </div>
+                    <div class="card-bottom"><span class="card-cat">#${it.c.toUpperCase()}</span><div class="card-actions"><span onclick="copyLink('${esc(it.u)}',event)" title="复制链接"><i class="fa-regular fa-copy"></i></span><span><i class="fa-solid fa-arrow-up-right-from-square"></i></span></div></div>
                 </div>`;
             }).join('');
         }
 
-        // ===== 工具 =====
         function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+        function openLink(u) { window.open(u, '_blank', 'noopener,noreferrer'); }
+        function getBadgeClass(b) { if (['热门', '神器', '必藏', '神站'].includes(b)) return 'badge-hot'; if (['新锐', 'FOSS', '推荐', '源头', '必读'].includes(b)) return 'badge-good'; return 'badge-other'; }
+        function joinQQ() { const m = /Android|iPhone/i.test(navigator.userAgent); const u = m ? 'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=691105381&card_type=group&source=qrcode' : 'https://qm.qq.com/q/cY9CE78ZMs'; m ? (location.href = u) : window.open(u, '_blank'); showToast('正在前往社区...'); }
+        function copyLink(u, e) { e.stopPropagation(); navigator.clipboard.writeText(u).then(() => showToast('链接已复制')).catch(() => showToast('复制失败', true)); }
+        function showToast(msg, err) { const t = document.createElement('div'); t.className = 'toast-item' + (err ? ' error' : ''); t.textContent = msg; document.getElementById('toast').appendChild(t); setTimeout(() => t.remove(), 2200); }
+        function randomSite() { if (!db.length) { showToast('加载中...', true); return; } const r = db[Math.floor(Math.random() * db.length)]; showToast('正在前往: ' + r.t); setTimeout(() => window.open(r.u, '_blank'), 500); }
 
-        function openLink(url) { window.open(url, '_blank', 'noopener,noreferrer'); }
-
-        function getBadgeClass(b) {
-            if (['热门', '神器', '必藏', '神站'].includes(b)) return 'badge-hot';
-            if (['新锐', 'FOSS', '推荐', '源头', '必读'].includes(b)) return 'badge-good';
-            return 'badge-other';
-        }
-
-        function joinQQ() {
-            const mobile = /Android|iPhone/i.test(navigator.userAgent);
-            const url = mobile
-                ? 'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=691105381&card_type=group&source=qrcode'
-                : 'https://qm.qq.com/q/cY9CE78ZMs';
-            mobile ? (location.href = url) : window.open(url, '_blank');
-            showToast('正在前往官方社区...');
-        }
-
-        function copyLink(url, e) {
-            e.stopPropagation();
-            navigator.clipboard.writeText(url)
-                .then(() => showToast('链接已复制'))
-                .catch(() => showToast('复制失败', true));
-        }
-
-        function showToast(msg, isErr) {
-            const t = document.createElement('div');
-            t.className = 'toast-item' + (isErr ? ' error' : '');
-            t.textContent = msg;
-            document.getElementById('toast').appendChild(t);
-            setTimeout(() => t.remove(), 2200);
-        }
-
-        function randomSite() {
-            if (!db.length) { showToast('数据加载中...', true); return; }
-            const r = db[Math.floor(Math.random() * db.length)];
-            showToast('正在前往: ' + r.t);
-            setTimeout(() => window.open(r.u, '_blank'), 500);
-        }
-
-        // ===== 搜索 =====
-        function setupSearch() {
-            document.getElementById('search').addEventListener('input', e => {
-                const v = e.target.value.toLowerCase().trim();
-                if (!v) { filter(currentCategory, document.querySelector('.nav-btn.active')); return; }
-                const list = db.filter(i => i.t.toLowerCase().includes(v) || i.d.toLowerCase().includes(v));
-                document.getElementById('cat-title').innerHTML =
-                    `<i class="fa-solid fa-magnifying-glass"></i> 搜索结果 <span class="cat-count">(${list.length})</span>`;
-                render(list);
-            });
-        }
-
-        // ===== 移动端侧边栏 =====
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('show');
-        }
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
-        }
-
-        // 启动
+        function setupSearch() { document.getElementById('search').addEventListener('input', e => { const v = e.target.value.toLowerCase().trim(); if (!v) { filter(currentCategory, document.querySelector('.nav-btn.active')); return; } const list = db.filter(i => i.t.toLowerCase().includes(v) || i.d.toLowerCase().includes(v)); document.getElementById('cat-title').innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> 搜索结果 <span class="cat-count">(${list.length})</span>`; render(list); }); }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
         init();
     </script>
 </body>
