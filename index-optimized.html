@@ -1,430 +1,1008 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
+<html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="资源风 - 真正收录300+全球优质极客资源。对标FMHY的中文导航站。">
+    <meta name="description" content="资源风 - 真正收录300+全球优质极客资源。对标FMHY的中文导航站。樱花版。">
     <meta name="keywords" content="资源导航,极客资源,影视,动漫,游戏,软件,AI,开发工具">
     <meta name="author" content="Feng-180">
     <meta property="og:title" content="资源风 | Resource Wind (300+版)">
-    <meta property="og:description" content="真正收录300+全球优质极客资源">
+    <meta property="og:description" content="真正收录300+全球优质极客资源，樱花主题">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://feng.资源风.top">
-    <title>资源风 | Resource Wind (300+版)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>资源风 | Resource Wind · 樱花版</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        dark: '#020617',
-                        card: '#0f172a',
-                        accent: '#38bdf8',
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    animation: { 'fade-in': 'fadeIn 0.5s ease-out' },
-                    keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } }
-                }
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-deep: #0c0618;
+            --bg-sidebar: #100a20;
+            --bg-card: rgba(25, 15, 45, 0.65);
+            --bg-glass: rgba(255, 255, 255, 0.025);
+            --border-subtle: rgba(167, 139, 250, 0.08);
+            --border-glow: rgba(244, 114, 182, 0.3);
+            --text-primary: #f5f0ff;
+            --text-secondary: #b8a5d4;
+            --text-muted: #6d5a8a;
+            --sakura-pink: #f472b6;
+            --sakura-purple: #a78bfa;
+            --sakura-rose: #fb7185;
+            --sakura-lavender: #c4b5fd;
+            --sakura-fuchsia: #e879f9;
+            --font: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+            --radius: 14px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-deep);
+            color: var(--text-secondary);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* ===== 背景极光 ===== */
+        .aurora {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .aurora::before {
+            content: '';
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            top: -250px;
+            left: -150px;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.1), transparent 70%);
+            animation: auroraFloat 20s ease-in-out infinite;
+        }
+
+        .aurora::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            bottom: -200px;
+            right: -100px;
+            background: radial-gradient(circle, rgba(244, 114, 182, 0.08), transparent 70%);
+            animation: auroraFloat 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes auroraFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(80px, 50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-50px, 80px) scale(0.95);
             }
         }
-    </script>
-    <style>
-        body { background-color: #020617; color: #cbd5e1; }
-        
-        /* Loading State */
+
+        /* ===== 加载 ===== */
         #loading-overlay {
             position: fixed;
             inset: 0;
-            background: #020617;
+            background: var(--bg-deep);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.5s, visibility 0.5s;
         }
+
         #loading-overlay.hidden {
             opacity: 0;
             visibility: hidden;
         }
-        .loading-spinner {
+
+        .loader-ring {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(167, 139, 250, 0.15);
+            border-top-color: var(--sakura-pink);
+            border-right-color: var(--sakura-purple);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== 滚动条 ===== */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(167, 139, 250, 0.2);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(167, 139, 250, 0.35);
+        }
+
+        /* ===== 侧边栏 ===== */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+            position: relative;
+            flex-shrink: 0;
+            transition: transform 0.25s ease;
+        }
+
+        .sidebar-header-area {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--sakura-pink), var(--sakura-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 15px;
+            margin-right: 12px;
+            box-shadow: 0 4px 16px rgba(244, 114, 182, 0.25);
+        }
+
+        .sidebar-title {
+            font-size: 1.15em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--sakura-pink), var(--sakura-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-ver {
+            font-size: 9px;
+            background: rgba(244, 114, 182, 0.1);
+            color: var(--sakura-pink);
+            padding: 2px 6px;
+            border-radius: 6px;
+            margin-left: 8px;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        /* QQ Card */
+        .qq-card {
+            margin-bottom: 14px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.08), rgba(167, 139, 250, 0.08));
+            border: 1px solid rgba(244, 114, 182, 0.15);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s;
+        }
+
+        .qq-card:hover {
+            border-color: rgba(244, 114, 182, 0.35);
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.12), rgba(167, 139, 250, 0.12));
+            transform: translateY(-1px);
+        }
+
+        .qq-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .qq-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--sakura-pink);
+        }
+
+        .qq-icon {
+            color: var(--sakura-lavender);
+        }
+
+        .qq-num {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-top: 4px;
+            font-family: 'Inter', monospace;
+        }
+
+        /* Nav Group Label */
+        .nav-group {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 18px 10px 6px;
+        }
+
+        /* Nav Button */
+        .nav-btn {
+            width: 100%;
+            text-align: left;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(167, 139, 250, 0.06);
+            color: var(--text-primary);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--sakura-pink), var(--sakura-purple));
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 3px 12px rgba(244, 114, 182, 0.2);
+        }
+
+        .nav-btn i {
+            width: 22px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .nav-btn .nav-label {
+            flex: 1;
+        }
+
+        .nav-count {
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 7px;
+            border-radius: 6px;
+            color: var(--text-muted);
+        }
+
+        .nav-btn.active .nav-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .sidebar-footer {
+            padding: 12px 16px 16px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-footer a {
+            display: block;
+            text-align: center;
+            padding: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .sidebar-footer a:hover {
+            color: var(--sakura-pink);
+            border-color: var(--border-glow);
+            background: rgba(244, 114, 182, 0.04);
+        }
+
+        /* ===== 主内容 ===== */
+        .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .top-bar {
+            height: 60px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 12px;
+            background: rgba(12, 6, 24, 0.85);
+            backdrop-filter: blur(16px);
+            z-index: 20;
+            flex-shrink: 0;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .search-wrap {
+            flex: 1;
+            max-width: 480px;
+            position: relative;
+        }
+
+        .search-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: var(--font);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.08);
+        }
+
+        .search-wrap input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .top-actions button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 4px;
+        }
+
+        .top-actions button:hover {
+            color: var(--sakura-pink);
+        }
+
+        .db-badge {
+            font-size: 11px;
+            font-family: monospace;
+            color: var(--text-muted);
+            background: var(--bg-glass);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        .db-badge .num {
+            color: var(--sakura-lavender);
+            font-weight: 700;
+        }
+
+        /* Content Area */
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px;
+        }
+
+        .cat-title {
+            font-size: 1.6em;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cat-title i {
+            color: var(--sakura-pink);
+        }
+
+        .cat-title .cat-count {
+            font-size: 0.5em;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* Card Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            padding-bottom: 60px;
+        }
+
+        /* Resource Card */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            animation: cardIn 0.45s ease forwards;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sakura-pink), var(--sakura-purple));
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-glow);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(244, 114, 182, 0.06);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
             width: 40px;
             height: 40px;
-            border: 3px solid #1e293b;
-            border-top-color: #38bdf8;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(167, 139, 250, 0.1));
+            color: var(--sakura-pink);
+            font-size: 16px;
+            flex-shrink: 0;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-        .resource-card { border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s; }
-        .resource-card:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.4); background: rgba(30, 41, 59, 0.5); box-shadow: 0 4px 20px -5px rgba(0,0,0,0.5); }
-        
-        /* Staggered card animation */
-        .resource-card { opacity: 0; animation: cardFadeIn 0.4s ease forwards; }
-        @keyframes cardFadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .card-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-right: 24px;
+            transition: color 0.2s;
         }
-        
-        .sidebar-header { font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.1em; padding: 1.5rem 1rem 0.5rem; }
-        #toast-container { z-index: 9999; }
+
+        .card:hover .card-name {
+            color: var(--sakura-pink);
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            flex-grow: 1;
+            margin-bottom: 12px;
+        }
+
+        .card-bottom {
+            padding-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-cat {
+            font-size: 10px;
+            background: rgba(167, 139, 250, 0.08);
+            color: var(--text-muted);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .card:hover .card-actions {
+            opacity: 1;
+        }
+
+        .card-actions span {
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 11px;
+            transition: color 0.15s;
+        }
+
+        .card-actions span:hover {
+            color: var(--sakura-pink);
+        }
+
+        /* Badge */
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid;
+        }
+
+        .badge-hot {
+            background: rgba(251, 113, 133, 0.1);
+            color: var(--sakura-rose);
+            border-color: rgba(251, 113, 133, 0.2);
+        }
+
+        .badge-good {
+            background: rgba(167, 139, 250, 0.1);
+            color: var(--sakura-lavender);
+            border-color: rgba(167, 139, 250, 0.2);
+        }
+
+        .badge-other {
+            background: rgba(232, 121, 249, 0.1);
+            color: var(--sakura-fuchsia);
+            border-color: rgba(232, 121, 249, 0.2);
+        }
+
+        /* Empty */
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        .empty .icon {
+            font-size: 3em;
+            margin-bottom: 12px;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .toast-item {
+            background: linear-gradient(135deg, var(--sakura-pink), var(--sakura-purple));
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            box-shadow: 0 6px 20px rgba(244, 114, 182, 0.3);
+            animation: toastIn 0.3s ease;
+        }
+
+        .toast-item.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .content-scroll {
+                padding: 20px 16px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .db-badge {
+                display: none;
+            }
+
+            .sidebar-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 49;
+                display: none;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+        }
     </style>
 </head>
-<body class="h-screen overflow-hidden flex text-sm selection:bg-accent selection:text-dark">
 
-    <!-- Loading Overlay -->
+<body>
+    <!-- 极光背景 -->
+    <div class="aurora"></div>
+
+    <!-- 加载 -->
     <div id="loading-overlay">
-        <div class="loading-spinner"></div>
+        <div class="loader-ring"></div>
     </div>
 
-    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-64 bg-[#0b1121] border-r border-slate-800/50 z-50 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-200">
-        <div class="h-16 flex items-center px-5 border-b border-slate-800/50 shrink-0 cursor-pointer" onclick="location.reload()">
-            <div class="w-8 h-8 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white mr-3 shadow-lg shadow-blue-500/20"><i class="fa-solid fa-wind"></i></div>
-            <div class="font-bold text-lg text-white tracking-wide">资源风 <span class="text-[10px] text-accent font-mono bg-accent/10 px-1 rounded ml-1">v11</span></div>
+    <!-- 移动端遮罩 -->
+    <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header-area" onclick="location.reload()">
+            <div class="sidebar-logo"><i class="fa-solid fa-wind"></i></div>
+            <span class="sidebar-title">资源风</span>
+            <span class="sidebar-ver">v12</span>
         </div>
 
-        <div class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-0.5">
-            <div onclick="joinQQ()" class="mb-4 p-3 rounded-xl bg-gradient-to-r from-blue-900/20 to-cyan-900/20 border border-blue-500/20 cursor-pointer group relative overflow-hidden">
-                <div class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition"></div>
-                <div class="flex justify-between items-center relative z-10"><span class="text-xs font-bold text-blue-300">加入官方社区</span><i class="fa-brands fa-qq"></i></div>
-                <div class="text-lg font-bold text-white mt-1 relative z-10 font-mono">691105381</div>
+        <div class="sidebar-nav">
+            <div class="qq-card" onclick="joinQQ()">
+                <div class="qq-card-top">
+                    <span class="qq-label">🌸 加入官方社区</span>
+                    <i class="fa-brands fa-qq qq-icon"></i>
+                </div>
+                <div class="qq-num">691105381</div>
             </div>
 
-            <button onclick="filter('all')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-white bg-slate-800 font-medium"><i class="fa-solid fa-layer-group w-6 text-center text-accent"></i> 全部资源 (300+)</button>
+            <button class="nav-btn active" onclick="filter('all', this)">
+                <span><i class="fa-solid fa-layer-group"></i><span class="nav-label">全部资源</span></span>
+                <span class="nav-count" id="c-all"></span>
+            </button>
 
-            <div class="sidebar-header">数字娱乐</div>
-            <button onclick="filter('movies')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-film w-6 text-center"></i> 影视与聚合 <span id="c-movies" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('anime')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-cat w-6 text-center"></i> 动漫与漫画 <span id="c-anime" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('games')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-gamepad w-6 text-center"></i> 游戏与模拟 <span id="c-games" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('music')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-music w-6 text-center"></i> 音乐与有声 <span id="c-music" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('iptv')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-tv w-6 text-center"></i> 直播与IPTV <span id="c-iptv" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <div class="nav-group">数字娱乐</div>
+            <button class="nav-btn" onclick="filter('movies', this)"><span><i class="fa-solid fa-film"></i><span
+                        class="nav-label">影视与聚合</span></span><span class="nav-count" id="c-movies"></span></button>
+            <button class="nav-btn" onclick="filter('anime', this)"><span><i class="fa-solid fa-cat"></i><span
+                        class="nav-label">动漫与漫画</span></span><span class="nav-count" id="c-anime"></span></button>
+            <button class="nav-btn" onclick="filter('games', this)"><span><i class="fa-solid fa-gamepad"></i><span
+                        class="nav-label">游戏与模拟</span></span><span class="nav-count" id="c-games"></span></button>
+            <button class="nav-btn" onclick="filter('music', this)"><span><i class="fa-solid fa-music"></i><span
+                        class="nav-label">音乐与有声</span></span><span class="nav-count" id="c-music"></span></button>
+            <button class="nav-btn" onclick="filter('iptv', this)"><span><i class="fa-solid fa-tv"></i><span
+                        class="nav-label">直播与IPTV</span></span><span class="nav-count" id="c-iptv"></span></button>
 
-            <div class="sidebar-header">极客生产力</div>
-            <button onclick="filter('tools')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-toolbox w-6 text-center"></i> 软件与工具 <span id="c-tools" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('ai')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-brain w-6 text-center"></i> 人工智能 <span id="c-ai" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('dev')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-code w-6 text-center"></i> 开发与编程 <span id="c-dev" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('design')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-pen-nib w-6 text-center"></i> 设计与素材 <span id="c-design" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <div class="nav-group">极客生产力</div>
+            <button class="nav-btn" onclick="filter('tools', this)"><span><i class="fa-solid fa-toolbox"></i><span
+                        class="nav-label">软件与工具</span></span><span class="nav-count" id="c-tools"></span></button>
+            <button class="nav-btn" onclick="filter('ai', this)"><span><i class="fa-solid fa-brain"></i><span
+                        class="nav-label">人工智能</span></span><span class="nav-count" id="c-ai"></span></button>
+            <button class="nav-btn" onclick="filter('dev', this)"><span><i class="fa-solid fa-code"></i><span
+                        class="nav-label">开发与编程</span></span><span class="nav-count" id="c-dev"></span></button>
+            <button class="nav-btn" onclick="filter('design', this)"><span><i class="fa-solid fa-pen-nib"></i><span
+                        class="nav-label">设计与素材</span></span><span class="nav-count" id="c-design"></span></button>
 
-            <div class="sidebar-header">移动 & 安全</div>
-            <button onclick="filter('android')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-brands fa-android w-6 text-center"></i> 安卓发烧友 <span id="c-android" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('privacy')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-shield-halved w-6 text-center"></i> 隐私与安全 <span id="c-privacy" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
-            <button onclick="filter('pan')" class="nav-btn w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white"><i class="fa-solid fa-cloud w-6 text-center"></i> 网盘与资源 <span id="c-pan" class="float-right text-[10px] bg-slate-800 px-1.5 rounded text-slate-500 mt-0.5"></span></button>
+            <div class="nav-group">移动 & 安全</div>
+            <button class="nav-btn" onclick="filter('android', this)"><span><i class="fa-brands fa-android"></i><span
+                        class="nav-label">安卓发烧友</span></span><span class="nav-count" id="c-android"></span></button>
+            <button class="nav-btn" onclick="filter('privacy', this)"><span><i
+                        class="fa-solid fa-shield-halved"></i><span class="nav-label">隐私与安全</span></span><span
+                    class="nav-count" id="c-privacy"></span></button>
+            <button class="nav-btn" onclick="filter('pan', this)"><span><i class="fa-solid fa-cloud"></i><span
+                        class="nav-label">网盘与资源</span></span><span class="nav-count" id="c-pan"></span></button>
+        </div>
 
-            <div class="mt-8 px-2 pb-6">
-                <a href="mailto:2902939692@qq.com" class="block text-center py-2 text-xs text-slate-500 hover:text-white border border-slate-700/50 rounded hover:bg-slate-800 transition">
-                    <i class="fa-solid fa-envelope mr-1"></i> 投稿: 2902939692
-                </a>
-            </div>
+        <div class="sidebar-footer">
+            <a href="mailto:2902939692@qq.com"><i class="fa-solid fa-envelope"></i> 投稿: 2902939692</a>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full relative bg-[#020617]">
-        <header class="h-16 border-b border-slate-800/50 flex items-center justify-between px-6 bg-[#020617]/90 backdrop-blur z-20">
-            <button class="md:hidden text-slate-400 mr-4" onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')"><i class="fa-solid fa-bars text-lg"></i></button>
-            <div class="flex-1 max-w-lg relative">
-                <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                <input type="text" id="search" placeholder="搜索 320+ 资源 (Ctrl+K)..." class="w-full bg-slate-900 border border-slate-800 rounded-full py-2 pl-10 pr-4 text-white focus:border-accent focus:outline-none placeholder-slate-600 text-sm">
+    <!-- 主内容 -->
+    <main class="main-area">
+        <header class="top-bar">
+            <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="search-wrap">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="search" placeholder="搜索 320+ 资源 (Ctrl+K)...">
             </div>
-            <div class="ml-4 flex items-center gap-3">
-                <button onclick="randomSite()" class="text-slate-400 hover:text-accent" title="手气不错"><i class="fa-solid fa-dice text-lg"></i></button>
-                <div class="hidden md:flex text-xs text-slate-500 font-mono bg-slate-900 px-2 py-1 rounded border border-slate-800">DB: <span id="total-db" class="text-emerald-400">0</span></div>
+            <div class="top-actions">
+                <button onclick="randomSite()" title="手气不错"><i class="fa-solid fa-dice"></i></button>
+                <span class="db-badge">DB: <span class="num" id="total-db">0</span></span>
             </div>
         </header>
 
-        <div id="content-area" class="flex-1 overflow-y-auto custom-scrollbar p-6">
-            <h2 id="cat-title" class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><i class="fa-solid fa-layer-group text-accent"></i> 全部资源</h2>
-            <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-20"></div>
+        <div class="content-scroll" id="content-area">
+            <h2 class="cat-title" id="cat-title"><i class="fa-solid fa-layer-group"></i> 全部资源</h2>
+            <div class="grid" id="grid"></div>
         </div>
     </main>
 
-    <div id="toast" class="fixed top-20 right-5 pointer-events-none z-50"></div>
+    <div id="toast"></div>
 
     <script>
-        // ==========================================
-        // 📚 全局变量
-        // ==========================================
+        // ===== 全局 =====
         let db = [];
         let currentCategory = 'all';
 
-        // ==========================================
-        // 🚀 初始化与数据加载
-        // ==========================================
+        const CAT_NAMES = {
+            all: '全部资源', movies: '影视与聚合', anime: '动漫与漫画',
+            games: '游戏与模拟', music: '音乐与有声', iptv: '直播与IPTV',
+            tools: '软件与工具', ai: '人工智能', dev: '开发与编程',
+            design: '设计与素材', android: '安卓发烧友', privacy: '隐私与安全', pan: '网盘与资源'
+        };
+
+        // ===== 初始化 =====
         async function init() {
             try {
-                // 从 data.json 加载数据
-                const response = await fetch('data.json');
-                if (!response.ok) throw new Error('Failed to load data');
-                db = await response.json();
-                
-                // 更新 Header 上的总数据库数量
+                const resp = await fetch('data.json');
+                if (!resp.ok) throw new Error('加载失败');
+                db = await resp.json();
                 document.getElementById('total-db').innerText = db.length;
-
-                // 统计分类数量
-                updateCategoryCounts();
-                
-                // 初始渲染
+                updateCounts();
                 render(db);
-                
-                // 添加 Ctrl + K 键盘快捷键监听
-                setupKeyboardShortcuts();
-                
-                // 设置搜索框监听器
-                setupSearchListener();
-                
-                // 隐藏加载动画
-                setTimeout(() => {
-                    document.getElementById('loading-overlay').classList.add('hidden');
-                }, 500);
-            } catch (error) {
-                console.error('初始化失败:', error);
-                showToast('加载失败，请刷新页面', 'error');
+                setupSearch();
+                document.addEventListener('keydown', e => {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('search').focus(); }
+                });
+                setTimeout(() => document.getElementById('loading-overlay').classList.add('hidden'), 400);
+            } catch (err) {
+                console.error(err);
+                showToast('加载失败，请刷新页面', true);
                 document.getElementById('loading-overlay').classList.add('hidden');
             }
         }
 
-        /**
-         * 更新分类计数
-         */
-        function updateCategoryCounts() {
+        function updateCounts() {
             const counts = {};
-            db.forEach(item => {
-                counts[item.c] = (counts[item.c] || 0) + 1;
-            });
-            
-            for (let category in counts) {
-                const el = document.getElementById(`c-${category}`);
-                if (el) el.innerText = counts[category];
+            db.forEach(it => counts[it.c] = (counts[it.c] || 0) + 1);
+            const allEl = document.getElementById('c-all');
+            if (allEl) allEl.innerText = db.length;
+            for (let c in counts) {
+                const el = document.getElementById('c-' + c);
+                if (el) el.innerText = counts[c];
             }
         }
 
-        /**
-         * 设置键盘快捷键
-         */
-        function setupKeyboardShortcuts() {
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                    e.preventDefault();
-                    document.getElementById('search').focus();
-                }
-            });
-        }
+        // ===== 分类 =====
+        function filter(cat, btn) {
+            currentCategory = cat;
+            const list = cat === 'all' ? db : db.filter(i => i.c === cat);
 
-        // ==========================================
-        // 🎯 分类筛选
-        // ==========================================
-        function filter(category) {
-            currentCategory = category;
-            const list = category === 'all' ? db : db.filter(i => i.c === category);
-            
-            // 侧边栏高亮逻辑
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-accent', 'text-dark', 'font-bold');
-                btn.classList.add('text-slate-400', 'bg-transparent');
-                if (btn.getAttribute('onclick').includes(`'${category}'`)) {
-                    btn.classList.remove('text-slate-400', 'bg-transparent');
-                    btn.classList.add('bg-accent', 'text-dark', 'font-bold');
-                }
-            });
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
 
-            // 移动端自动关闭侧边栏
-            if (window.innerWidth < 768) {
-                document.getElementById('sidebar').classList.add('-translate-x-full');
-            }
+            if (window.innerWidth < 768) closeSidebar();
 
-            // 更新标题
-            const categoryNames = {
-                'all': '全部资源',
-                'movies': '影视与聚合',
-                'anime': '动漫与漫画',
-                'games': '游戏与模拟',
-                'music': '音乐与有声',
-                'iptv': '直播与IPTV',
-                'tools': '软件与工具',
-                'ai': '人工智能',
-                'dev': '开发与编程',
-                'design': '设计与素材',
-                'android': '安卓发烧友',
-                'privacy': '隐私与安全',
-                'pan': '网盘与资源'
-            };
-
-            document.getElementById('cat-title').innerHTML = 
-                `<i class="fa-solid fa-layer-group text-accent"></i> ${categoryNames[category] || '搜索结果'} <span class="text-sm text-slate-500 ml-2">(${list.length})</span>`;
-
+            document.getElementById('cat-title').innerHTML =
+                `<i class="fa-solid fa-layer-group"></i> ${CAT_NAMES[cat] || '搜索结果'} <span class="cat-count">(${list.length})</span>`;
             render(list);
         }
 
-        // ==========================================
-        // 🎨 渲染卡片
-        // ==========================================
+        // ===== 渲染 =====
         function render(list) {
             const grid = document.getElementById('grid');
-            
-            if (list.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center text-slate-500 py-12">未找到相关资源</div>';
+            if (!list.length) {
+                grid.innerHTML = '<div class="empty"><div class="icon">🌸</div><p>未找到相关资源</p></div>';
                 return;
             }
-
-            // 使用 map + join 提升渲染性能
-            const htmlStr = list.map(item => {
-                const badge = item.badge ? `<span class="absolute top-2 right-2 text-[10px] font-bold px-1.5 py-0.5 rounded border ${getBadgeStyle(item.badge)}">${item.badge}</span>` : '';
+            grid.innerHTML = list.map((it, i) => {
+                const badge = it.badge ? `<span class="badge ${getBadgeClass(it.badge)}">${esc(it.badge)}</span>` : '';
                 return `
-                <div class="resource-card bg-[#0b1121] rounded-xl p-4 relative group cursor-pointer flex flex-col h-full animate-fade-in" onclick="openLink('${item.u}')">
+                <div class="card" style="animation-delay:${Math.min(i * 0.03, 0.6)}s" onclick="openLink('${esc(it.u)}')">
                     ${badge}
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-slate-800 text-accent text-lg shadow-inner"><i class="fa-solid ${item.i}"></i></div>
-                        <div class="font-bold text-slate-200 truncate pr-6 group-hover:text-accent transition">${escapeHtml(item.t)}</div>
+                    <div class="card-top">
+                        <div class="card-icon"><i class="fa-solid ${it.i}"></i></div>
+                        <div class="card-name">${esc(it.t)}</div>
                     </div>
-                    <p class="text-xs text-slate-400 leading-relaxed mb-3 flex-grow">${escapeHtml(item.d)}</p>
-                    <div class="pt-3 border-t border-slate-800/50 flex justify-between items-center text-[10px] text-slate-500">
-                        <span class="bg-slate-900 px-1.5 py-0.5 rounded">#${item.c.toUpperCase()}</span>
-                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
-                            <span onclick="copyLink('${item.u}', event)" class="hover:text-white cursor-pointer" title="复制链接"><i class="fa-regular fa-copy"></i></span>
-                            <span class="hover:text-white"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <p class="card-desc">${esc(it.d)}</p>
+                    <div class="card-bottom">
+                        <span class="card-cat">#${it.c.toUpperCase()}</span>
+                        <div class="card-actions">
+                            <span onclick="copyLink('${esc(it.u)}', event)" title="复制链接"><i class="fa-regular fa-copy"></i></span>
+                            <span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                         </div>
                     </div>
                 </div>`;
             }).join('');
-            
-            grid.innerHTML = htmlStr;
         }
 
-        // ==========================================
-        // 🔧 工具函数
-        // ==========================================
+        // ===== 工具 =====
+        function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
 
-        /**
-         * 转义 HTML 特殊字符，防止 XSS
-         */
-        function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return text.replace(/[&<>"']/g, m => map[m]);
+        function openLink(url) { window.open(url, '_blank', 'noopener,noreferrer'); }
+
+        function getBadgeClass(b) {
+            if (['热门', '神器', '必藏', '神站'].includes(b)) return 'badge-hot';
+            if (['新锐', 'FOSS', '推荐', '源头', '必读'].includes(b)) return 'badge-good';
+            return 'badge-other';
         }
 
-        /**
-         * 打开链接
-         */
-        function openLink(url) {
-            try {
-                window.open(url, '_blank');
-            } catch (error) {
-                console.error('打开链接失败:', error);
-                showToast('无法打开链接', 'error');
-            }
-        }
-
-        /**
-         * 获取 Badge 样式
-         */
-        function getBadgeStyle(badge) {
-            if (['热门', '神器', '必藏', '神站'].includes(badge)) 
-                return 'bg-red-500/10 text-red-400 border-red-500/20';
-            if (['新锐', 'FOSS', '推荐', '源头', '必读'].includes(badge)) 
-                return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-            return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
-        }
-
-        /**
-         * 加入 QQ 群
-         */
         function joinQQ() {
-            try {
-                const isMobile = /Android|iPhone/i.test(navigator.userAgent);
-                const url = isMobile 
-                    ? "mqqapi://card/show_pslcard?src_type=internal&version=1&uin=691105381&card_type=group&source=qrcode"
-                    : "https://qm.qq.com/q/cY9CE78ZMs";
-                isMobile ? (window.location.href = url) : window.open(url, '_blank');
-                showToast('正在前往官方社区...', 'success');
-            } catch (error) {
-                console.error('加入 QQ 群失败:', error);
-                showToast('加入失败，请稍后重试', 'error');
-            }
+            const mobile = /Android|iPhone/i.test(navigator.userAgent);
+            const url = mobile
+                ? 'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=691105381&card_type=group&source=qrcode'
+                : 'https://qm.qq.com/q/cY9CE78ZMs';
+            mobile ? (location.href = url) : window.open(url, '_blank');
+            showToast('正在前往官方社区...');
         }
 
-        /**
-         * 复制链接
-         */
         function copyLink(url, e) {
             e.stopPropagation();
             navigator.clipboard.writeText(url)
-                .then(() => showToast('链接已复制', 'success'))
-                .catch(error => {
-                    console.error('复制失败:', error);
-                    showToast('复制失败', 'error');
-                });
+                .then(() => showToast('链接已复制'))
+                .catch(() => showToast('复制失败', true));
         }
 
-        /**
-         * 显示 Toast 提示
-         */
-        function showToast(msg, type = 'success') {
+        function showToast(msg, isErr) {
             const t = document.createElement('div');
-            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-accent';
-            t.className = `${bgColor} text-dark font-bold px-4 py-2 rounded-lg shadow-lg mb-2 animate-bounce`;
-            t.innerText = msg;
+            t.className = 'toast-item' + (isErr ? ' error' : '');
+            t.textContent = msg;
             document.getElementById('toast').appendChild(t);
-            setTimeout(() => t.remove(), 2000);
+            setTimeout(() => t.remove(), 2200);
         }
 
-        /**
-         * 随机访问一个站点
-         */
         function randomSite() {
-            if (db.length === 0) {
-                showToast('数据加载中...', 'error');
-                return;
-            }
-            try {
-                const randomItem = db[Math.floor(Math.random() * db.length)];
-                showToast(`正在前往: ${randomItem.t}`, 'success');
-                setTimeout(() => {
-                    window.open(randomItem.u, '_blank');
-                }, 500);
-            } catch (error) {
-                console.error('随机访问失败:', error);
-                showToast('访问失败，请稍后重试', 'error');
-            }
+            if (!db.length) { showToast('数据加载中...', true); return; }
+            const r = db[Math.floor(Math.random() * db.length)];
+            showToast('正在前往: ' + r.t);
+            setTimeout(() => window.open(r.u, '_blank'), 500);
         }
 
-        // ==========================================
-        // 🔍 搜索功能
-        // ==========================================
-        function setupSearchListener() {
-            document.getElementById('search').addEventListener('input', (e) => {
-                const val = e.target.value.toLowerCase().trim();
-                
-                if (!val) {
-                    // 如果搜索框为空，显示当前分类
-                    filter(currentCategory);
-                    return;
-                }
-
-                // 搜索标题和描述
-                const filtered = db.filter(i => 
-                    i.t.toLowerCase().includes(val) || 
-                    i.d.toLowerCase().includes(val)
-                );
-
-                document.getElementById('cat-title').innerHTML = 
-                    `<i class="fa-solid fa-magnifying-glass text-accent"></i> 搜索结果 <span class="text-sm text-slate-500 ml-2">(${filtered.length})</span>`;
-                
-                render(filtered);
+        // ===== 搜索 =====
+        function setupSearch() {
+            document.getElementById('search').addEventListener('input', e => {
+                const v = e.target.value.toLowerCase().trim();
+                if (!v) { filter(currentCategory, document.querySelector('.nav-btn.active')); return; }
+                const list = db.filter(i => i.t.toLowerCase().includes(v) || i.d.toLowerCase().includes(v));
+                document.getElementById('cat-title').innerHTML =
+                    `<i class="fa-solid fa-magnifying-glass"></i> 搜索结果 <span class="cat-count">(${list.length})</span>`;
+                render(list);
             });
         }
 
-        // 启动应用
+        // ===== 移动端侧边栏 =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('show');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // 启动
         init();
     </script>
 </body>
+
 </html>
